@@ -1,5 +1,6 @@
 import { ComponentType } from 'react';
 import { Thermometer, CloudRain, Cloud, Wind, Gauge, Compass, Maximize, Minimize, Sliders } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 export type WeatherLayerType = 'temp' | 'rain' | 'clouds' | 'wind' | 'pressure';
 
@@ -30,6 +31,8 @@ export const MapControls = ({
   onToggleLayer,
   onResetView,
 }: MapControlsProps) => {
+  const { t } = useLanguage();
+
   const layers: {
     id: WeatherLayerType;
     label: string;
@@ -37,11 +40,11 @@ export const MapControls = ({
     icon: ComponentType<{ className?: string }>;
     accentColor: string;
   }[] = [
-    { id: 'temp', label: 'Temperature', emoji: '🌡️', icon: Thermometer, accentColor: 'text-[#F2C94C] border-[#F2C94C]' },
-    { id: 'rain', label: 'Rain', emoji: '🌧️', icon: CloudRain, accentColor: 'text-[#56CCF2] border-[#2F80ED]' },
-    { id: 'clouds', label: 'Clouds', emoji: '☁️', icon: Cloud, accentColor: 'text-[#F4F7F9] border-[#9AA8B2]' },
-    { id: 'wind', label: 'Wind', emoji: '💨', icon: Wind, accentColor: 'text-[#27AE9B] border-[#27AE9B]' },
-    { id: 'pressure', label: 'Pressure', emoji: '🧭', icon: Gauge, accentColor: 'text-[#56CCF2] border-[#3A4A57]' },
+    { id: 'temp', label: t('temperatureLayer', 'Temperature'), emoji: '🌡️', icon: Thermometer, accentColor: 'text-[#F2C94C] border-[#F2C94C]' },
+    { id: 'rain', label: t('rainLayer', 'Rain'), emoji: '🌧️', icon: CloudRain, accentColor: 'text-[#56CCF2] border-[#2F80ED]' },
+    { id: 'clouds', label: t('cloudsLayer', 'Clouds'), emoji: '☁️', icon: Cloud, accentColor: 'text-[#F4F7F9] border-[#9AA8B2]' },
+    { id: 'wind', label: t('windLayer', 'Wind'), emoji: '💨', icon: Wind, accentColor: 'text-[#27AE9B] border-[#27AE9B]' },
+    { id: 'pressure', label: t('pressureLayer', 'Pressure'), emoji: '🧭', icon: Gauge, accentColor: 'text-[#56CCF2] border-[#3A4A57]' },
   ];
 
   return (
@@ -53,7 +56,7 @@ export const MapControls = ({
       {/* Weather Layer Toggles Group */}
       <div className="flex items-center gap-1.5 overflow-x-auto max-w-full no-scrollbar pb-1 sm:pb-0" role="group" aria-label="Weather Overlay Layers">
         <span className="text-[11px] font-mono text-[#9AA8B2] uppercase tracking-wider px-2 border-r border-[#2B3945] hidden md:inline shrink-0">
-          Layers
+          {t('layers', 'Layers')}
         </span>
 
         {layers.map((layer) => {
@@ -86,7 +89,7 @@ export const MapControls = ({
         <div className="flex items-center gap-2 bg-[#101820] border border-[#2B3945] px-2.5 py-1.5 rounded-lg">
           <Sliders className="w-3.5 h-3.5 text-[#56CCF2] shrink-0" />
           <label htmlFor="map-opacity-slider" className="text-[11px] font-mono text-[#9AA8B2] hidden sm:inline">
-            Opacity
+            {t('opacity', 'Opacity')}
           </label>
           <input
             id="map-opacity-slider"
@@ -113,7 +116,7 @@ export const MapControls = ({
           aria-label="Reset map view to global extent"
         >
           <Compass className="w-3.5 h-3.5 text-[#56CCF2]" />
-          <span className="hidden sm:inline">Reset</span>
+          <span className="hidden sm:inline">{t('resetView', 'Reset')}</span>
         </button>
 
         {/* Fullscreen Map Toggle Button */}
@@ -124,7 +127,7 @@ export const MapControls = ({
           aria-label={isFullscreen ? 'Exit map fullscreen mode' : 'Enter map fullscreen mode'}
         >
           {isFullscreen ? <Minimize className="w-3.5 h-3.5 text-[#56CCF2]" /> : <Maximize className="w-3.5 h-3.5 text-[#56CCF2]" />}
-          <span className="hidden md:inline">{isFullscreen ? 'Exit' : 'Full'}</span>
+          <span className="hidden md:inline">{isFullscreen ? t('close', 'Exit') : t('fullscreen', 'Full')}</span>
         </button>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { useState, FormEvent, useRef, useEffect } from 'react';
 import { getAIWeatherAdvice, AIWeatherContext, ChatHistoryItem } from '../services/aiApi';
 import { CurrentWeatherResponse } from '../types/weather';
 import { Bot, User, Send, Sparkles, MapPin, RefreshCw, AlertCircle, HelpCircle, Thermometer, CloudRain, Wind } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface Message {
   id: string;
@@ -19,6 +20,8 @@ export const AIAdvisorPage = ({ currentCityWeather }: AIAdvisorPageProps) => {
   const selectedCity = currentCityWeather?.location.city || 'Mumbai';
   const country = currentCityWeather?.location.country || 'IN';
 
+  const { language, t, translateCondition } = useLanguage();
+
   const [inputQuery, setInputQuery] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,10 +31,30 @@ export const AIAdvisorPage = ({ currentCityWeather }: AIAdvisorPageProps) => {
     {
       id: 'welcome-1',
       sender: 'ai',
-      text: `Meteorological Advisor online for ${selectedCity}, ${country}. Inquire regarding outdoor scheduling, precipitation timing, thermal projections, or multi-city planning.`,
+      text: `${t('welcomeAdvisorPrefix', 'Meteorological Advisor online for')} ${selectedCity}, ${country}. ${t(
+        'welcomeAdvisorSuffix',
+        'Inquire regarding outdoor scheduling, precipitation timing, thermal projections, or multi-city planning.'
+      )}`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
+
+  // Keep welcome message text synchronized with language switches
+  useEffect(() => {
+    setMessages((prev) =>
+      prev.map((m) =>
+        m.id === 'welcome-1'
+          ? {
+              ...m,
+              text: `${t('welcomeAdvisorPrefix', 'Meteorological Advisor online for')} ${selectedCity}, ${country}. ${t(
+                'welcomeAdvisorSuffix',
+                'Inquire regarding outdoor scheduling, precipitation timing, thermal projections, or multi-city planning.'
+              )}`,
+            }
+          : m
+      )
+    );
+  }, [language, selectedCity, country, t]);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -41,14 +64,14 @@ export const AIAdvisorPage = ({ currentCityWeather }: AIAdvisorPageProps) => {
   }, [messages, loading]);
 
   const suggestions = [
-    'Can I play football at 6 PM?',
-    'Can I go running tomorrow morning?',
-    'Will it rain tonight?',
-    'What will the weather be tomorrow?',
-    'Will it be hot at 3 PM?',
-    'Can I go cycling at 7 AM?',
-    'What about 8 PM?',
-    'How is the weather now?',
+    t('queryFootball', 'Can I play football at 6 PM?'),
+    t('queryRunning', 'Can I go running tomorrow morning?'),
+    t('queryRainTonight', 'Will it rain tonight?'),
+    t('queryWeatherTomorrow', 'What will the weather be tomorrow?'),
+    t('queryHot3PM', 'Will it be hot at 3 PM?'),
+    t('queryCycling7AM', 'Can I go cycling at 7 AM?'),
+    t('queryAbout8PM', 'What about 8 PM?'),
+    t('queryWeatherNow', 'How is the weather now?'),
   ];
 
   const handleSendMessage = async (textToSend: string) => {
@@ -88,11 +111,12 @@ export const AIAdvisorPage = ({ currentCityWeather }: AIAdvisorPageProps) => {
 
       setMessages((prev) => [...prev, aiMessage]);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Unable to analyze weather data at this time. Please retry.");
+      const fallbackErr = t('unableToAnalyze', 'Unable to analyze weather data at this time. Please retry.');
+      setError(err instanceof Error ? err.message : fallbackErr);
       const errorMsg: Message = {
         id: `ai-err-${Date.now()}`,
         sender: 'ai',
-        text: "Unable to analyze weather data at this time. Please retry.",
+        text: fallbackErr,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       setMessages((prev) => [...prev, errorMsg]);
@@ -112,27 +136,27 @@ export const AIAdvisorPage = ({ currentCityWeather }: AIAdvisorPageProps) => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#18232D] border border-[#2B3945] p-4 rounded-xl shrink-0">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono text-[#56CCF2] mb-0.5">
-            <Bot className="w-3.5 h-3.5 text-[#2F80ED]" /> Advisory Intelligence Station
+            <Bot className="w-3.5 h-3.5 text-[#2F80ED]" /> {t('advisoryStation', 'Advisory Intelligence Station')}
           </div>
           <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">
-            AI Weather Advisor
+            {t('aiAdvisor', 'AI Weather Advisor')}
           </h1>
           <p className="text-xs text-[#9AA8B2] mt-0.5">
-            Contextual advisory engine for activity scheduling and weather risk analysis
+            {t('aiAdvisorSubtitle', 'Contextual advisory engine for activity scheduling and weather risk analysis')}
           </p>
         </div>
 
         {/* Location Telemetry Badge */}
         <div className="flex items-center gap-2 px-3 py-1.5 bg-[#101820] border border-[#2B3945] rounded-lg text-xs font-mono text-[#F4F7F9] shrink-0">
           <MapPin className="w-3.5 h-3.5 text-[#56CCF2]" />
-          <span>Station: <strong>{selectedCity}, {country}</strong></span>
+          <span>{t('station', 'Station:')} <strong>{selectedCity}, {country}</strong></span>
         </div>
       </div>
 
       {/* Suggested Questions Quick Chips */}
       <div className="shrink-0 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 max-w-full">
         <span className="text-[10px] font-mono text-[#9AA8B2] uppercase tracking-wider shrink-0 flex items-center gap-1">
-          <Sparkles className="w-3 h-3 text-[#2F80ED]" /> Queries:
+          <Sparkles className="w-3 h-3 text-[#2F80ED]" /> {t('queries', 'Queries:')}
         </span>
         {suggestions.map((suggestion) => (
           <button
@@ -191,7 +215,7 @@ export const AIAdvisorPage = ({ currentCityWeather }: AIAdvisorPageProps) => {
                   <div className="pt-2.5 border-t border-[#2B3945] space-y-1.5">
                     <div className="flex items-center gap-1.5 text-[11px] font-mono text-[#56CCF2] font-semibold">
                       <HelpCircle className="w-3.5 h-3.5 text-[#2F80ED]" />
-                      <span>Telemetry Referenced:</span>
+                      <span>{t('telemetryReferenced', 'Telemetry Referenced:')}</span>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 bg-[#101820] border border-[#2B3945] p-2.5 rounded-lg text-[11px] font-mono text-[#F4F7F9]">
                       <span className="flex items-center gap-1 truncate">
@@ -206,11 +230,11 @@ export const AIAdvisorPage = ({ currentCityWeather }: AIAdvisorPageProps) => {
                         <span>{ctx.temperature}°C</span>
                       </span>
                       <span className="flex items-center gap-1 truncate capitalize">
-                        <span>{ctx.condition}</span>
+                        <span>{translateCondition(ctx.condition)}</span>
                       </span>
                       <span className="flex items-center gap-1 truncate">
                         <CloudRain className="w-3 h-3 text-[#56CCF2] shrink-0" />
-                        <span>{ctx.precipitation_probability}% rain</span>
+                        <span>{ctx.precipitation_probability}% {t('rainLabel', 'rain')}</span>
                       </span>
                       <span className="flex items-center gap-1 truncate">
                         <Wind className="w-3 h-3 text-[#27AE9B] shrink-0" />
@@ -240,7 +264,7 @@ export const AIAdvisorPage = ({ currentCityWeather }: AIAdvisorPageProps) => {
             </div>
             <div className="bg-[#18232D] border border-[#2B3945] p-2.5 rounded-lg rounded-tl-none text-xs text-[#56CCF2] font-mono flex items-center gap-2 shadow-sm">
               <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#2F80ED]" />
-              <span>Analyzing atmospheric telemetry...</span>
+              <span>{t('analyzingTelemetry', 'Analyzing atmospheric telemetry...')}</span>
             </div>
           </div>
         )}
@@ -255,9 +279,9 @@ export const AIAdvisorPage = ({ currentCityWeather }: AIAdvisorPageProps) => {
             type="text"
             value={inputQuery}
             onChange={(e) => setInputQuery(e.target.value)}
-            placeholder="Ask regarding weather conditions, timing, or outdoor plans..."
+            placeholder={t('askAdvisor', 'Ask regarding weather conditions, timing, or outdoor plans...')}
             disabled={loading}
-            aria-label="Ask AI Weather Advisor a question"
+            aria-label={t('askAdvisor', 'Ask regarding weather conditions, timing, or outdoor plans...')}
             className="w-full bg-[#18232D] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none disabled:opacity-50"
           />
         </div>
@@ -265,11 +289,11 @@ export const AIAdvisorPage = ({ currentCityWeather }: AIAdvisorPageProps) => {
         <button
           type="submit"
           disabled={loading || !inputQuery.trim()}
-          aria-label="Send question to AI Weather Advisor"
+          aria-label={t('submit', 'Submit')}
           className="flex items-center gap-2 px-4 py-2.5 bg-[#2F80ED] hover:bg-[#2570d4] text-white font-medium text-xs sm:text-sm rounded-lg transition-colors disabled:opacity-40 shrink-0"
         >
           <Send className="w-4 h-4" />
-          <span className="hidden sm:inline">Submit</span>
+          <span className="hidden sm:inline">{t('submit', 'Submit')}</span>
         </button>
       </form>
     </div>

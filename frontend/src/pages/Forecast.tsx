@@ -10,6 +10,7 @@ import {
   AirQualityMetrics,
 } from '../types/weather';
 import { CalendarDays, RefreshCw, AlertCircle } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ForecastPageProps {
   dailyData?: DailyForecastResponse | null;
@@ -30,6 +31,7 @@ export const ForecastPage = ({
   onRefresh,
   onEnsureForecastData,
 }: ForecastPageProps) => {
+  const { t } = useLanguage();
   const dailyItems = dailyData?.daily || [];
   const cityName = dailyData?.location?.city || hourlyData?.location?.city || 'Mumbai';
   const countryName = dailyData?.location?.country || hourlyData?.location?.country || '';
@@ -104,7 +106,7 @@ export const ForecastPage = ({
             <CalendarDays className="w-3.5 h-3.5 text-[#2F80ED]" /> Meteorological & Atmospheric Analysis
           </div>
           <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">
-            Forecast Station — {cityName}
+            {t('forecast', 'Forecast Station')} — {cityName}
           </h1>
           <p className="text-xs text-[#9AA8B2] mt-0.5">
             {cityName
@@ -124,7 +126,7 @@ export const ForecastPage = ({
             title="Refresh forecast & air quality data"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading || aqLoading ? 'animate-spin text-[#2F80ED]' : 'text-[#56CCF2]'}`} />
-            <span>Refresh Telemetry</span>
+            <span>{t('refreshTelemetry', 'Refresh Telemetry')}</span>
           </button>
         )}
       </div>
@@ -144,7 +146,7 @@ export const ForecastPage = ({
               onClick={onRefresh}
               className="px-3 py-1.5 rounded bg-[#EB5757]/20 hover:bg-[#EB5757]/30 border border-[#EB5757]/40 text-[#F4F7F9] text-xs font-medium transition-colors shrink-0"
             >
-              Retry
+              {t('retry', 'Retry')}
             </button>
           )}
         </div>

@@ -1,6 +1,7 @@
 import { HourlyItem } from '../../types/weather';
 import { Sun, Cloud, CloudSun, CloudRain, CloudLightning, Umbrella, Wind, Clock } from 'lucide-react';
 import { formatTemp, formatWind } from '../../services/settingsService';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface HourlyForecastProps {
   items?: HourlyItem[];
@@ -15,6 +16,7 @@ export const HourlyForecast = ({
   error = null,
   isRealData = false,
 }: HourlyForecastProps) => {
+  const { t, translateCondition } = useLanguage();
 
   const getWeatherIcon = (condition: string, iconCode: string) => {
     const cond = condition.toLowerCase();
@@ -49,18 +51,18 @@ export const HourlyForecast = ({
         <div>
           <h2 className="text-base font-semibold text-[#F4F7F9] flex items-center gap-2">
             <Clock className="w-4 h-4 text-[#2F80ED]" />
-            Hourly Progression
+            {t('hourlyProgression', 'Hourly Progression')}
           </h2>
-          <p className="text-xs text-[#9AA8B2]">Atmospheric conditions over upcoming intervals</p>
+          <p className="text-xs text-[#9AA8B2]">{t('hourlyForecast', 'Atmospheric conditions over upcoming intervals')}</p>
         </div>
         <div className="flex items-center gap-2">
           {isRealData && (
             <span className="text-[10px] font-mono text-[#27AE9B] bg-[#27AE9B]/10 px-2 py-0.5 rounded border border-[#27AE9B]/30 font-medium">
-              Live Interval Feed
+              {t('liveTelemetry', 'Live Interval Feed')}
             </span>
           )}
           <div className="text-xs text-[#9AA8B2] font-mono bg-[#24313C] px-2.5 py-1 rounded border border-[#2B3945]">
-            Next 24 Hours
+            {t('next24Hours', 'Next 24 Hours')}
           </div>
         </div>
       </div>
@@ -93,6 +95,7 @@ export const HourlyForecast = ({
           {items.slice(0, 8).map((item, idx) => (
             <div
               key={idx}
+              title={translateCondition(item.condition)}
               className="bg-[#24313C] border border-[#2B3945] rounded-lg p-3 flex flex-col items-center justify-between hover:border-[#3A4A57] hover:bg-[#2A3946] transition-colors min-w-[110px] sm:min-w-0 shrink-0 sm:shrink"
             >
               <span className="text-xs font-semibold text-[#9AA8B2] font-mono">

@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
 import { CurrentWeatherResponse } from '../../types/weather';
-import { CloudSun, Wind, Droplets, Gauge, Eye, Sun, Cloud, CloudRain, CloudLightning, Moon, Navigation, Search } from 'lucide-react';
+import { CloudSun, Wind, Droplets, Gauge, Eye, Sun, Cloud, CloudRain, CloudLightning, Moon, Navigation, Search, Bookmark } from 'lucide-react';
 import { formatTemp, formatWind, formatPressure } from '../../services/settingsService';
+import { useLanguage } from '../../context/LanguageContext';
+import { useFavoriteCities } from '../../hooks/useFavoriteCities';
 
 interface CurrentWeatherCardProps {
   data: CurrentWeatherResponse;
@@ -8,7 +11,17 @@ interface CurrentWeatherCardProps {
 }
 
 export const CurrentWeatherCard = ({ data, isRealData = true }: CurrentWeatherCardProps) => {
+  const { t, translateCondition } = useLanguage();
+  const { isFavorite, toggleFavorite, updateCityWeather } = useFavoriteCities();
   const { location, current } = data;
+
+  useEffect(() => {
+    if (location?.city && current?.temperature !== undefined) {
+      updateCityWeather(location.city, current.temperature, current.condition);
+    }
+  }, [location?.city, current?.temperature, current?.condition, updateCityWeather]);
+
+  const isFav = isFavorite(location.city);
 
   const getConditionDetails = (iconCode: string, condition: string) => {
     const main = condition.toLowerCase();
@@ -67,19 +80,52 @@ export const CurrentWeatherCard = ({ data, isRealData = true }: CurrentWeatherCa
             {location.source === 'gps' ? (
               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#2F80ED]/10 border border-[#2F80ED]/30 text-[#56CCF2] text-xs font-medium shrink-0">
                 <Navigation className="w-3 h-3 text-[#56CCF2]" />
-                GPS Telemetry
+                {t('gpsTelemetry', 'GPS Telemetry')}
               </span>
             ) : (
               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#24313C] border border-[#2B3945] text-[#9AA8B2] text-xs font-medium shrink-0">
                 <Search className="w-3 h-3 text-[#9AA8B2]" />
-                Observed Station
+                {t('observedStation', 'Observed Station')}
               </span>
             )}
-            <h1 className="text-[#F4F7F9] text-lg sm:text-xl font-bold tracking-tight truncate max-w-full">
-              {location.city}
-              {location.state ? `, ${location.state}` : ''}
-              {location.country ? `, ${location.country}` : ''}
-            </h1>
+            <div className="flex items-center gap-1.5 flex-wrap min-w-0">
+              <h1 className="text-[#F4F7F9] text-lg sm:text-xl font-bold tracking-tight truncate max-w-full">
+                {location.city}
+                {location.state ? `, ${location.state}` : ''}
+                {location.country ? `, ${location.country}` : ''}
+              </h1>
+              <button
+                type="button"
+                onClick={() =>
+                  toggleFavorite({
+                    name: location.city,
+                    country: location.country,
+                    state: location.state,
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    temperature: current.temperature,
+                    condition: current.condition,
+                  })
+                }
+                aria-label={
+                  isFav
+                    ? `${t('removeFavoriteCity', 'Remove Favorite City')}: ${location.city}`
+                    : `${t('addFavoriteCity', 'Add Favorite City')}: ${location.city}`
+                }
+                title={
+                  isFav
+                    ? `${t('removeFavoriteCity', 'Remove Favorite City')}: ${location.city}`
+                    : `${t('addFavoriteCity', 'Add Favorite City')}: ${location.city}`
+                }
+                className="p-1 rounded-lg text-[#9AA8B2] hover:text-[#F2C94C] hover:bg-[#24313C] transition-colors"
+              >
+                <Bookmark
+                  className={`w-4 h-4 ${
+                    isFav ? 'text-[#F2C94C] fill-[#F2C94C]' : 'text-[#9AA8B2] hover:text-[#F2C94C]'
+                  }`}
+                />
+              </button>
+            </div>
           </div>
           <div className="text-[11px] text-[#9AA8B2] mt-1 font-mono">
             Lat {location.latitude.toFixed(3)}° &bull; Lon {location.longitude.toFixed(3)}°
@@ -89,11 +135,11 @@ export const CurrentWeatherCard = ({ data, isRealData = true }: CurrentWeatherCa
         <div className="flex items-center gap-2 shrink-0">
           {isRealData && (
             <span className="px-2 py-0.5 bg-[#27AE9B]/10 border border-[#27AE9B]/30 text-[#27AE9B] text-[10px] font-mono font-medium rounded">
-              LIVE TELEMETRY
+              {t('liveTelemetry', 'LIVE TELEMETRY')}
             </span>
           )}
           <div className={`px-2.5 py-1 rounded border text-xs font-medium flex items-center gap-1.5 ${cond.badgeColor}`}>
-            <span>{current.condition}</span>
+            <span>{translateCondition(current.condition)}</span>
           </div>
         </div>
       </div>
@@ -107,9 +153,9 @@ export const CurrentWeatherCard = ({ data, isRealData = true }: CurrentWeatherCa
             </span>
           </div>
           <div className="text-sm text-[#9AA8B2] mt-1 flex flex-wrap items-center gap-2">
-            <span>Feels like <strong className="text-[#F4F7F9] font-medium">{formatTemp(current.feels_like)}</strong></span>
+            <span>{t('feelsLike', 'Feels like')} <strong className="text-[#F4F7F9] font-medium">{formatTemp(current.feels_like)}</strong></span>
             <span>&bull;</span>
-            <span className="capitalize text-[#F4F7F9]">{current.description}</span>
+            <span className="capitalize text-[#F4F7F9]">{translateCondition(current.description) || current.description}</span>
           </div>
         </div>
 
@@ -119,8 +165,8 @@ export const CurrentWeatherCard = ({ data, isRealData = true }: CurrentWeatherCa
             {cond.icon}
           </div>
           <div>
-            <div className="text-[11px] text-[#9AA8B2] font-mono uppercase tracking-wider">Atmospheric State</div>
-            <div className="text-sm font-semibold text-[#F4F7F9] capitalize">{current.description}</div>
+            <div className="text-[11px] text-[#9AA8B2] font-mono uppercase tracking-wider">{t('atmosphericState', 'Atmospheric State')}</div>
+            <div className="text-sm font-semibold text-[#F4F7F9] capitalize">{translateCondition(current.description) || current.description}</div>
           </div>
         </div>
       </div>
@@ -130,7 +176,7 @@ export const CurrentWeatherCard = ({ data, isRealData = true }: CurrentWeatherCa
         <div className="bg-[#24313C] p-3 rounded-lg border border-[#2B3945]">
           <div className="flex items-center gap-1.5 text-xs text-[#9AA8B2] mb-1">
             <Droplets className="w-3.5 h-3.5 text-[#56CCF2]" />
-            <span>Humidity</span>
+            <span>{t('humidity', 'Humidity')}</span>
           </div>
           <div className="text-lg font-bold text-[#F4F7F9] font-mono">{current.humidity}%</div>
         </div>
@@ -138,7 +184,7 @@ export const CurrentWeatherCard = ({ data, isRealData = true }: CurrentWeatherCa
         <div className="bg-[#24313C] p-3 rounded-lg border border-[#2B3945]">
           <div className="flex items-center gap-1.5 text-xs text-[#9AA8B2] mb-1">
             <Wind className="w-3.5 h-3.5 text-[#56CCF2]" />
-            <span>Wind</span>
+            <span>{t('wind', 'Wind')}</span>
           </div>
           <div className="text-lg font-bold text-[#F4F7F9] font-mono">{formatWind(current.wind_speed)}</div>
         </div>
@@ -146,7 +192,7 @@ export const CurrentWeatherCard = ({ data, isRealData = true }: CurrentWeatherCa
         <div className="bg-[#24313C] p-3 rounded-lg border border-[#2B3945]">
           <div className="flex items-center gap-1.5 text-xs text-[#9AA8B2] mb-1">
             <Gauge className="w-3.5 h-3.5 text-[#27AE9B]" />
-            <span>Pressure</span>
+            <span>{t('pressure', 'Pressure')}</span>
           </div>
           <div className="text-lg font-bold text-[#F4F7F9] font-mono">{formatPressure(current.pressure)}</div>
         </div>
@@ -154,7 +200,7 @@ export const CurrentWeatherCard = ({ data, isRealData = true }: CurrentWeatherCa
         <div className="bg-[#24313C] p-3 rounded-lg border border-[#2B3945]">
           <div className="flex items-center gap-1.5 text-xs text-[#9AA8B2] mb-1">
             <Eye className="w-3.5 h-3.5 text-[#9AA8B2]" />
-            <span>Visibility</span>
+            <span>{t('visibility', 'Visibility')}</span>
           </div>
           <div className="text-lg font-bold text-[#F4F7F9] font-mono">{current.visibility} km</div>
         </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -8,6 +9,7 @@ interface ProtectedRouteProps {
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { user, loading } = useAuth();
+  const { t } = useLanguage();
   const location = useLocation();
 
   if (loading) {
@@ -30,7 +32,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
             animation: 'spin 1s linear infinite',
             margin: '0 auto 12px auto'
           }} />
-          <p style={{ fontSize: '13px', margin: 0 }}>Verifying credentials...</p>
+          <p style={{ fontSize: '13px', margin: 0 }}>{t('detecting', 'Verifying credentials...')}</p>
         </div>
       </div>
     );
@@ -42,7 +44,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         to="/login"
         state={{
           from: location,
-          message: 'Sign in to use this feature.',
+          message: t('signIn', 'Sign in to use this feature.'),
         }}
         replace
       />

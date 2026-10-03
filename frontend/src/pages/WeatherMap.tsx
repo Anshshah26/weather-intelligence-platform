@@ -6,12 +6,14 @@ import { DynamicMapLegend } from '../components/map/DynamicMapLegend';
 import { CurrentWeatherResponse } from '../types/weather';
 import { getCurrentWeather } from '../services/weatherApi';
 import { Search, MapPin, Globe, RefreshCw, AlertCircle } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface WeatherMapPageProps {
   currentCityWeather?: CurrentWeatherResponse | null;
 }
 
 export const WeatherMapPage = ({ currentCityWeather }: WeatherMapPageProps) => {
+  const { t } = useLanguage();
   const [activeLayers, setActiveLayers] = useState<ActiveLayersState>({
     temp: true,
     rain: false,
@@ -123,7 +125,7 @@ export const WeatherMapPage = ({ currentCityWeather }: WeatherMapPageProps) => {
             <Globe className="w-3.5 h-3.5 text-[#2F80ED]" /> Meteorological Map Station
           </div>
           <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">
-            Atmospheric Spatial Telemetry
+            {t('weatherMap', 'Atmospheric Spatial Telemetry')}
           </h1>
           <p className="text-xs text-[#9AA8B2] mt-0.5 hidden sm:block">
             High-precision OpenWeather layers for Temperature, Precipitation, Clouds, Wind, and Barometric Pressure.
@@ -138,7 +140,7 @@ export const WeatherMapPage = ({ currentCityWeather }: WeatherMapPageProps) => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Center map on city..."
+              placeholder={t('searchPlaceholder', 'Center map on city...')}
               aria-label="Search city to update map view"
               className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg pl-9 pr-3 py-2 text-xs text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none min-h-[38px]"
             />
@@ -150,7 +152,7 @@ export const WeatherMapPage = ({ currentCityWeather }: WeatherMapPageProps) => {
             className="flex items-center gap-1.5 px-3.5 py-2 bg-[#2F80ED] hover:bg-[#2570d4] text-white text-xs font-medium rounded-lg transition-colors disabled:opacity-40 shrink-0 min-h-[38px]"
           >
             {loading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <MapPin className="w-3.5 h-3.5" />}
-            <span>Go</span>
+            <span>{t('searchButton', 'Go')}</span>
           </button>
         </form>
       </div>

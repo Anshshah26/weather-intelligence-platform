@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import { CloudSun, LogIn, AlertCircle, Lock, Mail } from 'lucide-react';
 
 export const Login: React.FC = () => {
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -53,9 +55,9 @@ export const Login: React.FC = () => {
           <div className="inline-flex items-center justify-center p-3 bg-[#24313C] border border-[#2B3945] rounded-xl text-[#2F80ED] mb-3">
             <CloudSun className="w-7 h-7" />
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">Weather Intelligence Platform</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">{t('appTitle', 'Weather Intelligence Platform')}</h1>
           <p className="text-xs text-[#9AA8B2] mt-1">
-            Sign in to access advanced meteorological tools & analytics
+            {t('signIn', 'Sign In')}
           </p>
         </div>
 
@@ -125,7 +127,7 @@ export const Login: React.FC = () => {
             ) : (
               <>
                 <LogIn className="w-4 h-4" />
-                <span>Sign In</span>
+                <span>{t('signIn', 'Sign In')}</span>
               </>
             )}
           </button>
@@ -140,7 +142,7 @@ export const Login: React.FC = () => {
               state={{ from: location.state?.from }}
               className="text-[#56CCF2] hover:text-[#F4F7F9] font-medium transition-colors"
             >
-              Register here
+              {t('signUp', 'Register')}
             </Link>
           </p>
         </div>

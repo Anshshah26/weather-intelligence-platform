@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Thermometer, CloudRain, Cloud, Wind, Gauge, ChevronDown, ChevronUp, Info } from 'lucide-react';
 import { ActiveLayersState } from './MapControls';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface DynamicMapLegendProps {
   activeLayers: ActiveLayersState;
 }
 
 export const DynamicMapLegend = ({ activeLayers }: DynamicMapLegendProps) => {
+  const { t } = useLanguage();
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
   const activeCount = Object.values(activeLayers).filter(Boolean).length;
@@ -23,7 +25,7 @@ export const DynamicMapLegend = ({ activeLayers }: DynamicMapLegendProps) => {
       <div className="flex items-center justify-between px-3.5 py-2 bg-[#24313C] border-b border-[#2B3945]">
         <div className="flex items-center gap-2 text-xs font-semibold text-[#F4F7F9]">
           <Info className="w-3.5 h-3.5 text-[#56CCF2]" />
-          <span>Active Legends ({activeCount})</span>
+          <span>{t('activeLegends', 'Active Legends')} ({activeCount})</span>
         </div>
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
@@ -43,7 +45,7 @@ export const DynamicMapLegend = ({ activeLayers }: DynamicMapLegendProps) => {
               <div className="flex items-center justify-between text-xs font-medium text-[#F4F7F9]">
                 <div className="flex items-center gap-1.5 text-[#F2C94C]">
                   <Thermometer className="w-3.5 h-3.5" />
-                  <span>Temperature (°C)</span>
+                  <span>{t('temperatureLayer', 'Temperature')} (°C)</span>
                 </div>
                 <span className="text-[10px] text-[#9AA8B2] font-mono">Cold → Hot</span>
               </div>
@@ -62,7 +64,7 @@ export const DynamicMapLegend = ({ activeLayers }: DynamicMapLegendProps) => {
               <div className="flex items-center justify-between text-xs font-medium text-[#F4F7F9]">
                 <div className="flex items-center gap-1.5 text-[#56CCF2]">
                   <CloudRain className="w-3.5 h-3.5" />
-                  <span>Precipitation Rate</span>
+                  <span>{t('rainLayer', 'Precipitation Rate')}</span>
                 </div>
                 <span className="text-[10px] text-[#9AA8B2] font-mono">Light → Heavy</span>
               </div>
@@ -81,7 +83,7 @@ export const DynamicMapLegend = ({ activeLayers }: DynamicMapLegendProps) => {
               <div className="flex items-center justify-between text-xs font-medium text-[#F4F7F9]">
                 <div className="flex items-center gap-1.5 text-[#9AA8B2]">
                   <Cloud className="w-3.5 h-3.5 text-[#9AA8B2]" />
-                  <span>Cloud Cover (%)</span>
+                  <span>{t('cloudsLayer', 'Cloud Cover')} (%)</span>
                 </div>
                 <span className="text-[10px] text-[#9AA8B2] font-mono">Clear → Overcast</span>
               </div>
@@ -100,7 +102,7 @@ export const DynamicMapLegend = ({ activeLayers }: DynamicMapLegendProps) => {
               <div className="flex items-center justify-between text-xs font-medium text-[#F4F7F9]">
                 <div className="flex items-center gap-1.5 text-[#27AE9B]">
                   <Wind className="w-3.5 h-3.5" />
-                  <span>Wind Velocity</span>
+                  <span>{t('windLayer', 'Wind Velocity')}</span>
                 </div>
                 <span className="text-[10px] text-[#9AA8B2] font-mono">Calm → Strong</span>
               </div>
@@ -119,7 +121,7 @@ export const DynamicMapLegend = ({ activeLayers }: DynamicMapLegendProps) => {
               <div className="flex items-center justify-between text-xs font-medium text-[#F4F7F9]">
                 <div className="flex items-center gap-1.5 text-[#56CCF2]">
                   <Gauge className="w-3.5 h-3.5" />
-                  <span>Barometric Pressure</span>
+                  <span>{t('pressureLayer', 'Barometric Pressure')}</span>
                 </div>
                 <span className="text-[10px] text-[#9AA8B2] font-mono">Low → High</span>
               </div>

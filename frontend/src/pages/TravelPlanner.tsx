@@ -20,6 +20,11 @@ import {
   analyzeTripWeather,
   TravelPlannerResponse,
 } from '../services/travelApi';
+import { useLanguage } from '../context/LanguageContext';
+import {
+  translateDayOfWeek,
+  translatePackingSuggestion,
+} from '../i18n';
 
 interface TravelPlannerPageProps {
   initialCity?: string;
@@ -28,6 +33,8 @@ interface TravelPlannerPageProps {
 export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
   initialCity = 'Mumbai',
 }) => {
+  const { language, t, translateCondition } = useLanguage();
+
   // Today date formatted YYYY-MM-DD
   const today = new Date();
   const formatYMD = (d: Date) => d.toISOString().split('T')[0];
@@ -47,7 +54,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
     if (e) e.preventDefault();
 
     if (!destination.trim()) {
-      setError('Please select a valid destination.');
+      setError(t('evaluateCityPlaceholder', 'Please select a valid destination.'));
       return;
     }
 
@@ -76,7 +83,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError('Unable to analyze the trip right now. Please try again.');
+        setError(t('unableToAnalyze', 'Unable to analyze the trip right now. Please try again.'));
       }
     } finally {
       setLoading(false);
@@ -97,12 +104,14 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
             <Compass className="w-5 h-5" />
           </div>
           <div>
-            <div className="text-xs font-mono text-[#56CCF2] mb-0.5">Itinerary Atmospheric Assessment</div>
+            <div className="text-xs font-mono text-[#56CCF2] mb-0.5">
+              {t('itineraryAssessment', 'Itinerary Atmospheric Assessment')}
+            </div>
             <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">
-              Smart Travel Weather Planner
+              {t('travelPlannerTitle', 'Smart Travel Weather Planner')}
             </h1>
             <p className="text-xs text-[#9AA8B2] mt-0.5">
-              Multi-day destination forecasts and luggage packing advisories
+              {t('travelPlannerSubtitle', 'Multi-day destination forecasts and luggage packing advisories')}
             </p>
           </div>
         </div>
@@ -114,7 +123,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
           {/* Destination */}
           <div className="md:col-span-5 space-y-1.5">
             <label className="text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider flex items-center gap-1.5 font-mono">
-              <MapPin className="w-3.5 h-3.5 text-[#2F80ED]" /> Destination
+              <MapPin className="w-3.5 h-3.5 text-[#2F80ED]" /> {t('destination', 'Destination')}
             </label>
             <div className="relative">
               <input
@@ -131,7 +140,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
           {/* Start Date */}
           <div className="md:col-span-3 space-y-1.5">
             <label className="text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider flex items-center gap-1.5 font-mono">
-              <Calendar className="w-3.5 h-3.5 text-[#56CCF2]" /> Departure
+              <Calendar className="w-3.5 h-3.5 text-[#56CCF2]" /> {t('departure', 'Departure')}
             </label>
             <input
               type="date"
@@ -144,7 +153,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
           {/* End Date */}
           <div className="md:col-span-3 space-y-1.5">
             <label className="text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider flex items-center gap-1.5 font-mono">
-              <Calendar className="w-3.5 h-3.5 text-[#27AE9B]" /> Return
+              <Calendar className="w-3.5 h-3.5 text-[#27AE9B]" /> {t('returnDate', 'Return')}
             </label>
             <input
               type="date"
@@ -164,7 +173,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
               {loading ? (
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
-                'Analyze'
+                t('analyze', 'Analyze')
               )}
             </button>
           </div>
@@ -174,7 +183,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
         <div className="mt-3.5 flex items-center gap-2 text-xs text-[#9AA8B2] bg-[#101820] px-3 py-2 rounded-lg border border-[#2B3945]">
           <Info className="w-4 h-4 text-[#2F80ED] shrink-0" />
           <span>
-            Detailed weather forecast telemetry is available for up to 5 days ahead. Dates beyond provider availability will be marked accordingly.
+            {t('forecastHorizonNotice', 'Detailed weather forecast telemetry is available for up to 5 days ahead. Dates beyond provider availability will be marked accordingly.')}
           </span>
         </div>
       </div>
@@ -191,8 +200,12 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
       {loading && (
         <div className="bg-[#18232D] border border-[#2B3945] rounded-xl p-8 text-center space-y-2">
           <div className="w-8 h-8 border-2 border-[#2F80ED]/30 border-t-[#2F80ED] rounded-full animate-spin mx-auto" />
-          <p className="text-[#F4F7F9] font-medium text-sm">Evaluating itinerary weather profile...</p>
-          <p className="text-[#9AA8B2] text-xs font-mono">Synthesizing multi-day forecasts and packing requirements.</p>
+          <p className="text-[#F4F7F9] font-medium text-sm">
+            {t('evaluatingItinerary', 'Evaluating itinerary weather profile...')}
+          </p>
+          <p className="text-[#9AA8B2] text-xs font-mono">
+            {t('synthesizingForecasts', 'Synthesizing multi-day forecasts and packing requirements.')}
+          </p>
         </div>
       )}
 
@@ -204,7 +217,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
             <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-5 pb-5 border-b border-[#2B3945]">
               <div>
                 <div className="flex items-center gap-1.5 text-[#56CCF2] text-xs font-mono uppercase tracking-wider">
-                  <MapPin className="w-3.5 h-3.5 text-[#2F80ED]" /> Destination Summary
+                  <MapPin className="w-3.5 h-3.5 text-[#2F80ED]" /> {t('destinationSummary', 'Destination Summary')}
                 </div>
                 <h2 className="text-2xl font-bold text-[#F4F7F9] mt-1">
                   {result.destination.city}, {result.destination.country}
@@ -216,11 +229,11 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
                   </span>
                   <span className="flex items-center gap-1 font-mono">
                     <Clock className="w-3.5 h-3.5 text-[#9AA8B2]" />
-                    Zone: {result.destination.timezone}
+                    {t('zoneLabel', 'Zone:')} {result.destination.timezone}
                   </span>
                   <span className="flex items-center gap-1 text-[#27AE9B] font-medium">
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    {result.available_forecast_days} Days Observed
+                    {result.available_forecast_days} {t('daysObserved', 'Days Observed')}
                   </span>
                 </div>
               </div>
@@ -229,7 +242,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
               <div className="grid grid-cols-3 gap-2 bg-[#24313C] p-3 rounded-lg border border-[#2B3945] min-w-[260px]">
                 <div className="text-center">
                   <div className="text-[#9AA8B2] text-[10px] flex items-center justify-center gap-1 font-mono">
-                    <Thermometer className="w-3 h-3 text-[#F2C94C]" /> Average
+                    <Thermometer className="w-3 h-3 text-[#F2C94C]" /> {t('averageTempLabel', 'Average')}
                   </div>
                   <div className="text-[#F4F7F9] font-bold text-sm font-mono mt-0.5">
                     {result.temperature_analysis.average_temperature}°C
@@ -237,18 +250,18 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
                 </div>
                 <div className="text-center border-x border-[#2B3945] px-2">
                   <div className="text-[#9AA8B2] text-[10px] flex items-center justify-center gap-1 font-mono">
-                    <CloudRain className="w-3 h-3 text-[#56CCF2]" /> Rain Risk
+                    <CloudRain className="w-3 h-3 text-[#56CCF2]" /> {t('rainRiskLabel', 'Rain Risk')}
                   </div>
                   <div className="text-[#F4F7F9] font-bold text-sm mt-0.5 font-mono">
-                    {result.rain_analysis.rain_risk_days.length > 0 ? 'Possible' : 'Low'}
+                    {result.rain_analysis.rain_risk_days.length > 0 ? t('riskPossible', 'Possible') : t('riskLow', 'Low')}
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-[#9AA8B2] text-[10px] flex items-center justify-center gap-1 font-mono">
-                    <Umbrella className="w-3 h-3 text-[#27AE9B]" /> Gear
+                    <Umbrella className="w-3 h-3 text-[#27AE9B]" /> {t('gearLabel', 'Gear')}
                   </div>
                   <div className="text-[#F4F7F9] font-bold text-xs mt-1 truncate font-mono">
-                    {result.rain_analysis.rain_risk_days.length > 0 ? 'Umbrella' : 'Standard'}
+                    {result.rain_analysis.rain_risk_days.length > 0 ? t('gearUmbrella', 'Umbrella') : t('gearStandard', 'Standard')}
                   </div>
                 </div>
               </div>
@@ -262,7 +275,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
                 </div>
                 <div>
                   <div className="text-xs font-semibold text-[#56CCF2] font-mono uppercase tracking-wider mb-0.5">
-                    Travel Advisory Synthesis
+                    {t('travelAdvisorySynthesis', 'Travel Advisory Synthesis')}
                   </div>
                   <p className="text-[#F4F7F9] text-xs sm:text-sm leading-relaxed">
                     "{result.ai_summary}"
@@ -275,7 +288,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
           {/* Daily Forecast Cards */}
           <div className="space-y-2.5">
             <h3 className="text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider flex items-center gap-2 font-mono">
-              <Calendar className="w-3.5 h-3.5 text-[#2F80ED]" /> Daily Travel Forecast
+              <Calendar className="w-3.5 h-3.5 text-[#2F80ED]" /> {t('dailyTravelForecast', 'Daily Travel Forecast')}
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
@@ -290,7 +303,9 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
                 >
                   <div className="flex items-center justify-between pb-2.5 border-b border-[#2B3945]">
                     <div>
-                      <div className="text-xs text-[#9AA8B2] font-medium font-mono uppercase">{dayItem.day}</div>
+                      <div className="text-xs text-[#9AA8B2] font-medium font-mono uppercase">
+                        {translateDayOfWeek(dayItem.day, language)}
+                      </div>
                       <div className="text-xs font-bold text-[#F4F7F9] font-mono">{dayItem.date}</div>
                     </div>
                     {dayItem.is_available && (
@@ -305,7 +320,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
                   {dayItem.is_available ? (
                     <div className="mt-3 space-y-2">
                       <div className="text-xs font-medium text-[#F4F7F9] capitalize truncate">
-                        {dayItem.condition}
+                        {translateCondition(dayItem.condition)}
                       </div>
 
                       <div className="text-lg font-bold text-[#F4F7F9] font-mono flex items-baseline gap-1">
@@ -318,21 +333,21 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
                       <div className="space-y-1 pt-2 text-xs border-t border-[#2B3945]">
                         <div className="flex items-center justify-between text-[#F4F7F9]">
                           <span className="flex items-center gap-1 text-[#56CCF2] text-[11px]">
-                            <CloudRain className="w-3 h-3" /> Rain
+                            <CloudRain className="w-3 h-3" /> {t('rainMetric', 'Rain')}
                           </span>
                           <span className="font-semibold font-mono">{dayItem.precipitation_probability}%</span>
                         </div>
 
                         <div className="flex items-center justify-between text-[#F4F7F9]">
                           <span className="flex items-center gap-1 text-[#27AE9B] text-[11px]">
-                            <Wind className="w-3 h-3" /> Wind
+                            <Wind className="w-3 h-3" /> {t('windMetric', 'Wind')}
                           </span>
                           <span className="font-semibold font-mono">{dayItem.wind_speed} km/h</span>
                         </div>
 
                         <div className="flex items-center justify-between text-[#F4F7F9]">
                           <span className="flex items-center gap-1 text-[#9AA8B2] text-[11px]">
-                            <Droplets className="w-3 h-3" /> Humidity
+                            <Droplets className="w-3 h-3" /> {t('humidity', 'Humidity')}
                           </span>
                           <span className="font-semibold font-mono">{dayItem.humidity}%</span>
                         </div>
@@ -342,7 +357,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
                     <div className="mt-4 text-center space-y-1.5 py-3">
                       <Clock className="w-5 h-5 text-[#9AA8B2] mx-auto" />
                       <div className="text-[11px] font-mono text-[#9AA8B2]">
-                        {dayItem.note || 'Projection beyond horizon.'}
+                        {dayItem.note || t('beyondHorizon', 'Projection beyond horizon.')}
                       </div>
                     </div>
                   )}
@@ -356,26 +371,26 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
             {/* Rain Analysis */}
             <div className="bg-[#18232D] border border-[#2B3945] rounded-xl p-5 shadow-sm space-y-3">
               <div className="flex items-center gap-2 text-[#56CCF2] text-xs font-semibold uppercase tracking-wider font-mono">
-                <CloudRain className="w-3.5 h-3.5" /> Precipitation Risk
+                <CloudRain className="w-3.5 h-3.5" /> {t('precipitationRisk', 'Precipitation Risk')}
               </div>
 
               <div className="space-y-2.5 text-xs">
                 <div className="flex justify-between items-center bg-[#24313C] p-2.5 rounded-lg border border-[#2B3945]">
-                  <span className="text-[#9AA8B2]">Highest Risk Window:</span>
+                  <span className="text-[#9AA8B2]">{t('highestRiskWindow', 'Highest Risk Window:')}</span>
                   <span className="text-[#F4F7F9] font-medium font-mono">
-                    {result.rain_analysis.highest_rain_day || 'None Observed'}
+                    {result.rain_analysis.highest_rain_day || 'None'}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center bg-[#24313C] p-2.5 rounded-lg border border-[#2B3945]">
-                  <span className="text-[#9AA8B2]">Lowest Risk Window:</span>
+                  <span className="text-[#9AA8B2]">{t('lowestRiskWindow', 'Lowest Risk Window:')}</span>
                   <span className="text-[#F4F7F9] font-medium font-mono">
-                    {result.rain_analysis.lowest_rain_day || 'None Observed'}
+                    {result.rain_analysis.lowest_rain_day || 'None'}
                   </span>
                 </div>
 
                 <div className="bg-[#24313C] p-2.5 rounded-lg border border-[#2B3945] space-y-1">
-                  <span className="text-[#9AA8B2] block">Umbrella Recommended Days:</span>
+                  <span className="text-[#9AA8B2] block">{t('umbrellaRecommendedDays', 'Umbrella Recommended Days:')}</span>
                   {result.rain_analysis.rain_risk_days.length > 0 ? (
                     <ul className="space-y-1 pt-1">
                       {result.rain_analysis.rain_risk_days.map((dayStr, idx) => (
@@ -385,7 +400,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
                       ))}
                     </ul>
                   ) : (
-                    <span className="text-[#27AE9B] font-medium font-mono">No heavy rain days expected</span>
+                    <span className="text-[#27AE9B] font-medium font-mono">{t('noHeavyRainExpected', 'No heavy rain days expected')}</span>
                   )}
                 </div>
               </div>
@@ -394,26 +409,26 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
             {/* Temperature Analysis */}
             <div className="bg-[#18232D] border border-[#2B3945] rounded-xl p-5 shadow-sm space-y-3">
               <div className="flex items-center gap-2 text-[#F2C94C] text-xs font-semibold uppercase tracking-wider font-mono">
-                <Thermometer className="w-3.5 h-3.5" /> Thermal Profile
+                <Thermometer className="w-3.5 h-3.5" /> {t('thermalProfile', 'Thermal Profile')}
               </div>
 
               <div className="space-y-2.5 text-xs">
                 <div className="flex justify-between items-center bg-[#24313C] p-2.5 rounded-lg border border-[#2B3945]">
-                  <span className="text-[#9AA8B2]">Warmest Available Window:</span>
+                  <span className="text-[#9AA8B2]">{t('warmestWindow', 'Warmest Available Window:')}</span>
                   <span className="text-[#F4F7F9] font-medium font-mono">
                     {result.temperature_analysis.warmest_day || 'N/A'}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center bg-[#24313C] p-2.5 rounded-lg border border-[#2B3945]">
-                  <span className="text-[#9AA8B2]">Coolest Available Window:</span>
+                  <span className="text-[#9AA8B2]">{t('coolestWindow', 'Coolest Available Window:')}</span>
                   <span className="text-[#F4F7F9] font-medium font-mono">
                     {result.temperature_analysis.coolest_day || 'N/A'}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center bg-[#24313C] p-2.5 rounded-lg border border-[#2B3945]">
-                  <span className="text-[#9AA8B2]">Mean Temperature:</span>
+                  <span className="text-[#9AA8B2]">{t('meanTemperature', 'Mean Temperature:')}</span>
                   <span className="text-[#F2C94C] font-bold font-mono">
                     {result.temperature_analysis.average_temperature}°C
                   </span>
@@ -424,7 +439,28 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
             {/* Packing Suggestions */}
             <div className="bg-[#18232D] border border-[#2B3945] rounded-xl p-5 shadow-sm space-y-3">
               <div className="flex items-center gap-2 text-[#27AE9B] text-xs font-semibold uppercase tracking-wider font-mono">
-                <Luggage className="w-3.5 h-3.5" /> Packing Checklist
+                <Luggage className="w-3.5 h-3.5" /> {t('packingChecklist', 'Packing Checklist')}
+              </div>
+
+              {/* Common recommended packing item chips */}
+              <div className="space-y-1.5 pb-1">
+                <span className="text-[11px] font-mono text-[#9AA8B2] block">
+                  {t('recommendedItems', 'Recommended Items')}:
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#24313C] border border-[#2B3945] text-[#9AA8B2]">
+                    {t('itemUmbrella', 'Umbrella')}
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#24313C] border border-[#2B3945] text-[#9AA8B2]">
+                    {t('itemLightJacket', 'Light Jacket')}
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#24313C] border border-[#2B3945] text-[#9AA8B2]">
+                    {t('itemSunglasses', 'Sunglasses')}
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#24313C] border border-[#2B3945] text-[#9AA8B2]">
+                    {t('itemWaterBottle', 'Water Bottle')}
+                  </span>
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -434,7 +470,7 @@ export const TravelPlannerPage: React.FC<TravelPlannerPageProps> = ({
                     className="flex items-start gap-2 bg-[#24313C] p-2.5 rounded-lg border border-[#2B3945] text-xs text-[#F4F7F9]"
                   >
                     <CheckCircle2 className="w-3.5 h-3.5 text-[#27AE9B] shrink-0 mt-0.5" />
-                    <span>{suggestion}</span>
+                    <span>{translatePackingSuggestion(suggestion, language)}</span>
                   </div>
                 ))}
               </div>

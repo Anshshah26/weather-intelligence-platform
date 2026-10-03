@@ -5,6 +5,20 @@
 @tailwind utilities;
 
 :root {
+  /* Prompt Section 8 Standard Design Tokens */
+  --background: #101820;
+  --surface: #18232D;
+  --surface-secondary: #24313C;
+  --text-primary: #F4F7F9;
+  --text-secondary: #9AA8B2;
+  --border: #2B3945;
+  --accent: #2F80ED;
+  --button: #2F80ED;
+  --button-hover: #2570d4;
+  --input-background: #18232D;
+  --card-background: #18232D;
+
+  /* Atmospheric Color Variables */
   --color-bg: #101820;
   --color-surface: #18232D;
   --color-surface-2: #24313C;
@@ -123,3 +137,180 @@
   background-color: #24313C !important;
   color: #F4F7F9 !important;
 }
+
+/* ============================================================
+   LIGHT THEME DESIGN TOKENS & METEOROLOGICAL STATION OVERRIDES
+   ============================================================ */
+html.light,
+[data-theme="light"] {
+  /* Prompt Section 8 Standard Design Tokens */
+  --background: #F4F7F9;
+  --surface: #FFFFFF;
+  --surface-secondary: #EDF2F7;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --border: #E2E8F0;
+  --accent: #2563EB;
+  --button: #2563EB;
+  --button-hover: #1D4ED8;
+  --input-background: #FFFFFF;
+  --card-background: #FFFFFF;
+
+  --color-bg: #F4F7F9;
+  --color-surface: #FFFFFF;
+  --color-surface-2: #EDF2F7;
+  --color-surface-hover: #E2E8F0;
+  --color-border: #E2E8F0;
+  --color-border-light: #CBD5E1;
+  --color-text: #0F172A;
+  --color-muted: #475569;
+}
+
+html.light body,
+[data-theme="light"] body {
+  background-color: #F4F7F9 !important;
+  color: #0F172A !important;
+}
+
+/* Background surface overrides in Light mode */
+html.light .bg-\[\#101820\],
+[data-theme="light"] .bg-\[\#101820\] {
+  background-color: #F4F7F9 !important;
+}
+
+html.light .bg-\[\#18232D\],
+[data-theme="light"] .bg-\[\#18232D\] {
+  background-color: #FFFFFF !important;
+}
+
+html.light .bg-\[\#24313C\],
+[data-theme="light"] .bg-\[\#24313C\] {
+  background-color: #EDF2F7 !important;
+}
+
+html.light .bg-\[\#141C24\],
+[data-theme="light"] .bg-\[\#141C24\] {
+  background-color: #E2E8F0 !important;
+}
+
+html.light .bg-\[\#293744\],
+[data-theme="light"] .bg-\[\#293744\] {
+  background-color: #E0E7FF !important;
+}
+
+/* Text overrides in Light mode */
+html.light .text-\[\#F4F7F9\],
+[data-theme="light"] .text-\[\#F4F7F9\] {
+  color: #0F172A !important;
+}
+
+html.light .text-\[\#9AA8B2\],
+[data-theme="light"] .text-\[\#9AA8B2\] {
+  color: #475569 !important;
+}
+
+html.light .placeholder-\[\#9AA8B2\]::placeholder,
+[data-theme="light"] .placeholder-\[\#9AA8B2\]::placeholder {
+  color: #64748B !important;
+}
+
+/* Border overrides in Light mode */
+html.light .border-\[\#2B3945\],
+[data-theme="light"] .border-\[\#2B3945\] {
+  border-color: #E2E8F0 !important;
+}
+
+html.light .border-\[\#3A4A57\],
+[data-theme="light"] .border-\[\#3A4A57\] {
+  border-color: #CBD5E1 !important;
+}
+
+/* Hover overrides in Light mode */
+html.light .hover\:bg-\[\#24313C\]:hover,
+[data-theme="light"] .hover\:bg-\[\#24313C\]:hover {
+  background-color: #E2E8F0 !important;
+}
+
+html.light .hover\:bg-\[\#2A3946\]:hover,
+[data-theme="light"] .hover\:bg-\[\#2A3946\]:hover {
+  background-color: #E2E8F0 !important;
+}
+
+html.light .hover\:text-\[\#F4F7F9\]:hover,
+[data-theme="light"] .hover\:text-\[\#F4F7F9\]:hover {
+  color: #0F172A !important;
+}
+
+/* SVG chart lines in Light mode */
+html.light line[stroke="#2B3945"],
+[data-theme="light"] line[stroke="#2B3945"] {
+  stroke: #E2E8F0 !important;
+}
+
+html.light circle[fill="#101820"],
+[data-theme="light"] circle[fill="#101820"] {
+  fill: #FFFFFF !important;
+}
+
+/* Leaflet dark/light overrides */
+html.light .leaflet-container {
+  background-color: #F4F7F9 !important;
+}
+
+html.light .leaflet-popup-content-wrapper,
+html.light .leaflet-popup-tip {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: #E2E8F0 !important;
+}
+
+html.light .leaflet-control-zoom a {
+  background-color: #FFFFFF !important;
+  color: #0284C7 !important;
+  border-color: #E2E8F0 !important;
+}
+
+html.light .leaflet-control-zoom a:hover {
+  background-color: #EDF2F7 !important;
+  color: #0F172A !important;
+}
+
+/* Light mode input backgrounds & high contrast text */
+html.light input.bg-\[\#101820\],
+html.light select.bg-\[\#101820\],
+[data-theme="light"] input.bg-\[\#101820\],
+[data-theme="light"] select.bg-\[\#101820\] {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: #CBD5E1 !important;
+}
+
+html.light input.bg-\[\#18232D\],
+[data-theme="light"] input.bg-\[\#18232D\] {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: #CBD5E1 !important;
+}
+
+/* Accent color contrast enhancement on light surfaces */
+html.light .text-\[\#56CCF2\],
+[data-theme="light"] .text-\[\#56CCF2\] {
+  color: #0284C7 !important;
+}
+
+html.light .text-\[\#F2C94C\],
+[data-theme="light"] .text-\[\#F2C94C\] {
+  color: #B45309 !important;
+}
+
+html.light polyline[stroke="#56CCF2"],
+[data-theme="light"] polyline[stroke="#56CCF2"] {
+  stroke: #0284C7 !important;
+}
+
+html.light polyline[stroke="#F2C94C"],
+[data-theme="light"] polyline[stroke="#F2C94C"] {
+  stroke: #D97706 !important;
+}
+
+

@@ -161,3 +161,14 @@ export interface AirQualityResponse {
   air_quality: AirQualityMetrics;
 }
 
+export interface FavoriteCity {
+  name: string;
+  country?: string;
+  state?: string | null;
+  latitude?: number;
+  longitude?: number;
+  id?: string | number;
+  temperature?: number;
+  condition?: string;
+}
+

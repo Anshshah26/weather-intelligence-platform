@@ -22,6 +22,11 @@ import {
   compareWeatherCities,
   CityComparisonResponse,
 } from '../services/comparisonApi';
+import { useLanguage } from '../context/LanguageContext';
+import {
+  translateActivityName,
+  translateCategoryName,
+} from '../i18n';
 
 interface CityComparisonPageProps {
   initialCity?: string;
@@ -41,6 +46,8 @@ const SUPPORTED_ACTIVITIES = [
 export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
   initialCity = 'Mumbai',
 }) => {
+  const { language, t, translateCondition } = useLanguage();
+
   const [cityInputs, setCityInputs] = useState<string[]>([
     initialCity,
     'Delhi',
@@ -104,7 +111,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError('Unable to compare weather right now. Please try again.');
+        setError(t('unableToAnalyze', 'Unable to compare weather right now. Please try again.'));
       }
     } finally {
       setLoading(false);
@@ -125,12 +132,14 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
             <GitCompare className="w-5 h-5" />
           </div>
           <div>
-            <div className="text-xs font-mono text-[#56CCF2] mb-0.5">Comparative Analysis Engine</div>
+            <div className="text-xs font-mono text-[#56CCF2] mb-0.5">
+              {t('comparativeAnalysisEngine', 'Comparative Analysis Engine')}
+            </div>
             <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">
-              City Weather Comparison
+              {t('cityComparisonTitle', 'City Weather Comparison')}
             </h1>
             <p className="text-xs text-[#9AA8B2] mt-0.5">
-              Side-by-side meteorological metrics and activity suitability evaluation
+              {t('cityComparisonSubtitle', 'Side-by-side meteorological metrics and activity suitability evaluation')}
             </p>
           </div>
         </div>
@@ -141,7 +150,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <label className="text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider flex items-center gap-1.5 font-mono">
-              <MapPin className="w-3.5 h-3.5 text-[#2F80ED]" /> Target Locations (2 to 4 Cities)
+              <MapPin className="w-3.5 h-3.5 text-[#2F80ED]" /> {t('targetLocations', 'Target Locations (2 to 4 Cities)')}
             </label>
             {cityInputs.length < 4 && (
               <button
@@ -149,7 +158,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
                 onClick={handleAddCity}
                 className="text-xs font-medium text-[#56CCF2] hover:text-[#F4F7F9] flex items-center gap-1 bg-[#24313C] hover:bg-[#2A3946] border border-[#2B3945] px-2.5 py-1 rounded transition-colors"
               >
-                <Plus className="w-3.5 h-3.5" /> Add Location
+                <Plus className="w-3.5 h-3.5" /> {t('addLocation', 'Add Location')}
               </button>
             )}
           </div>
@@ -162,7 +171,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
                   type="text"
                   value={cityVal}
                   onChange={(e) => handleCityInputChange(idx, e.target.value)}
-                  placeholder={`Location ${idx + 1}`}
+                  placeholder={`${t('destination', 'City')} ${idx + 1}`}
                   className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg px-3 py-2 pl-9 pr-9 text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none transition-colors text-xs sm:text-sm"
                 />
                 <Search className="w-4 h-4 text-[#9AA8B2] absolute left-3" />
@@ -170,7 +179,8 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
                   <button
                     type="button"
                     onClick={() => handleRemoveCity(idx)}
-                    title="Remove City"
+                    title={t('close', 'Remove')}
+                    aria-label={t('close', 'Remove')}
                     className="absolute right-2.5 text-[#9AA8B2] hover:text-[#EB5757] transition-colors p-1"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -186,7 +196,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
           {/* Activity Selector */}
           <div className="md:col-span-5 space-y-1.5">
             <label className="text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider flex items-center gap-1.5 font-mono">
-              <Activity className="w-3.5 h-3.5 text-[#56CCF2]" /> Activity Criterion
+              <Activity className="w-3.5 h-3.5 text-[#56CCF2]" /> {t('activityCriterion', 'Activity Criterion')}
             </label>
             <select
               value={selectedActivity}
@@ -195,7 +205,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
             >
               {SUPPORTED_ACTIVITIES.map((act) => (
                 <option key={act.id} value={act.id}>
-                  {act.icon} {act.name}
+                  {act.icon} {translateActivityName(act.name, language)}
                 </option>
               ))}
             </select>
@@ -204,16 +214,16 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
           {/* Timeframe option */}
           <div className="md:col-span-4 space-y-1.5">
             <label className="text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider flex items-center gap-1.5 font-mono">
-              <Clock className="w-3.5 h-3.5 text-[#27AE9B]" /> Analysis Timeframe
+              <Clock className="w-3.5 h-3.5 text-[#27AE9B]" /> {t('analysisTimeframe', 'Analysis Timeframe')}
             </label>
             <select
               value={forecastDay}
               onChange={(e) => setForecastDay(e.target.value)}
               className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg px-3 py-2 text-[#F4F7F9] focus:outline-none transition-colors text-xs sm:text-sm"
             >
-              <option value="current">Current Telemetry</option>
-              <option value="today">Today's Aggregation</option>
-              <option value="tomorrow">Tomorrow's Projection</option>
+              <option value="current">{t('timeframeCurrent', 'Current Telemetry')}</option>
+              <option value="today">{t('timeframeToday', "Today's Aggregation")}</option>
+              <option value="tomorrow">{t('timeframeTomorrow', "Tomorrow's Projection")}</option>
             </select>
           </div>
 
@@ -228,7 +238,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
               {loading ? (
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
-                'Execute Comparison'
+                t('executeComparison', 'Execute Comparison')
               )}
             </button>
           </div>
@@ -247,8 +257,12 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
       {loading && (
         <div className="bg-[#18232D] border border-[#2B3945] rounded-xl p-8 text-center space-y-2">
           <div className="w-8 h-8 border-2 border-[#2F80ED]/30 border-t-[#2F80ED] rounded-full animate-spin mx-auto" />
-          <p className="text-[#F4F7F9] font-medium text-sm">Processing telemetry matrices...</p>
-          <p className="text-[#9AA8B2] text-xs font-mono">Aggregating atmospheric variables and normalizing comparative scales.</p>
+          <p className="text-[#F4F7F9] font-medium text-sm">
+            {t('processingMatrices', 'Processing telemetry matrices...')}
+          </p>
+          <p className="text-[#9AA8B2] text-xs font-mono">
+            {t('aggregatingVariables', 'Aggregating atmospheric variables and normalizing comparative scales.')}
+          </p>
         </div>
       )}
 
@@ -263,7 +277,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
               </div>
               <div>
                 <h3 className="text-xs font-mono uppercase text-[#56CCF2] tracking-wider mb-1 font-semibold">
-                  Comparative Analysis Synthesis
+                  {t('comparativeAnalysisSynthesis', 'Comparative Analysis Synthesis')}
                 </h3>
                 <p className="text-[#F4F7F9] text-xs sm:text-sm leading-relaxed">
                   "{result.ai_summary}"
@@ -312,7 +326,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
                         {cityData.temperature}°C
                       </div>
                       <div className="text-xs text-[#9AA8B2] mt-0.5">
-                        Feels like <span className="text-[#F4F7F9] font-medium font-mono">{cityData.feels_like}°C</span> &bull; {cityData.description}
+                        {t('feelsLike', 'Feels like')} <span className="text-[#F4F7F9] font-medium font-mono">{cityData.feels_like}°C</span> &bull; {translateCondition(cityData.description || cityData.condition)}
                       </div>
                     </div>
 
@@ -320,7 +334,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
                     <div className="grid grid-cols-2 gap-2 text-xs pt-3 border-t border-[#2B3945]">
                       <div className="bg-[#24313C] p-2 rounded-lg border border-[#2B3945] space-y-0.5">
                         <span className="text-[#9AA8B2] text-[10px] flex items-center gap-1 font-mono">
-                          <CloudRain className="w-3 h-3 text-[#56CCF2]" /> Rain
+                          <CloudRain className="w-3 h-3 text-[#56CCF2]" /> {t('rainMetric', 'Rain')}
                         </span>
                         <span className="text-[#F4F7F9] font-bold block text-xs font-mono">
                           {cityData.rain_probability}%
@@ -329,7 +343,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
 
                       <div className="bg-[#24313C] p-2 rounded-lg border border-[#2B3945] space-y-0.5">
                         <span className="text-[#9AA8B2] text-[10px] flex items-center gap-1 font-mono">
-                          <Wind className="w-3 h-3 text-[#27AE9B]" /> Wind
+                          <Wind className="w-3 h-3 text-[#27AE9B]" /> {t('windMetric', 'Wind')}
                         </span>
                         <span className="text-[#F4F7F9] font-bold block text-xs font-mono">
                           {cityData.wind_speed} km/h
@@ -338,7 +352,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
 
                       <div className="bg-[#24313C] p-2 rounded-lg border border-[#2B3945] space-y-0.5">
                         <span className="text-[#9AA8B2] text-[10px] flex items-center gap-1 font-mono">
-                          <Droplets className="w-3 h-3 text-[#56CCF2]" /> Humidity
+                          <Droplets className="w-3 h-3 text-[#56CCF2]" /> {t('humidity', 'Humidity')}
                         </span>
                         <span className="text-[#F4F7F9] font-bold block text-xs font-mono">
                           {cityData.humidity}%
@@ -347,7 +361,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
 
                       <div className="bg-[#24313C] p-2 rounded-lg border border-[#2B3945] space-y-0.5">
                         <span className="text-[#9AA8B2] text-[10px] flex items-center gap-1 font-mono">
-                          <Gauge className="w-3 h-3 text-[#F2C94C]" /> Pressure
+                          <Gauge className="w-3 h-3 text-[#F2C94C]" /> {t('pressure', 'Pressure')}
                         </span>
                         <span className="text-[#F4F7F9] font-bold block text-xs font-mono">
                           {cityData.pressure} hPa
@@ -359,12 +373,12 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
                     {cityData.activity_score !== undefined && cityData.activity_score !== null && (
                       <div className="pt-2.5 border-t border-[#2B3945] flex items-center justify-between bg-[#24313C] p-2.5 rounded-lg border border-[#2B3945]">
                         <div className="text-xs text-[#9AA8B2] capitalize font-mono">
-                          {selectedActivity}
+                          {translateActivityName(selectedActivity, language)}
                         </div>
                         <div className="text-xs font-bold text-[#F4F7F9] flex items-center gap-1.5 font-mono">
                           <span>{cityData.activity_score}/100</span>
                           <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#18232D] border border-[#2B3945] text-[#56CCF2]">
-                            {cityData.activity_category}
+                            {translateCategoryName(cityData.activity_category, language)}
                           </span>
                         </div>
                       </div>
@@ -384,14 +398,14 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
           {/* Detailed Side-by-Side Comparison Table */}
           <div className="bg-[#18232D] border border-[#2B3945] rounded-xl p-5 shadow-sm space-y-3">
             <h3 className="text-sm font-semibold text-[#F4F7F9] flex items-center gap-2 font-mono">
-              <GitCompare className="w-4 h-4 text-[#2F80ED]" /> Parameter Comparison Matrix
+              <GitCompare className="w-4 h-4 text-[#2F80ED]" /> {t('parameterMatrix', 'Parameter Comparison Matrix')}
             </h3>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
                   <tr className="border-b border-[#2B3945] text-[#9AA8B2] uppercase font-mono text-[10px]">
-                    <th className="py-2.5 px-3 font-semibold">Parameter</th>
+                    <th className="py-2.5 px-3 font-semibold">{t('parameterLabel', 'Parameter')}</th>
                     {result.cities.map((c, i) => (
                       <th key={i} className="py-2.5 px-3 font-semibold text-right text-[#F4F7F9]">
                         {c.name} ({c.country})
@@ -402,7 +416,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
                 <tbody className="divide-y divide-[#2B3945] text-[#F4F7F9]">
                   <tr>
                     <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
-                      <Thermometer className="w-3.5 h-3.5 text-[#F2C94C]" /> Temperature
+                      <Thermometer className="w-3.5 h-3.5 text-[#F2C94C]" /> {t('temperature', 'Temperature')}
                     </td>
                     {result.cities.map((c, i) => (
                       <td key={i} className="py-2.5 px-3 text-right font-bold font-mono">
@@ -413,7 +427,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
 
                   <tr>
                     <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
-                      <Thermometer className="w-3.5 h-3.5 text-[#F2994A]" /> Feels Like
+                      <Thermometer className="w-3.5 h-3.5 text-[#F2994A]" /> {t('feelsLike', 'Feels Like')}
                     </td>
                     {result.cities.map((c, i) => (
                       <td key={i} className="py-2.5 px-3 text-right font-medium font-mono text-[#9AA8B2]">
@@ -424,7 +438,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
 
                   <tr>
                     <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
-                      <CloudRain className="w-3.5 h-3.5 text-[#56CCF2]" /> Rain Probability
+                      <CloudRain className="w-3.5 h-3.5 text-[#56CCF2]" /> {t('rainProbability', 'Rain Probability')}
                     </td>
                     {result.cities.map((c, i) => (
                       <td key={i} className="py-2.5 px-3 text-right font-medium font-mono text-[#56CCF2]">
@@ -435,7 +449,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
 
                   <tr>
                     <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
-                      <Wind className="w-3.5 h-3.5 text-[#27AE9B]" /> Wind Speed
+                      <Wind className="w-3.5 h-3.5 text-[#27AE9B]" /> {t('windSpeed', 'Wind Speed')}
                     </td>
                     {result.cities.map((c, i) => (
                       <td key={i} className="py-2.5 px-3 text-right font-medium font-mono">
@@ -446,7 +460,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
 
                   <tr>
                     <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
-                      <Droplets className="w-3.5 h-3.5 text-[#56CCF2]" /> Humidity
+                      <Droplets className="w-3.5 h-3.5 text-[#56CCF2]" /> {t('humidity', 'Humidity')}
                     </td>
                     {result.cities.map((c, i) => (
                       <td key={i} className="py-2.5 px-3 text-right font-medium font-mono">
@@ -457,7 +471,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
 
                   <tr>
                     <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
-                      <Gauge className="w-3.5 h-3.5 text-[#27AE9B]" /> Barometric Pressure
+                      <Gauge className="w-3.5 h-3.5 text-[#27AE9B]" /> {t('barometricPressure', 'Barometric Pressure')}
                     </td>
                     {result.cities.map((c, i) => (
                       <td key={i} className="py-2.5 px-3 text-right font-medium font-mono">
@@ -468,7 +482,7 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
 
                   <tr>
                     <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
-                      <Eye className="w-3.5 h-3.5 text-[#9AA8B2]" /> Visibility
+                      <Eye className="w-3.5 h-3.5 text-[#9AA8B2]" /> {t('visibility', 'Visibility')}
                     </td>
                     {result.cities.map((c, i) => (
                       <td key={i} className="py-2.5 px-3 text-right font-medium font-mono">
@@ -479,12 +493,12 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
 
                   <tr>
                     <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
-                      <Activity className="w-3.5 h-3.5 text-[#56CCF2]" /> Suitability ({selectedActivity})
+                      <Activity className="w-3.5 h-3.5 text-[#56CCF2]" /> {t('suitabilityLabel', 'Suitability')} ({translateActivityName(selectedActivity, language)})
                     </td>
                     {result.cities.map((c, i) => (
                       <td key={i} className="py-2.5 px-3 text-right font-bold font-mono text-[#56CCF2]">
                         {c.is_available && c.activity_score !== undefined
-                          ? `${c.activity_score}/100 (${c.activity_category})`
+                          ? `${c.activity_score}/100 (${translateCategoryName(c.activity_category, language)})`
                           : 'N/A'}
                       </td>
                     ))}

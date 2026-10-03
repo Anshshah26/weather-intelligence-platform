@@ -1,6 +1,7 @@
 import React from 'react';
 import { AirQualityMetrics } from '../../types/weather';
 import { Wind, AlertCircle, ShieldCheck } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface AirQualityCardProps {
   airQuality?: AirQualityMetrics | null;
@@ -17,6 +18,16 @@ export const AirQualityCard: React.FC<AirQualityCardProps> = ({
   error = null,
   onRetry,
 }) => {
+  const { t } = useLanguage();
+
+  const getLocalizedCategory = (cat: string = '') => {
+    const lower = cat.toLowerCase();
+    if (lower.includes('good')) return t('good', 'Good');
+    if (lower.includes('moderate')) return t('moderate', 'Moderate');
+    if (lower.includes('poor') || lower.includes('unhealthy')) return t('poor', 'Poor');
+    if (lower.includes('hazardous')) return t('hazardous', 'Hazardous');
+    return cat;
+  };
   const getCategoryTheme = (cat: string = '') => {
     const categoryLower = cat.toLowerCase();
     if (categoryLower.includes('good')) {
@@ -64,13 +75,13 @@ export const AirQualityCard: React.FC<AirQualityCardProps> = ({
           <div>
             <h2 className="text-base font-semibold text-[#F4F7F9] flex items-center gap-2">
               <Wind className="w-4 h-4 text-[#2F80ED]" />
-              Air Quality Index {city ? `— ${city}` : ''}
+              {t('airQualityIndex', 'Air Quality Index')} {city ? `— ${city}` : ''}
             </h2>
-            <p className="text-xs text-[#9AA8B2]">Atmospheric particulate and gas telemetry</p>
+            <p className="text-xs text-[#9AA8B2]">{t('airQuality', 'Atmospheric particulate and gas telemetry')}</p>
           </div>
           {airQuality && (
             <span className={`text-[11px] font-semibold px-2.5 py-1 rounded border ${theme.badge}`}>
-              {airQuality.category}
+              {getLocalizedCategory(airQuality.category)}
             </span>
           )}
         </div>
@@ -87,7 +98,7 @@ export const AirQualityCard: React.FC<AirQualityCardProps> = ({
                 onClick={onRetry}
                 className="px-2.5 py-1 bg-[#EB5757]/20 hover:bg-[#EB5757]/30 border border-[#EB5757]/40 text-[#F4F7F9] text-[11px] font-medium rounded transition-colors shrink-0"
               >
-                Retry
+                {t('retry', 'Retry')}
               </button>
             )}
           </div>
@@ -119,7 +130,7 @@ export const AirQualityCard: React.FC<AirQualityCardProps> = ({
                   {airQuality.aqi}
                 </div>
                 <div>
-                  <div className="text-xs font-mono uppercase text-[#9AA8B2]">US AQI Standard</div>
+                  <div className="text-xs font-mono uppercase text-[#9AA8B2]">{t('usAqiStandard', 'US AQI Standard')}</div>
                   <div className="text-xs text-[#F4F7F9] mt-0.5 leading-snug">
                     {airQuality.description}
                   </div>
@@ -127,7 +138,7 @@ export const AirQualityCard: React.FC<AirQualityCardProps> = ({
               </div>
               <div className="flex items-center gap-1.5 text-xs text-[#9AA8B2] bg-[#18232D] px-2.5 py-1.5 rounded border border-[#2B3945] shrink-0">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#27AE9B] shrink-0" />
-                <span>Station Feed</span>
+                <span>{t('liveTelemetry', 'Station Feed')}</span>
               </div>
             </div>
 

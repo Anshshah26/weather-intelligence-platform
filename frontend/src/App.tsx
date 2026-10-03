@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
+import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { Layout } from './components/layout/Layout';
@@ -186,7 +188,9 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <AuthProvider>
+      <ThemeProvider>
+        <LanguageProvider>
+          <AuthProvider>
         <Layout
           selectedCity={selectedCity}
           onSearchCity={handleSearchCity}
@@ -285,7 +289,9 @@ export default function App() {
             </Routes>
           </Suspense>
         </Layout>
-      </AuthProvider>
+          </AuthProvider>
+        </LanguageProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

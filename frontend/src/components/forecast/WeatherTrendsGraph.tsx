@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { HourlyItem } from '../../types/weather';
 import { TrendingUp, Thermometer, Umbrella, Wind, AlertCircle } from 'lucide-react';
 import { formatTemp, formatWind } from '../../services/settingsService';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface WeatherTrendsGraphProps {
   items?: HourlyItem[];
@@ -20,6 +21,7 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
   error = null,
   onRetry,
 }) => {
+  const { t, translateCondition } = useLanguage();
   const [metric, setMetric] = useState<GraphMetric>('temperature');
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
@@ -84,7 +86,7 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
           <div>
             <h2 className="text-base font-semibold text-[#F4F7F9] flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-[#2F80ED]" />
-              Weather Trends — {selectedDateLabel}
+              {t('weatherTrends', 'Weather Trends')} — {selectedDateLabel}
             </h2>
             <p className="text-xs text-[#9AA8B2]">Atmospheric trend lines and hourly variations</p>
           </div>
@@ -100,7 +102,7 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
               }`}
             >
               <Thermometer className="w-3.5 h-3.5" />
-              <span>Temp</span>
+              <span>{t('tempMetric', 'Temp')}</span>
             </button>
             <button
               onClick={() => setMetric('rain')}
@@ -111,7 +113,7 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
               }`}
             >
               <Umbrella className="w-3.5 h-3.5" />
-              <span>Rain</span>
+              <span>{t('rainMetric', 'Rain')}</span>
             </button>
             <button
               onClick={() => setMetric('wind')}
@@ -122,7 +124,7 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
               }`}
             >
               <Wind className="w-3.5 h-3.5" />
-              <span>Wind</span>
+              <span>{t('windMetric', 'Wind')}</span>
             </button>
           </div>
         </div>
@@ -139,7 +141,7 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
                 onClick={onRetry}
                 className="px-2.5 py-1 bg-[#EB5757]/20 hover:bg-[#EB5757]/30 border border-[#EB5757]/40 text-[#F4F7F9] text-[11px] font-medium rounded transition-colors shrink-0"
               >
-                Retry
+                {t('retry', 'Retry')}
               </button>
             )}
           </div>
@@ -170,19 +172,19 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
               >
                 <div className="font-bold text-[#F4F7F9] border-b border-[#2B3945] pb-1 flex justify-between font-mono">
                   <span>{hoveredItem.time}</span>
-                  <span className="capitalize text-[#9AA8B2] font-normal">{hoveredItem.condition}</span>
+                  <span className="capitalize text-[#9AA8B2] font-normal">{translateCondition(hoveredItem.condition)}</span>
                 </div>
                 <div className="text-[#F4F7F9]">
-                  Temp: <span className="font-semibold font-mono text-[#F2C94C]">{formatTemp(hoveredItem.temperature)}</span>
+                  {t('tempMetric', 'Temp')}: <span className="font-semibold font-mono text-[#F2C94C]">{formatTemp(hoveredItem.temperature)}</span>
                 </div>
                 <div className="text-[#9AA8B2]">
-                  Feels like: <span className="font-semibold font-mono">{formatTemp(hoveredItem.feels_like)}</span>
+                  {t('feelsLike', 'Feels like')}: <span className="font-semibold font-mono">{formatTemp(hoveredItem.feels_like)}</span>
                 </div>
                 <div className="text-[#56CCF2]">
-                  Rain: <span className="font-semibold font-mono">{hoveredItem.precipitation_probability}%</span>
+                  {t('rainMetric', 'Rain')}: <span className="font-semibold font-mono">{hoveredItem.precipitation_probability}%</span>
                 </div>
                 <div className="text-[#27AE9B]">
-                  Wind: <span className="font-semibold font-mono">{formatWind(hoveredItem.wind_speed)}</span>
+                  {t('windMetric', 'Wind')}: <span className="font-semibold font-mono">{formatWind(hoveredItem.wind_speed)}</span>
                 </div>
               </div>
             )}

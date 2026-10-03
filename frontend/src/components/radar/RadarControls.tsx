@@ -1,4 +1,5 @@
 import { Play, Pause, SkipBack, SkipForward, Clock, Sliders } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface RadarControlsProps {
   isPlaying: boolean;
@@ -21,6 +22,7 @@ export const RadarControls = ({
   onChangeOpacity,
   disabled = false,
 }: RadarControlsProps) => {
+  const { t } = useLanguage();
   return (
     <div
       className="flex items-center justify-between gap-2.5 sm:gap-3 bg-[#18232D] border border-[#2B3945] p-2.5 rounded-xl shadow-sm text-[#F4F7F9] overflow-x-auto max-w-full no-scrollbar pb-1 sm:pb-0"
@@ -43,11 +45,11 @@ export const RadarControls = ({
           onClick={onTogglePlay}
           disabled={disabled}
           aria-label={isPlaying ? 'Pause radar playback' : 'Play radar playback'}
-          title={disabled ? 'Radar playback unavailable' : isPlaying ? 'Pause' : 'Play'}
+          title={disabled ? 'Radar playback unavailable' : isPlaying ? t('pause', 'Pause') : t('play', 'Play')}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2F80ED] hover:bg-[#2570d4] text-white font-medium text-xs disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           {isPlaying ? <Pause className="w-4 h-4 fill-white" /> : <Play className="w-4 h-4 fill-white ml-0.5" />}
-          <span>{isPlaying ? 'Pause' : 'Play'}</span>
+          <span>{isPlaying ? t('pause', 'Pause') : t('play', 'Play')}</span>
         </button>
 
         <button
@@ -65,7 +67,7 @@ export const RadarControls = ({
       <div className="flex items-center gap-2 bg-[#101820] border border-[#2B3945] px-2.5 py-1.5 rounded-lg">
         <Sliders className="w-3.5 h-3.5 text-[#56CCF2] shrink-0" />
         <label htmlFor="radar-opacity-slider" className="text-[11px] font-mono text-[#9AA8B2] hidden sm:inline">
-          Opacity
+          {t('opacity', 'Opacity')}
         </label>
         <input
           id="radar-opacity-slider"
@@ -87,7 +89,7 @@ export const RadarControls = ({
       {/* Selected Radar Frame Timestamp Display */}
       <div className="flex items-center gap-2 bg-[#101820] border border-[#2B3945] px-3 py-1.5 rounded-lg font-mono text-xs text-[#F4F7F9]">
         <Clock className="w-3.5 h-3.5 text-[#56CCF2]" />
-        <span>Radar: <strong className="text-[#56CCF2] font-semibold">{currentDisplayTime}</strong></span>
+        <span>{t('radar', 'Radar')}: <strong className="text-[#56CCF2] font-semibold">{currentDisplayTime}</strong></span>
       </div>
     </div>
   );

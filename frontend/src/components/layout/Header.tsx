@@ -1,7 +1,11 @@
 import { useState, FormEvent, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, CloudSun, MapPin, LogIn, LogOut, Navigation, CheckCircle2, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Search, Menu, CloudSun, MapPin, LogIn, LogOut, Navigation, CheckCircle2, AlertTriangle, RefreshCw, Bookmark } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { SettingsButton } from '../settings/SettingsButton';
+import { FavoritesButton } from '../favorites/FavoritesButton';
+import { useFavoriteCities } from '../../hooks/useFavoriteCities';
 import { getCitySuggestions } from '../../services/weatherApi';
 import { CitySuggestion } from '../../types/weather';
 
@@ -36,10 +40,22 @@ export const Header = ({
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const { user, logout } = useAuth();
+  const { t } = useLanguage();
+  const { isFavorite, toggleFavorite } = useFavoriteCities();
   const navigate = useNavigate();
+
+  const handleSelectFavoriteCity = (cityName: string) => {
+    setQuery(cityName);
+    setShowDropdown(false);
+    if (onSearchCity) {
+      onSearchCity(cityName);
+    }
+    navigate('/');
+  };
 
   useEffect(() => {
     setQuery(selectedCity);
@@ -191,8 +207,14 @@ export const Header = ({
             </div>
           </div>
 
-          {/* Authentication Controls on Mobile */}
-          <div className="flex items-center sm:hidden">
+          {/* Settings & Authentication Controls on Mobile */}
+          <div className="flex items-center gap-1.5 sm:hidden">
+            <FavoritesButton
+              onSelectCity={handleSelectFavoriteCity}
+              onOpenSearch={() => searchInputRef.current?.focus()}
+              showTextOnDesktop={false}
+            />
+            <SettingsButton showTextOnDesktop={false} />
             {user ? (
               <div className="flex items-center gap-1.5">
                 <div className="w-7 h-7 rounded bg-[#2F80ED] flex items-center justify-center font-bold text-xs text-white uppercase">
@@ -201,7 +223,7 @@ export const Header = ({
                 <button
                   onClick={handleLogout}
                   className="p-2 rounded-lg text-[#9AA8B2] hover:text-[#EB5757] hover:bg-[#24313C] transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
-                  title="Logout"
+                  title={t('logout', 'Logout')}
                 >
                   <LogOut className="w-4 h-4" />
                 </button>
@@ -212,7 +234,7 @@ export const Header = ({
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2F80ED] text-white font-medium text-xs transition-colors hover:bg-[#2570d4]"
               >
                 <LogIn className="w-3.5 h-3.5" />
-                <span>Sign In</span>
+                <span>{t('signIn', 'Sign In')}</span>
               </Link>
             )}
           </div>
@@ -230,6 +252,7 @@ export const Header = ({
                 <Search className={`w-4 h-4 ${isSearching ? 'animate-spin text-[#2F80ED]' : ''}`} />
               </button>
               <input
+                ref={searchInputRef}
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -239,7 +262,7 @@ export const Header = ({
                   }
                 }}
                 onKeyDown={handleKeyDown}
-                placeholder="Search city..."
+                placeholder={t('searchPlaceholder', 'Search city...')}
                 className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg pl-9 pr-14 py-2 text-xs sm:text-sm text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none transition-colors min-h-[38px]"
               />
               <button
@@ -248,7 +271,7 @@ export const Header = ({
                 className="hidden md:flex items-center gap-1 absolute right-1.5 top-1/2 -translate-y-1/2 text-[11px] font-medium text-white bg-[#2F80ED] hover:bg-[#2570d4] px-2.5 py-1 rounded transition-colors disabled:opacity-40 z-10"
               >
                 <MapPin className="w-3 h-3" />
-                <span>Search</span>
+                <span>{t('searchButton', 'Search')}</span>
               </button>
             </form>
 
@@ -272,26 +295,62 @@ export const Header = ({
                 ) : (
                   suggestions.map((item, idx) => {
                     const isHighlighted = idx === highlightedIndex;
+                    const isFav = isFavorite(item.name);
                     return (
                       <div
                         key={`${item.name}-${item.latitude}-${item.longitude}-${idx}`}
                         onClick={() => handleSelectSuggestion(item)}
                         onMouseEnter={() => setHighlightedIndex(idx)}
-                        className={`px-3.5 py-2.5 cursor-pointer flex items-start gap-2.5 border-b border-[#2B3945] last:border-b-0 transition-colors ${
+                        className={`px-3.5 py-2.5 cursor-pointer flex items-center justify-between gap-2.5 border-b border-[#2B3945] last:border-b-0 transition-colors ${
                           isHighlighted
                             ? 'bg-[#24313C] text-[#F4F7F9] border-l-2 border-l-[#2F80ED]'
                             : 'hover:bg-[#24313C]/80 text-[#F4F7F9]'
                         }`}
                       >
-                        <MapPin className="w-4 h-4 text-[#56CCF2] shrink-0 mt-0.5" />
-                        <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-[#F4F7F9] text-xs sm:text-sm truncate">
-                            {item.name}
-                          </div>
-                          <div className="text-[11px] text-[#9AA8B2] truncate">
-                            {[item.state, item.country].filter(Boolean).join(', ')}
+                        <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                          <MapPin className="w-4 h-4 text-[#56CCF2] shrink-0 mt-0.5" />
+                          <div className="flex-1 min-w-0">
+                            <div className="font-semibold text-[#F4F7F9] text-xs sm:text-sm truncate">
+                              {item.name}
+                            </div>
+                            <div className="text-[11px] text-[#9AA8B2] truncate">
+                              {[item.state, item.country].filter(Boolean).join(', ')}
+                            </div>
                           </div>
                         </div>
+
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleFavorite({
+                              name: item.name,
+                              country: item.country,
+                              state: item.state,
+                              latitude: item.latitude,
+                              longitude: item.longitude,
+                            });
+                          }}
+                          aria-label={
+                            isFav
+                              ? `${t('removeFavoriteCity', 'Remove Favorite City')}: ${item.name}`
+                              : `${t('addFavoriteCity', 'Add Favorite City')}: ${item.name}`
+                          }
+                          title={
+                            isFav
+                              ? `${t('removeFavoriteCity', 'Remove Favorite City')}: ${item.name}`
+                              : `${t('addFavoriteCity', 'Add Favorite City')}: ${item.name}`
+                          }
+                          className="p-1.5 rounded-lg text-[#9AA8B2] hover:text-[#F2C94C] hover:bg-[#101820] transition-colors shrink-0"
+                        >
+                          <Bookmark
+                            className={`w-4 h-4 ${
+                              isFav
+                                ? 'text-[#F2C94C] fill-[#F2C94C]'
+                                : 'text-[#9AA8B2] hover:text-[#F2C94C]'
+                            }`}
+                          />
+                        </button>
                       </div>
                     );
                   })
@@ -316,17 +375,22 @@ export const Header = ({
             >
               <Navigation className={`w-3.5 h-3.5 ${isDetectingGPS ? 'animate-spin text-[#2F80ED]' : 'text-[#56CCF2]'}`} />
               <span className="hidden sm:inline">
-                {isDetectingGPS ? 'Detecting...' : 'Use My Location'}
+                {isDetectingGPS ? t('detecting', 'Detecting...') : t('useMyLocation', 'Use My Location')}
               </span>
               <span className="sm:hidden">
-                {isDetectingGPS ? 'Detecting...' : 'GPS'}
+                {isDetectingGPS ? t('detecting', 'Detecting...') : 'GPS'}
               </span>
             </button>
           )}
         </div>
 
-        {/* Right section: Authentication Controls on Desktop */}
-        <div className="hidden sm:flex items-center shrink-0">
+        {/* Right section: Favorites, Settings & Authentication Controls on Desktop */}
+        <div className="hidden sm:flex items-center gap-2.5 shrink-0">
+          <FavoritesButton
+            onSelectCity={handleSelectFavoriteCity}
+            onOpenSearch={() => searchInputRef.current?.focus()}
+          />
+          <SettingsButton />
           {user ? (
             <div className="flex items-center gap-2 sm:gap-3">
               <div className="flex items-center gap-2.5 pl-2 pr-3 py-1 rounded-lg border border-[#2B3945] bg-[#101820]">
@@ -335,16 +399,16 @@ export const Header = ({
                 </div>
                 <div className="hidden sm:block text-left">
                   <div className="text-xs font-medium text-[#F4F7F9] leading-none">{user.name}</div>
-                  <div className="text-[10px] text-[#9AA8B2] mt-0.5 max-w-[120px] truncate">{user.email}</div>
+                  <div className="text-[10px] text-[#9AA8B2] mt-0.5 max-w-[120px] truncate font-mono">{user.email}</div>
                 </div>
               </div>
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[#9AA8B2] hover:text-[#EB5757] hover:bg-[#24313C] border border-transparent hover:border-[#2B3945] text-xs font-medium transition-colors"
-                title="Logout"
+                title={t('logout', 'Logout')}
               >
                 <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline">Logout</span>
+                <span className="hidden sm:inline">{t('logout', 'Logout')}</span>
               </button>
             </div>
           ) : (
@@ -353,7 +417,7 @@ export const Header = ({
               className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#2F80ED] hover:bg-[#2570d4] text-white font-medium text-xs sm:text-sm transition-colors shadow-sm"
             >
               <LogIn className="w-4 h-4" />
-              <span>Sign In</span>
+              <span>{t('signIn', 'Sign In')}</span>
             </Link>
           )}
         </div>

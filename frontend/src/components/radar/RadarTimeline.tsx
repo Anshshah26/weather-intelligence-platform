@@ -1,4 +1,5 @@
 import { RadarFrame } from '../../types/weather';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface RadarTimelineProps {
   frames: RadarFrame[];
@@ -13,7 +14,8 @@ export const RadarTimeline = ({
   onSelectFrame,
   disabled = false,
 }: RadarTimelineProps) => {
-  const defaultTimes = ['-60m', '-30m', 'NOW', '+30m', '+60m'];
+  const { t } = useLanguage();
+  const defaultTimes = ['-60m', '-30m', t('now', 'NOW'), '+30m', '+60m'];
 
   return (
     <div

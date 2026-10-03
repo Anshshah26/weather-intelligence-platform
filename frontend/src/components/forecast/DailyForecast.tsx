@@ -1,6 +1,7 @@
 import { DailyItem } from '../../types/weather';
 import { Sun, Cloud, CloudSun, CloudRain, Umbrella, Wind, Calendar, CloudLightning } from 'lucide-react';
 import { formatTemp, formatWind } from '../../services/settingsService';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface DailyForecastProps {
   items?: DailyItem[];
@@ -19,6 +20,7 @@ export const DailyForecast = ({
   selectedDate,
   onSelectDate,
 }: DailyForecastProps) => {
+  const { t, translateCondition } = useLanguage();
 
   const getWeatherIcon = (condition: string, iconCode: string) => {
     const cond = condition.toLowerCase();
@@ -43,13 +45,13 @@ export const DailyForecast = ({
         <div>
           <h2 className="text-base font-semibold text-[#F4F7F9] flex items-center gap-2">
             <Calendar className="w-4 h-4 text-[#2F80ED]" />
-            Extended Forecast Timeline
+            {t('extendedForecast', 'Extended Forecast Timeline')}
           </h2>
-          <p className="text-xs text-[#9AA8B2]">Meteorological projections and thermal ranges</p>
+          <p className="text-xs text-[#9AA8B2]">{t('forecast', 'Meteorological projections and thermal ranges')}</p>
         </div>
         {isRealData && (
           <span className="text-[10px] font-mono text-[#27AE9B] bg-[#27AE9B]/10 px-2 py-0.5 rounded border border-[#27AE9B]/30 font-medium">
-            Daily Projection
+            {t('dailyProjection', 'Daily Projection')}
           </span>
         )}
       </div>
@@ -107,7 +109,7 @@ export const DailyForecast = ({
 
                 <div className="text-center w-full space-y-1.5">
                   <div className="text-xs font-medium text-[#F4F7F9] capitalize truncate">
-                    {item.condition}
+                    {translateCondition(item.condition)}
                   </div>
 
                   <div className="flex items-center justify-center gap-1.5 text-xs font-mono">

@@ -16,6 +16,12 @@ import {
   Droplets,
   Sparkles,
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
+import {
+  translateActivityName,
+  translateCategoryName,
+  translateActivityReason,
+} from '../i18n';
 
 interface ActivitiesPageProps {
   currentCityWeather?: CurrentWeatherResponse | null;
@@ -23,6 +29,8 @@ interface ActivitiesPageProps {
 
 export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
   const defaultCity = currentCityWeather?.location.city || 'Mumbai';
+
+  const { language, t } = useLanguage();
 
   const [searchQuery, setSearchQuery] = useState<string>(defaultCity);
   const [activeCity, setActiveCity] = useState<string>(defaultCity);
@@ -75,7 +83,7 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
       const res = await getActivityScore(activity, city, dateParam, timeParam);
       setScoreData(res);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Unable to calculate activity score.');
+      setError(err instanceof Error ? err.message : t('unableToAnalyze', 'Unable to calculate activity score.'));
     } finally {
       setLoading(false);
     }
@@ -133,13 +141,13 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#18232D] border border-[#2B3945] p-4 rounded-xl">
         <div>
           <div className="flex items-center gap-2 text-xs font-mono text-[#56CCF2] mb-0.5">
-            <Activity className="w-3.5 h-3.5 text-[#2F80ED]" /> Suitability Telemetry Engine
+            <Activity className="w-3.5 h-3.5 text-[#2F80ED]" /> {t('suitabilityTelemetryEngine', 'Suitability Telemetry Engine')}
           </div>
           <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">
-            Activity Weather Intelligence
+            {t('activitiesTitle', 'Activity Weather Intelligence')}
           </h1>
           <p className="text-xs text-[#9AA8B2] mt-0.5">
-            Quantitative outdoor plan suitability computed from atmospheric variables
+            {t('activitiesSubtitle', 'Quantitative outdoor plan suitability computed from atmospheric variables')}
           </p>
         </div>
 
@@ -151,19 +159,19 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Evaluate city..."
-              aria-label="Search city for activity scores"
+              placeholder={t('evaluateCityPlaceholder', 'Evaluate city...')}
+              aria-label={t('evaluateCityPlaceholder', 'Search city for activity scores')}
               className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg pl-9 pr-3 py-2 text-xs text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none min-h-[38px]"
             />
           </div>
           <button
             type="submit"
             disabled={loading || !searchQuery.trim()}
-            aria-label="Execute activity city search"
+            aria-label={t('goButton', 'Go')}
             className="flex items-center gap-1.5 px-3.5 py-2 bg-[#2F80ED] hover:bg-[#2570d4] text-white text-xs font-medium rounded-lg transition-colors disabled:opacity-40 shrink-0 min-h-[38px]"
           >
             {loading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <MapPin className="w-3.5 h-3.5" />}
-            <span>Go</span>
+            <span>{t('goButton', 'Go')}</span>
           </button>
         </form>
       </div>
@@ -181,8 +189,8 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
         <div className="p-3.5 bg-[#EB5757]/10 border border-[#EB5757]/30 rounded-xl flex items-center gap-3 text-[#EB5757] text-xs font-mono">
           <AlertTriangle className="w-5 h-5 text-[#EB5757] shrink-0" />
           <div>
-            <strong className="text-[#EB5757] block font-semibold">Severe conditions present:</strong>
-            <span>Extreme temperature, heavy precipitation, or strong gusts. Outdoor activity is not recommended.</span>
+            <strong className="text-[#EB5757] block font-semibold">{t('severeConditionsPresent', 'Severe conditions present:')}</strong>
+            <span>{t('severeConditionsMessage', 'Extreme temperature, heavy precipitation, or strong gusts. Outdoor activity is not recommended.')}</span>
           </div>
         </div>
       )}
@@ -190,14 +198,17 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
       {/* Activity Cards Selection Grid */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-[#9AA8B2] font-mono">Select Activity Plan</h2>
-          <span className="text-[11px] font-mono text-[#9AA8B2]">8 Supported Modules</span>
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-[#9AA8B2] font-mono">
+            {t('selectActivityPlan', 'Select Activity Plan')}
+          </h2>
+          <span className="text-[11px] font-mono text-[#9AA8B2]">{t('supportedModules', '8 Supported Modules')}</span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
           {activities.map((act) => {
             const isSelected = act.id === selectedActivity;
             const itemScore = allScores.find((s) => s.activity.toLowerCase() === act.name.toLowerCase())?.score;
+            const localizedName = translateActivityName(act.name, language);
 
             return (
               <button
@@ -212,7 +223,7 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-2 sm:gap-0">
                     <span className="text-lg sm:text-xl">{act.icon}</span>
-                    <span className="text-xs font-medium sm:hidden">{act.name}</span>
+                    <span className="text-xs font-medium sm:hidden">{localizedName}</span>
                   </div>
                   {itemScore !== undefined && (
                     <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#101820] border border-[#2B3945] text-[#56CCF2] font-semibold">
@@ -220,7 +231,7 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
                     </span>
                   )}
                 </div>
-                <span className="text-xs font-medium tracking-tight hidden sm:block mt-2 truncate w-full">{act.name}</span>
+                <span className="text-xs font-medium tracking-tight hidden sm:block mt-2 truncate w-full">{localizedName}</span>
               </button>
             );
           })}
@@ -230,12 +241,12 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
       {/* Time Slice Filter Toolbar */}
       <div className="flex items-center gap-1.5 bg-[#18232D] border border-[#2B3945] p-1.5 rounded-lg w-fit">
         <span className="text-[10px] font-mono text-[#9AA8B2] uppercase tracking-wider px-2 border-r border-[#2B3945] hidden sm:inline">
-          Time Slot
+          {t('timeSlot', 'Time Slot')}
         </span>
         {[
-          { id: 'now', label: 'Now' },
-          { id: 'today', label: 'Today' },
-          { id: 'tomorrow', label: 'Tomorrow' },
+          { id: 'now', label: t('slotNow', 'Now') },
+          { id: 'today', label: t('slotToday', 'Today') },
+          { id: 'tomorrow', label: t('slotTomorrow', 'Tomorrow') },
           { id: '07:00', label: '7:00 AM' },
           { id: '18:00', label: '6:00 PM' },
         ].map((tf) => (
@@ -259,7 +270,7 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
           {/* Main Visual Score Gauge Card */}
           <div className="bg-[#18232D] border border-[#2B3945] p-6 rounded-xl shadow-sm flex flex-col items-center justify-center text-center">
             <div className="text-xs font-mono text-[#9AA8B2] uppercase tracking-wider mb-3 flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-[#2F80ED]" /> Suitability Index
+              <Sparkles className="w-3.5 h-3.5 text-[#2F80ED]" /> {t('suitabilityIndex', 'Suitability Index')}
             </div>
 
             {/* Circular Ring Gauge Meter */}
@@ -297,11 +308,11 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
 
             {/* Category Badge */}
             <div className={`mt-3 px-3 py-1 rounded border text-xs font-bold uppercase font-mono ${getCategoryColor(scoreData.category)}`}>
-              {scoreData.category}
+              {translateCategoryName(scoreData.category, language)}
             </div>
 
             <p className="text-xs text-[#9AA8B2] mt-2 font-mono">
-              Evaluated for <strong>{scoreData.activity}</strong> in {scoreData.weather_summary.city}
+              {t('evaluatedFor', 'Evaluated for')} <strong>{translateActivityName(scoreData.activity, language)}</strong> {t('inCity', 'in')} {scoreData.weather_summary.city}
             </p>
           </div>
 
@@ -311,7 +322,7 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
             <div className="bg-[#18232D] border border-[#2B3945] p-4 rounded-xl space-y-3">
               <div className="flex items-center justify-between text-xs font-semibold text-[#F4F7F9]">
                 <span className="flex items-center gap-1.5 font-mono text-[#56CCF2]">
-                  <Clock className="w-3.5 h-3.5 text-[#2F80ED]" /> Condition Variables
+                  <Clock className="w-3.5 h-3.5 text-[#2F80ED]" /> {t('conditionVariables', 'Condition Variables')}
                 </span>
                 <span className="text-[11px] font-mono text-[#9AA8B2]">
                   {scoreData.weather_summary.city} &bull; {scoreData.weather_summary.time}
@@ -322,7 +333,7 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
                 <div className="bg-[#24313C] border border-[#2B3945] p-2.5 rounded-lg flex items-center gap-2">
                   <Thermometer className="w-4 h-4 text-[#F2C94C] shrink-0" />
                   <div>
-                    <span className="text-[10px] text-[#9AA8B2] font-mono block">Temp</span>
+                    <span className="text-[10px] text-[#9AA8B2] font-mono block">{t('tempMetric', 'Temp')}</span>
                     <span className="text-sm font-bold text-[#F4F7F9] font-mono">{scoreData.weather_summary.temperature}°C</span>
                   </div>
                 </div>
@@ -330,7 +341,7 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
                 <div className="bg-[#24313C] border border-[#2B3945] p-2.5 rounded-lg flex items-center gap-2">
                   <CloudRain className="w-4 h-4 text-[#56CCF2] shrink-0" />
                   <div>
-                    <span className="text-[10px] text-[#9AA8B2] font-mono block">Rain Prob</span>
+                    <span className="text-[10px] text-[#9AA8B2] font-mono block">{t('rainProbMetric', 'Rain Prob')}</span>
                     <span className="text-sm font-bold text-[#F4F7F9] font-mono">{scoreData.weather_summary.precipitation_probability}%</span>
                   </div>
                 </div>
@@ -338,7 +349,7 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
                 <div className="bg-[#24313C] border border-[#2B3945] p-2.5 rounded-lg flex items-center gap-2">
                   <Wind className="w-4 h-4 text-[#27AE9B] shrink-0" />
                   <div>
-                    <span className="text-[10px] text-[#9AA8B2] font-mono block">Wind</span>
+                    <span className="text-[10px] text-[#9AA8B2] font-mono block">{t('windMetric', 'Wind')}</span>
                     <span className="text-sm font-bold text-[#F4F7F9] font-mono">{scoreData.weather_summary.wind_speed} km/h</span>
                   </div>
                 </div>
@@ -346,7 +357,7 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
                 <div className="bg-[#24313C] border border-[#2B3945] p-2.5 rounded-lg flex items-center gap-2">
                   <Droplets className="w-4 h-4 text-[#56CCF2] shrink-0" />
                   <div>
-                    <span className="text-[10px] text-[#9AA8B2] font-mono block">Humidity</span>
+                    <span className="text-[10px] text-[#9AA8B2] font-mono block">{t('humidity', 'Humidity')}</span>
                     <span className="text-sm font-bold text-[#F4F7F9] font-mono">{scoreData.weather_summary.humidity}%</span>
                   </div>
                 </div>
@@ -358,17 +369,17 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
               {/* Positive Factors */}
               <div className="bg-[#18232D] border border-[#2B3945] border-l-2 border-l-[#27AE9B] p-4 rounded-xl space-y-2">
                 <h3 className="text-xs font-semibold text-[#27AE9B] font-mono flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#27AE9B]" /> Favorable Factors
+                  <CheckCircle2 className="w-4 h-4 text-[#27AE9B]" /> {t('favorableFactors', 'Favorable Factors')}
                 </h3>
                 <ul className="space-y-1.5 text-xs text-[#F4F7F9]">
                   {scoreData.reasons.map((reason, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <span className="text-[#27AE9B] font-bold shrink-0">✓</span>
-                      <span>{reason}</span>
+                      <span>{translateActivityReason(reason, language)}</span>
                     </li>
                   ))}
                   {scoreData.reasons.length === 0 && (
-                    <li className="text-[#9AA8B2] italic">No strong positive weather factors present.</li>
+                    <li className="text-[#9AA8B2] italic">{t('noPositiveFactors', 'No strong positive weather factors present.')}</li>
                   )}
                 </ul>
               </div>
@@ -376,17 +387,17 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
               {/* Warnings / Cautions */}
               <div className="bg-[#18232D] border border-[#2B3945] border-l-2 border-l-[#F2994A] p-4 rounded-xl space-y-2">
                 <h3 className="text-xs font-semibold text-[#F2994A] font-mono flex items-center gap-1.5">
-                  <AlertTriangle className="w-4 h-4 text-[#F2994A]" /> Weather Advisories
+                  <AlertTriangle className="w-4 h-4 text-[#F2994A]" /> {t('weatherAdvisories', 'Weather Advisories')}
                 </h3>
                 <ul className="space-y-1.5 text-xs text-[#F4F7F9]">
                   {scoreData.warnings.map((warn, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <span className="text-[#F2994A] font-bold shrink-0">⚠</span>
-                      <span>{warn}</span>
+                      <span>{translateActivityReason(warn, language)}</span>
                     </li>
                   ))}
                   {scoreData.warnings.length === 0 && (
-                    <li className="text-[#27AE9B] text-xs">No adverse weather warnings observed for this window.</li>
+                    <li className="text-[#27AE9B] text-xs">{t('noAdverseWarnings', 'No adverse weather warnings observed for this window.')}</li>
                   )}
                 </ul>
               </div>
@@ -396,7 +407,7 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
             {scoreData.ai_explanation && (
               <div className="bg-[#18232D] border border-[#2B3945] p-4 rounded-xl text-xs text-[#F4F7F9] leading-relaxed shadow-sm">
                 <div className="flex items-center gap-1.5 text-[#56CCF2] font-mono font-semibold mb-1">
-                  <Sparkles className="w-3.5 h-3.5 text-[#2F80ED]" /> Meteorological Evaluation Synthesis:
+                  <Sparkles className="w-3.5 h-3.5 text-[#2F80ED]" /> {t('meteorologicalEvaluationSynthesis', 'Meteorological Evaluation Synthesis:')}
                 </div>
                 <p className="text-[#9AA8B2]">{scoreData.ai_explanation}</p>
               </div>

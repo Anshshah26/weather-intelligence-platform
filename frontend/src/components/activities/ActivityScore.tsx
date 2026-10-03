@@ -1,11 +1,15 @@
 import { ActivityScoreItem } from '../../types/weather';
 import { Footprints, UserCheck, Bike, Trophy, Activity } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
+import { translateActivityName, translateCategoryName } from '../../i18n';
 
 interface ActivityScoreProps {
   items: ActivityScoreItem[];
 }
 
 export const ActivityScore = ({ items }: ActivityScoreProps) => {
+  const { language, t } = useLanguage();
+
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'Footprints':
@@ -34,12 +38,14 @@ export const ActivityScore = ({ items }: ActivityScoreProps) => {
         <div>
           <h2 className="text-base font-semibold text-[#F4F7F9] flex items-center gap-2">
             <Activity className="w-4 h-4 text-[#2F80ED]" />
-            Outdoor Activity Index
+            {t('outdoorActivityIndex', 'Outdoor Activity Index')}
           </h2>
-          <p className="text-xs text-[#9AA8B2]">Suitability indices based on current conditions</p>
+          <p className="text-xs text-[#9AA8B2]">
+            {t('environmentalTelemetry', 'Suitability indices based on current conditions')}
+          </p>
         </div>
         <span className="text-[10px] font-mono text-[#9AA8B2] bg-[#24313C] px-2.5 py-1 rounded border border-[#2B3945]">
-          Telemetry Rating
+          {t('telemetryRating', 'Telemetry Rating')}
         </span>
       </div>
 
@@ -51,12 +57,18 @@ export const ActivityScore = ({ items }: ActivityScoreProps) => {
                 <div className="p-1.5 bg-[#18232D] border border-[#2B3945] rounded">
                   {getIcon(item.icon)}
                 </div>
-                <span className="text-xs font-semibold text-[#F4F7F9]">{item.name}</span>
+                <span className="text-xs font-semibold text-[#F4F7F9]">
+                  {translateActivityName(item.name, language)}
+                </span>
               </div>
               
               <div className="flex items-center gap-2">
-                <span className="text-xs text-[#9AA8B2] font-mono">{item.status}</span>
-                <span className="text-sm font-bold text-[#F4F7F9] font-mono">{item.score}<span className="text-xs text-[#9AA8B2]">/100</span></span>
+                <span className="text-xs text-[#9AA8B2] font-mono">
+                  {translateCategoryName(item.status, language)}
+                </span>
+                <span className="text-sm font-bold text-[#F4F7F9] font-mono">
+                  {item.score}<span className="text-xs text-[#9AA8B2]">/100</span>
+                </span>
               </div>
             </div>
 
