@@ -35,24 +35,24 @@ export const MapControls = ({
     label: string;
     emoji: string;
     icon: ComponentType<{ className?: string }>;
-    activeColor: string;
+    accentColor: string;
   }[] = [
-    { id: 'temp', label: 'Temperature', emoji: '🌡️', icon: Thermometer, activeColor: 'bg-amber-500/20 border-amber-500/40 text-amber-300' },
-    { id: 'rain', label: 'Rain', emoji: '🌧️', icon: CloudRain, activeColor: 'bg-blue-500/20 border-blue-500/40 text-blue-300' },
-    { id: 'clouds', label: 'Clouds', emoji: '☁️', icon: Cloud, activeColor: 'bg-slate-500/20 border-slate-400/40 text-slate-200' },
-    { id: 'wind', label: 'Wind', emoji: '💨', icon: Wind, activeColor: 'bg-teal-500/20 border-teal-500/40 text-teal-300' },
-    { id: 'pressure', label: 'Pressure', emoji: '🧭', icon: Gauge, activeColor: 'bg-purple-500/20 border-purple-500/40 text-purple-300' },
+    { id: 'temp', label: 'Temperature', emoji: '🌡️', icon: Thermometer, accentColor: 'text-[#F2C94C] border-[#F2C94C]' },
+    { id: 'rain', label: 'Rain', emoji: '🌧️', icon: CloudRain, accentColor: 'text-[#56CCF2] border-[#2F80ED]' },
+    { id: 'clouds', label: 'Clouds', emoji: '☁️', icon: Cloud, accentColor: 'text-[#F4F7F9] border-[#9AA8B2]' },
+    { id: 'wind', label: 'Wind', emoji: '💨', icon: Wind, accentColor: 'text-[#27AE9B] border-[#27AE9B]' },
+    { id: 'pressure', label: 'Pressure', emoji: '🧭', icon: Gauge, accentColor: 'text-[#56CCF2] border-[#3A4A57]' },
   ];
 
   return (
     <div
-      className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 backdrop-blur-md border border-slate-800 p-3 rounded-2xl shadow-xl text-slate-200"
+      className="flex flex-wrap items-center justify-between gap-2.5 bg-[#18232D] border border-[#2B3945] p-2.5 rounded-xl shadow-sm text-[#F4F7F9]"
       role="toolbar"
       aria-label="Weather Map Control Toolbar"
     >
       {/* Weather Layer Toggles Group */}
       <div className="flex items-center gap-1.5 overflow-x-auto max-w-full no-scrollbar pb-1 sm:pb-0" role="group" aria-label="Weather Overlay Layers">
-        <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider px-2 border-r border-slate-800 hidden md:inline shrink-0">
+        <span className="text-[11px] font-mono text-[#9AA8B2] uppercase tracking-wider px-2 border-r border-[#2B3945] hidden md:inline shrink-0">
           Layers
         </span>
 
@@ -66,10 +66,10 @@ export const MapControls = ({
               onClick={() => onToggleLayer(layer.id)}
               aria-pressed={isActive}
               title={`Toggle ${layer.label} layer`}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-cyan-500/50 ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                 isActive
-                  ? `${layer.activeColor} border shadow-sm ring-1 ring-cyan-500/30`
-                  : 'bg-slate-950/60 border border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800/80'
+                  ? `bg-[#24313C] border-2 ${layer.accentColor} text-[#F4F7F9] shadow-sm font-semibold`
+                  : 'bg-[#101820] border border-[#2B3945] text-[#9AA8B2] hover:text-[#F4F7F9] hover:bg-[#24313C]'
               }`}
             >
               <span className="text-xs">{layer.emoji}</span>
@@ -81,11 +81,11 @@ export const MapControls = ({
       </div>
 
       {/* Auxiliary Controls: Opacity Slider, Reset, Fullscreen */}
-      <div className="flex items-center gap-3 ml-auto shrink-0">
+      <div className="flex items-center gap-2.5 ml-auto shrink-0">
         {/* Opacity Control Slider */}
-        <div className="flex items-center gap-2 bg-slate-950/60 border border-slate-800 px-3 py-1.5 rounded-xl">
-          <Sliders className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-          <label htmlFor="map-opacity-slider" className="text-[11px] font-mono text-slate-400 hidden sm:inline">
+        <div className="flex items-center gap-2 bg-[#101820] border border-[#2B3945] px-2.5 py-1.5 rounded-lg">
+          <Sliders className="w-3.5 h-3.5 text-[#56CCF2] shrink-0" />
+          <label htmlFor="map-opacity-slider" className="text-[11px] font-mono text-[#9AA8B2] hidden sm:inline">
             Opacity
           </label>
           <input
@@ -97,10 +97,10 @@ export const MapControls = ({
             value={Math.round(opacity * 100)}
             onChange={(e) => onChangeOpacity(Number(e.target.value) / 100)}
             aria-label="Weather overlay opacity slider"
-            className="w-16 sm:w-20 accent-cyan-400 h-1 bg-slate-800 rounded-lg cursor-pointer focus:outline-none focus:ring-1 focus:ring-cyan-500"
+            className="w-16 sm:w-20 accent-[#2F80ED] h-1 bg-[#24313C] rounded-lg cursor-pointer"
             title={`Overlay Opacity: ${Math.round(opacity * 100)}%`}
           />
-          <span className="text-[11px] font-mono text-cyan-300 min-w-[2.5rem] text-right font-semibold">
+          <span className="text-[11px] font-mono text-[#56CCF2] min-w-[2.5rem] text-right font-medium">
             {Math.round(opacity * 100)}%
           </span>
         </div>
@@ -108,23 +108,23 @@ export const MapControls = ({
         {/* Fit World / Reset Map View Button */}
         <button
           onClick={onResetView}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-950/60 border border-slate-800 text-slate-300 hover:text-cyan-300 hover:border-cyan-500/30 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[#101820] border border-[#2B3945] text-[#F4F7F9] hover:bg-[#24313C] hover:border-[#3A4A57] transition-colors"
           title="Reset Map to World View"
           aria-label="Reset map view to global extent"
         >
-          <Compass className="w-3.5 h-3.5 text-cyan-400" />
-          <span className="hidden sm:inline">Reset View</span>
+          <Compass className="w-3.5 h-3.5 text-[#56CCF2]" />
+          <span className="hidden sm:inline">Reset</span>
         </button>
 
         {/* Fullscreen Map Toggle Button */}
         <button
           onClick={onToggleFullscreen}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-950/60 border border-slate-800 text-slate-300 hover:text-cyan-300 hover:border-cyan-500/30 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[#101820] border border-[#2B3945] text-[#F4F7F9] hover:bg-[#24313C] hover:border-[#3A4A57] transition-colors"
           title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
           aria-label={isFullscreen ? 'Exit map fullscreen mode' : 'Enter map fullscreen mode'}
         >
-          {isFullscreen ? <Minimize className="w-3.5 h-3.5 text-cyan-400" /> : <Maximize className="w-3.5 h-3.5 text-cyan-400" />}
-          <span className="hidden md:inline">{isFullscreen ? 'Exit Full' : 'Fullscreen'}</span>
+          {isFullscreen ? <Minimize className="w-3.5 h-3.5 text-[#56CCF2]" /> : <Maximize className="w-3.5 h-3.5 text-[#56CCF2]" />}
+          <span className="hidden md:inline">{isFullscreen ? 'Exit' : 'Full'}</span>
         </button>
       </div>
     </div>

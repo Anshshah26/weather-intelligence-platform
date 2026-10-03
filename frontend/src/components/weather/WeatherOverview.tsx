@@ -24,116 +24,116 @@ export const WeatherOverview = ({
   const currentVisibility = visibility !== undefined ? visibility : data.visibility.value;
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl">
+    <div className="bg-[#18232D] border border-[#2B3945] rounded-xl p-5 sm:p-6 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-base font-semibold text-slate-100">Today's Overview</h2>
-          <p className="text-xs text-slate-400">Detailed environmental & atmospheric metrics</p>
+          <h2 className="text-base font-semibold text-[#F4F7F9]">Today's Environmental Telemetry</h2>
+          <p className="text-xs text-[#9AA8B2]">Atmospheric conditions and solar metrics</p>
         </div>
         {isRealData && (
-          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
-            Live Telemetry
+          <span className="text-[10px] font-mono text-[#27AE9B] bg-[#27AE9B]/10 px-2 py-0.5 rounded border border-[#27AE9B]/30 font-medium">
+            Live Feed
           </span>
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
         {/* Humidity Card */}
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-400 text-xs mb-3">
+        <div className="bg-[#24313C] border border-[#2B3945] rounded-lg p-4 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-[#9AA8B2] text-xs mb-3">
             <span className="font-medium">Humidity</span>
-            <Droplets className="w-4 h-4 text-blue-400" />
+            <Droplets className="w-4 h-4 text-[#56CCF2]" />
           </div>
           <div>
-            <div className="text-2xl font-bold text-slate-100">
-              {currentHumidity}<span className="text-sm font-normal text-slate-400">%</span>
+            <div className="text-2xl font-bold text-[#F4F7F9] font-mono">
+              {currentHumidity}<span className="text-sm font-normal text-[#9AA8B2]">%</span>
             </div>
-            <div className="text-xs text-slate-400 mt-1">
-              {currentHumidity > 70 ? 'High Humidity' : currentHumidity > 40 ? 'Optimal Range' : 'Low Humidity'} &bull; Live
+            <div className="text-xs text-[#9AA8B2] mt-1">
+              {currentHumidity > 70 ? 'High relative humidity' : currentHumidity > 40 ? 'Comfortable humidity' : 'Low relative humidity'}
             </div>
           </div>
         </div>
 
         {/* Wind Card */}
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-400 text-xs mb-3">
+        <div className="bg-[#24313C] border border-[#2B3945] rounded-lg p-4 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-[#9AA8B2] text-xs mb-3">
             <span className="font-medium">Wind Speed</span>
-            <Wind className="w-4 h-4 text-cyan-400" />
+            <Wind className="w-4 h-4 text-[#56CCF2]" />
           </div>
           <div>
-            <div className="text-2xl font-bold text-slate-100">
-              {currentWindSpeed}<span className="text-sm font-normal text-slate-400"> km/h</span>
+            <div className="text-2xl font-bold text-[#F4F7F9] font-mono">
+              {currentWindSpeed}<span className="text-sm font-normal text-[#9AA8B2]"> km/h</span>
             </div>
-            <div className="text-xs text-slate-400 mt-1">
-              Atmospheric airflow &bull; {currentWindSpeed > 20 ? 'Moderate breeze' : 'Light breeze'}
+            <div className="text-xs text-[#9AA8B2] mt-1">
+              {currentWindSpeed > 20 ? 'Moderate breeze' : 'Light airflow'}
             </div>
           </div>
         </div>
 
         {/* Pressure Card */}
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-400 text-xs mb-3">
+        <div className="bg-[#24313C] border border-[#2B3945] rounded-lg p-4 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-[#9AA8B2] text-xs mb-3">
             <span className="font-medium">Barometric Pressure</span>
-            <Gauge className="w-4 h-4 text-emerald-400" />
+            <Gauge className="w-4 h-4 text-[#27AE9B]" />
           </div>
           <div>
-            <div className="text-2xl font-bold text-slate-100">
-              {currentPressure}<span className="text-sm font-normal text-slate-400"> hPa</span>
+            <div className="text-2xl font-bold text-[#F4F7F9] font-mono">
+              {currentPressure}<span className="text-sm font-normal text-[#9AA8B2]"> hPa</span>
             </div>
-            <div className="text-xs text-slate-400 mt-1">Sea level atmospheric pressure</div>
+            <div className="text-xs text-[#9AA8B2] mt-1">Sea level atmospheric equilibrium</div>
           </div>
         </div>
 
         {/* Visibility Card */}
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-400 text-xs mb-3">
+        <div className="bg-[#24313C] border border-[#2B3945] rounded-lg p-4 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-[#9AA8B2] text-xs mb-3">
             <span className="font-medium">Visibility</span>
-            <Eye className="w-4 h-4 text-purple-400" />
+            <Eye className="w-4 h-4 text-[#9AA8B2]" />
           </div>
           <div>
-            <div className="text-2xl font-bold text-slate-100">
-              {currentVisibility}<span className="text-sm font-normal text-slate-400"> km</span>
+            <div className="text-2xl font-bold text-[#F4F7F9] font-mono">
+              {currentVisibility}<span className="text-sm font-normal text-[#9AA8B2]"> km</span>
             </div>
-            <div className="text-xs text-slate-400 mt-1">Visual range clarity</div>
+            <div className="text-xs text-[#9AA8B2] mt-1">Horizontal optical transparency</div>
           </div>
         </div>
 
         {/* UV Index Card */}
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-400 text-xs mb-3">
+        <div className="bg-[#24313C] border border-[#2B3945] rounded-lg p-4 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-[#9AA8B2] text-xs mb-3">
             <span className="font-medium">UV Index</span>
-            <Sun className="w-4 h-4 text-amber-400" />
+            <Sun className="w-4 h-4 text-[#F2C94C]" />
           </div>
           <div>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-slate-100">{data.uvIndex.value}</span>
-              <span className="text-xs font-semibold text-amber-400 px-2 py-0.5 bg-amber-500/10 border border-amber-500/20 rounded">
+              <span className="text-2xl font-bold text-[#F4F7F9] font-mono">{data.uvIndex.value}</span>
+              <span className="text-xs font-medium text-[#F2C94C] px-2 py-0.5 bg-[#F2C94C]/10 border border-[#F2C94C]/25 rounded">
                 {data.uvIndex.text}
               </span>
             </div>
-            <div className="text-xs text-slate-400 mt-1">{data.uvIndex.recommendation}</div>
+            <div className="text-xs text-[#9AA8B2] mt-1">{data.uvIndex.recommendation}</div>
           </div>
         </div>
 
         {/* Sunrise / Sunset Card */}
-        <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
-            <span className="font-medium">Sun Cycle</span>
-            <span className="text-[10px] text-cyan-400">{data.sunCycle.daylight} daylight</span>
+        <div className="bg-[#24313C] border border-[#2B3945] rounded-lg p-4 flex flex-col justify-between">
+          <div className="flex items-center justify-between text-[#9AA8B2] text-xs mb-2">
+            <span className="font-medium">Solar Cycle</span>
+            <span className="text-[11px] text-[#56CCF2] font-mono">{data.sunCycle.daylight} daylight</span>
           </div>
           <div className="grid grid-cols-2 gap-2 mt-1">
             <div className="flex items-center gap-2">
-              <Sunrise className="w-4 h-4 text-amber-400 shrink-0" />
+              <Sunrise className="w-4 h-4 text-[#F2C94C] shrink-0" />
               <div>
-                <div className="text-[10px] text-slate-500">Sunrise</div>
-                <div className="text-xs font-bold text-slate-200">{data.sunCycle.sunrise}</div>
+                <div className="text-[10px] text-[#9AA8B2]">Sunrise</div>
+                <div className="text-xs font-semibold text-[#F4F7F9] font-mono">{data.sunCycle.sunrise}</div>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Sunset className="w-4 h-4 text-orange-400 shrink-0" />
+              <Sunset className="w-4 h-4 text-[#F2994A] shrink-0" />
               <div>
-                <div className="text-[10px] text-slate-500">Sunset</div>
-                <div className="text-xs font-bold text-slate-200">{data.sunCycle.sunset}</div>
+                <div className="text-[10px] text-[#9AA8B2]">Sunset</div>
+                <div className="text-xs font-semibold text-[#F4F7F9] font-mono">{data.sunCycle.sunset}</div>
               </div>
             </div>
           </div>

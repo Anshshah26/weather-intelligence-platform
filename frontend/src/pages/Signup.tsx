@@ -61,23 +61,23 @@ export const Signup: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md bg-slate-900/90 border border-slate-800 backdrop-blur-xl rounded-2xl p-8 shadow-2xl shadow-cyan-950/20">
+    <div className="min-h-[75vh] flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md bg-[#18232D] border border-[#2B3945] rounded-xl p-8 shadow-sm">
         {/* Brand logo & header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center p-3 bg-cyan-500/10 border border-cyan-500/30 rounded-2xl text-cyan-400 mb-4 shadow-inner">
-            <CloudSun className="w-8 h-8" />
+          <div className="inline-flex items-center justify-center p-3 bg-[#24313C] border border-[#2B3945] rounded-xl text-[#2F80ED] mb-3">
+            <CloudSun className="w-7 h-7" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-100 tracking-tight">Create Your Account</h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Join Weather Intelligence Platform today
+          <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">Create Platform Account</h1>
+          <p className="text-xs text-[#9AA8B2] mt-1">
+            Access enterprise atmospheric data & personalized weather tools
           </p>
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div className="mb-6 p-3.5 bg-rose-500/10 border border-rose-500/30 rounded-xl flex items-center gap-3 text-rose-300 text-sm">
-            <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
+          <div className="mb-5 p-3 bg-[#EB5757]/10 border border-[#EB5757]/30 rounded-lg flex items-center gap-2.5 text-[#EB5757] text-xs">
+            <AlertCircle className="w-4 h-4 shrink-0 text-[#EB5757]" />
             <span>{error}</span>
           </div>
         )}
@@ -85,49 +85,49 @@ export const Signup: React.FC = () => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider mb-2">
               Full Name
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#9AA8B2]">
                 <User className="w-4 h-4" />
               </div>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Ansh Sharma"
-                className="w-full bg-slate-950/80 border border-slate-800 focus:border-cyan-500/60 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                placeholder="Full Name"
+                className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg pl-10 pr-4 py-2.5 text-sm text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none transition-colors"
                 autoComplete="name"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider mb-2">
               Email Address
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#9AA8B2]">
                 <Mail className="w-4 h-4" />
               </div>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@example.com"
-                className="w-full bg-slate-950/80 border border-slate-800 focus:border-cyan-500/60 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                placeholder="name@organization.com"
+                className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg pl-10 pr-4 py-2.5 text-sm text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none transition-colors"
                 autoComplete="email"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider mb-2">
               Password
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#9AA8B2]">
                 <Lock className="w-4 h-4" />
               </div>
               <input
@@ -135,18 +135,18 @@ export const Signup: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 6 characters"
-                className="w-full bg-slate-950/80 border border-slate-800 focus:border-cyan-500/60 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg pl-10 pr-4 py-2.5 text-sm text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none transition-colors"
                 autoComplete="new-password"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider mb-2">
               Confirm Password
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#9AA8B2]">
                 <Lock className="w-4 h-4" />
               </div>
               <input
@@ -154,7 +154,7 @@ export const Signup: React.FC = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Repeat password"
-                className="w-full bg-slate-950/80 border border-slate-800 focus:border-cyan-500/60 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg pl-10 pr-4 py-2.5 text-sm text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none transition-colors"
                 autoComplete="new-password"
               />
             </div>
@@ -163,10 +163,10 @@ export const Signup: React.FC = () => {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full mt-2 flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold py-2.5 px-4 rounded-xl transition-all shadow-lg shadow-cyan-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full mt-2 flex items-center justify-center gap-2 bg-[#2F80ED] hover:bg-[#2570d4] text-white font-medium py-2.5 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {submitting ? (
-              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
               <>
                 <UserPlus className="w-4 h-4" />
@@ -177,13 +177,13 @@ export const Signup: React.FC = () => {
         </form>
 
         {/* Login Redirect link */}
-        <div className="mt-8 text-center border-t border-slate-800/80 pt-6">
-          <p className="text-sm text-slate-400">
+        <div className="mt-6 text-center border-t border-[#2B3945] pt-5">
+          <p className="text-xs text-[#9AA8B2]">
             Already have an account?{' '}
             <Link
               to="/login"
               state={{ from: location.state?.from }}
-              className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors underline-offset-4 hover:underline"
+              className="text-[#56CCF2] hover:text-[#F4F7F9] font-medium transition-colors"
             >
               Sign In
             </Link>

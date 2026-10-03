@@ -1,4 +1,4 @@
-import { Activity, AlertTriangle } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 
 interface RadarStatusProps {
   available: boolean;
@@ -9,28 +9,28 @@ interface RadarStatusProps {
 export const RadarStatus = ({ available, provider, message }: RadarStatusProps) => {
   return (
     <div
-      className="flex items-center justify-between gap-3 bg-slate-900/90 backdrop-blur-md border border-slate-800 px-3.5 py-2 rounded-2xl shadow-xl text-xs"
+      className="flex items-center justify-between gap-3 bg-[#18232D] border border-[#2B3945] px-3.5 py-2 rounded-xl shadow-sm text-xs"
       role="status"
       aria-label="Weather Radar Connectivity Status"
     >
       <div className="flex items-center gap-2 font-mono">
-        <span className="text-slate-400">Radar Status:</span>
+        <span className="text-[#9AA8B2]">Radar Feed:</span>
         {available ? (
-          <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block" />
-            Live ({provider})
+          <span className="flex items-center gap-1.5 text-[#27AE9B] font-medium">
+            <span className="w-2 h-2 rounded-full bg-[#27AE9B] inline-block" />
+            Active ({provider})
           </span>
         ) : (
-          <span className="flex items-center gap-1.5 text-amber-400 font-semibold">
-            <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" />
-            Unavailable
+          <span className="flex items-center gap-1.5 text-[#F2C94C] font-medium">
+            <span className="w-2 h-2 rounded-full bg-[#F2C94C] inline-block" />
+            Standby / Standard Mode
           </span>
         )}
       </div>
 
       {!available && message && (
-        <div className="hidden lg:flex items-center gap-1.5 text-[11px] text-amber-300/80 font-mono border-l border-slate-800 pl-3">
-          <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+        <div className="hidden lg:flex items-center gap-1.5 text-[11px] text-[#9AA8B2] font-mono border-l border-[#2B3945] pl-3">
+          <AlertTriangle className="w-3.5 h-3.5 text-[#F2C94C] shrink-0" />
           <span className="truncate max-w-md">{message}</span>
         </div>
       )}

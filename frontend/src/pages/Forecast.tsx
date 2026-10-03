@@ -26,7 +26,7 @@ export const ForecastPage = ({
   hourlyData,
   loading = false,
   error = null,
-  onSearchCity,
+  onSearchCity: _onSearchCity,
   onRefresh,
   onEnsureForecastData,
 }: ForecastPageProps) => {
@@ -96,19 +96,19 @@ export const ForecastPage = ({
       );
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
+    <div className="space-y-5 max-w-7xl mx-auto">
       {/* Forecast Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/60 border border-slate-800 p-5 rounded-2xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#18232D] border border-[#2B3945] p-5 rounded-xl">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 mb-1">
-            <CalendarDays className="w-3.5 h-3.5" /> Meteorological & Atmospheric Analysis
+          <div className="flex items-center gap-2 text-xs font-mono text-[#56CCF2] mb-1">
+            <CalendarDays className="w-3.5 h-3.5 text-[#2F80ED]" /> Meteorological & Atmospheric Analysis
           </div>
-          <h1 className="text-2xl font-bold text-slate-100 tracking-tight">
-            Forecast Center — {cityName}
+          <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">
+            Forecast Station — {cityName}
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-[#9AA8B2] mt-0.5">
             {cityName
-              ? `Daily forecast summaries, live air quality telemetry, and trend graphs for ${cityName}${countryName ? `, ${countryName}` : ''}`
+              ? `Multi-day atmospheric projections, air quality telemetry, and trend graphs for ${cityName}${countryName ? `, ${countryName}` : ''}`
               : 'Multi-day atmospheric trend analysis'}
           </p>
         </div>
@@ -120,29 +120,29 @@ export const ForecastPage = ({
               fetchAirQualityData(cityName);
             }}
             disabled={loading || aqLoading}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-slate-200 hover:text-cyan-300 text-xs font-semibold transition-all disabled:opacity-50 shrink-0"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#24313C] hover:bg-[#2A3946] border border-[#2B3945] hover:border-[#3A4A57] text-[#F4F7F9] text-xs font-medium transition-colors disabled:opacity-50 shrink-0"
             title="Refresh forecast & air quality data"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading || aqLoading ? 'animate-spin text-cyan-400' : ''}`} />
-            <span>Refresh</span>
+            <RefreshCw className={`w-3.5 h-3.5 ${loading || aqLoading ? 'animate-spin text-[#2F80ED]' : 'text-[#56CCF2]'}`} />
+            <span>Refresh Telemetry</span>
           </button>
         )}
       </div>
 
       {/* Main Forecast Error Alert */}
       {error && (
-        <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-rose-300 text-sm">
+        <div className="p-3.5 bg-[#EB5757]/10 border border-[#EB5757]/30 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[#EB5757] text-sm">
           <div className="flex items-center gap-3">
-            <AlertCircle className="w-5 h-5 shrink-0 text-rose-400" />
+            <AlertCircle className="w-4 h-4 shrink-0 text-[#EB5757]" />
             <div>
               <span className="font-semibold block">Unable to load forecast data.</span>
-              <span className="text-xs text-rose-400">{error}</span>
+              <span className="text-xs text-[#EB5757]/80">{error}</span>
             </div>
           </div>
           {onRefresh && (
             <button
               onClick={onRefresh}
-              className="px-3 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 text-xs font-semibold transition-colors shrink-0"
+              className="px-3 py-1.5 rounded bg-[#EB5757]/20 hover:bg-[#EB5757]/30 border border-[#EB5757]/40 text-[#F4F7F9] text-xs font-medium transition-colors shrink-0"
             >
               Retry
             </button>
@@ -156,10 +156,12 @@ export const ForecastPage = ({
         loading={loading}
         error={null}
         isRealData={!!dailyData}
+        selectedDate={selectedDate}
+        onSelectDate={setSelectedDate}
       />
 
       {/* Air Quality & Weather Trends Graph Section Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <AirQualityCard
           airQuality={airQuality}
           city={cityName}
@@ -176,7 +178,7 @@ export const ForecastPage = ({
         />
       </div>
 
-      {/* Hourly Weather Section */}
+      {/* Hourly Weather Section for Selected Day */}
       <HourlyForecast
         items={displayHourlyItems}
         loading={loading}

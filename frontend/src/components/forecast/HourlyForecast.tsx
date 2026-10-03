@@ -1,5 +1,5 @@
 import { HourlyItem } from '../../types/weather';
-import { Sun, Cloud, CloudSun, CloudRain, Umbrella, Wind } from 'lucide-react';
+import { Sun, Cloud, CloudSun, CloudRain, CloudLightning, Umbrella, Wind, Clock } from 'lucide-react';
 import { formatTemp, formatWind } from '../../services/settingsService';
 
 interface HourlyForecastProps {
@@ -18,19 +18,19 @@ export const HourlyForecast = ({
 
   const getWeatherIcon = (condition: string, iconCode: string) => {
     const cond = condition.toLowerCase();
-    if (cond.includes('rain') || cond.includes('drizzle') || cond.includes('thunder')) {
-      return <CloudRain className="w-6 h-6 text-blue-400" />;
+    if (cond.includes('thunder') || cond.includes('storm')) {
+      return <CloudLightning className="w-5 h-5 text-[#F2994A]" />;
+    }
+    if (cond.includes('rain') || cond.includes('drizzle')) {
+      return <CloudRain className="w-5 h-5 text-[#56CCF2]" />;
     }
     if (cond.includes('cloud')) {
-      return <CloudSun className="w-6 h-6 text-cyan-400" />;
+      return <CloudSun className="w-5 h-5 text-[#9AA8B2]" />;
     }
-    if (cond.includes('clear') || cond.includes('sun')) {
-      return <Sun className="w-6 h-6 text-amber-400" />;
+    if (cond.includes('clear') || cond.includes('sun') || iconCode.includes('d')) {
+      return <Sun className="w-5 h-5 text-[#F2C94C]" />;
     }
-    if (iconCode.includes('d')) {
-      return <Sun className="w-6 h-6 text-amber-400" />;
-    }
-    return <Cloud className="w-6 h-6 text-slate-400" />;
+    return <Cloud className="w-5 h-5 text-[#9AA8B2]" />;
   };
 
   const formatLocalTime = (timestamp: number, rawTime: string) => {
@@ -44,19 +44,22 @@ export const HourlyForecast = ({
   };
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl">
+    <div className="bg-[#18232D] border border-[#2B3945] rounded-xl p-5 sm:p-6 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-base font-semibold text-slate-100">Hourly Forecast</h2>
-          <p className="text-xs text-slate-400">Atmospheric trend over upcoming 3-hour intervals</p>
+          <h2 className="text-base font-semibold text-[#F4F7F9] flex items-center gap-2">
+            <Clock className="w-4 h-4 text-[#2F80ED]" />
+            Hourly Progression
+          </h2>
+          <p className="text-xs text-[#9AA8B2]">Atmospheric conditions over upcoming intervals</p>
         </div>
         <div className="flex items-center gap-2">
           {isRealData && (
-            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
-              LIVE 3H SLOTS
+            <span className="text-[10px] font-mono text-[#27AE9B] bg-[#27AE9B]/10 px-2 py-0.5 rounded border border-[#27AE9B]/30 font-medium">
+              Live Interval Feed
             </span>
           )}
-          <div className="text-xs text-cyan-400 font-mono bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/20">
+          <div className="text-xs text-[#9AA8B2] font-mono bg-[#24313C] px-2.5 py-1 rounded border border-[#2B3945]">
             Next 24 Hours
           </div>
         </div>
@@ -64,7 +67,7 @@ export const HourlyForecast = ({
 
       {/* Error State */}
       {error && (
-        <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-300 text-xs font-medium mb-3">
+        <div className="p-3 bg-[#EB5757]/10 border border-[#EB5757]/30 rounded-lg text-[#EB5757] text-xs font-medium mb-3">
           {error}
         </div>
       )}
@@ -75,12 +78,12 @@ export const HourlyForecast = ({
           {Array.from({ length: 8 }).map((_, idx) => (
             <div
               key={idx}
-              className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3.5 flex flex-col items-center justify-between h-36 min-w-[110px] sm:min-w-0 animate-pulse shrink-0 sm:shrink"
+              className="bg-[#24313C] border border-[#2B3945] rounded-lg p-3 flex flex-col items-center justify-between h-36 min-w-[110px] sm:min-w-0 animate-pulse shrink-0 sm:shrink"
             >
-              <div className="w-12 h-3 bg-slate-800 rounded"></div>
-              <div className="w-8 h-8 bg-slate-800 rounded-full my-3"></div>
-              <div className="w-10 h-4 bg-slate-800 rounded mb-1"></div>
-              <div className="w-14 h-3 bg-slate-800 rounded"></div>
+              <div className="w-12 h-3 bg-[#18232D] rounded"></div>
+              <div className="w-6 h-6 bg-[#18232D] rounded-full my-3"></div>
+              <div className="w-10 h-4 bg-[#18232D] rounded mb-1"></div>
+              <div className="w-14 h-3 bg-[#18232D] rounded"></div>
             </div>
           ))}
         </div>
@@ -90,28 +93,28 @@ export const HourlyForecast = ({
           {items.slice(0, 8).map((item, idx) => (
             <div
               key={idx}
-              className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3 flex flex-col items-center justify-between hover:border-cyan-500/40 hover:bg-slate-800/40 transition-all group relative min-w-[110px] sm:min-w-0 shrink-0 sm:shrink"
+              className="bg-[#24313C] border border-[#2B3945] rounded-lg p-3 flex flex-col items-center justify-between hover:border-[#3A4A57] hover:bg-[#2A3946] transition-colors min-w-[110px] sm:min-w-0 shrink-0 sm:shrink"
             >
-              <span className="text-xs font-semibold text-slate-300 group-hover:text-cyan-300">
+              <span className="text-xs font-semibold text-[#9AA8B2] font-mono">
                 {formatLocalTime(item.timestamp, item.time)}
               </span>
 
-              <div className="my-2 transition-transform group-hover:scale-110">
+              <div className="my-2">
                 {getWeatherIcon(item.condition, item.icon)}
               </div>
 
               <div className="text-center w-full space-y-1">
-                <span className="text-base font-bold text-slate-100 block">
+                <span className="text-sm font-bold text-[#F4F7F9] font-mono block">
                   {formatTemp(item.temperature)}
                 </span>
 
-                <div className="flex items-center justify-center gap-1 text-[10px] text-blue-400 bg-blue-500/10 py-0.5 px-1 rounded-md border border-blue-500/20">
+                <div className="flex items-center justify-center gap-1 text-[10px] text-[#56CCF2] bg-[#2F80ED]/10 py-0.5 px-1 rounded border border-[#2F80ED]/20 font-mono">
                   <Umbrella className="w-3 h-3 shrink-0" />
                   <span>{item.precipitation_probability}%</span>
                 </div>
 
-                <div className="flex items-center justify-center gap-1 text-[10px] text-slate-400">
-                  <Wind className="w-2.5 h-2.5 text-cyan-400 shrink-0" />
+                <div className="flex items-center justify-center gap-1 text-[10px] text-[#9AA8B2] font-mono">
+                  <Wind className="w-2.5 h-2.5 text-[#9AA8B2] shrink-0" />
                   <span>{formatWind(item.wind_speed)}</span>
                 </div>
               </div>

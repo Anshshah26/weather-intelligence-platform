@@ -16,13 +16,11 @@ import {
   Sparkles,
   AlertCircle,
   Info,
-  CheckCircle2,
   XCircle,
 } from 'lucide-react';
 import {
   compareWeatherCities,
   CityComparisonResponse,
-  CityMetrics,
 } from '../services/comparisonApi';
 
 interface CityComparisonPageProps {
@@ -119,62 +117,63 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
   }, []);
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-5 pb-10">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 backdrop-blur-md border border-slate-800 rounded-2xl p-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#18232D] border border-[#2B3945] rounded-xl p-5">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-400">
-            <GitCompare className="w-6 h-6" />
+          <div className="p-2.5 bg-[#24313C] border border-[#2B3945] rounded-lg text-[#2F80ED]">
+            <GitCompare className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">
+            <div className="text-xs font-mono text-[#56CCF2] mb-0.5">Comparative Analysis Engine</div>
+            <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">
               City Weather Comparison
             </h1>
-            <p className="text-slate-400 text-sm mt-0.5">
-              Compare weather conditions across cities.
+            <p className="text-xs text-[#9AA8B2] mt-0.5">
+              Side-by-side meteorological metrics and activity suitability evaluation
             </p>
           </div>
         </div>
       </div>
 
       {/* Input Selection Card */}
-      <div className="bg-slate-900/60 backdrop-blur-md border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
-        <div className="space-y-4">
+      <div className="bg-[#18232D] border border-[#2B3945] rounded-xl p-5 shadow-sm space-y-5">
+        <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <MapPin className="w-4 h-4 text-blue-400" /> Compare Cities (2 to 4 Cities)
+            <label className="text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider flex items-center gap-1.5 font-mono">
+              <MapPin className="w-3.5 h-3.5 text-[#2F80ED]" /> Target Locations (2 to 4 Cities)
             </label>
             {cityInputs.length < 4 && (
               <button
                 type="button"
                 onClick={handleAddCity}
-                className="text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 px-3 py-1.5 rounded-lg transition-all"
+                className="text-xs font-medium text-[#56CCF2] hover:text-[#F4F7F9] flex items-center gap-1 bg-[#24313C] hover:bg-[#2A3946] border border-[#2B3945] px-2.5 py-1 rounded transition-colors"
               >
-                <Plus className="w-3.5 h-3.5" /> Add City
+                <Plus className="w-3.5 h-3.5" /> Add Location
               </button>
             )}
           </div>
 
           {/* Dynamic City Input Fields Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {cityInputs.map((cityVal, idx) => (
               <div key={idx} className="relative flex items-center">
                 <input
                   type="text"
                   value={cityVal}
                   onChange={(e) => handleCityInputChange(idx, e.target.value)}
-                  placeholder={`City ${idx + 1}`}
-                  className="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl px-4 py-3 pl-10 pr-10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all text-sm"
+                  placeholder={`Location ${idx + 1}`}
+                  className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg px-3 py-2 pl-9 pr-9 text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none transition-colors text-xs sm:text-sm"
                 />
-                <Search className="w-4 h-4 text-slate-400 absolute left-3.5" />
+                <Search className="w-4 h-4 text-[#9AA8B2] absolute left-3" />
                 {cityInputs.length > 2 && (
                   <button
                     type="button"
                     onClick={() => handleRemoveCity(idx)}
                     title="Remove City"
-                    className="absolute right-3 text-slate-400 hover:text-red-400 transition-colors p-1"
+                    className="absolute right-2.5 text-[#9AA8B2] hover:text-[#EB5757] transition-colors p-1"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 )}
               </div>
@@ -183,16 +182,16 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
         </div>
 
         {/* Activity & Forecast options bar */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 pt-4 border-t border-slate-800/80 items-end">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 pt-4 border-t border-[#2B3945] items-end">
           {/* Activity Selector */}
-          <div className="md:col-span-6 space-y-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Activity className="w-4 h-4 text-purple-400" /> Compare Activity Score
+          <div className="md:col-span-5 space-y-1.5">
+            <label className="text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider flex items-center gap-1.5 font-mono">
+              <Activity className="w-3.5 h-3.5 text-[#56CCF2]" /> Activity Criterion
             </label>
             <select
               value={selectedActivity}
               onChange={(e) => setSelectedActivity(e.target.value)}
-              className="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all text-sm"
+              className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg px-3 py-2 text-[#F4F7F9] focus:outline-none transition-colors text-xs sm:text-sm"
             >
               {SUPPORTED_ACTIVITIES.map((act) => (
                 <option key={act.id} value={act.id}>
@@ -203,33 +202,33 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
           </div>
 
           {/* Timeframe option */}
-          <div className="md:col-span-4 space-y-2">
-            <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-emerald-400" /> Timeframe
+          <div className="md:col-span-4 space-y-1.5">
+            <label className="text-xs font-semibold text-[#9AA8B2] uppercase tracking-wider flex items-center gap-1.5 font-mono">
+              <Clock className="w-3.5 h-3.5 text-[#27AE9B]" /> Analysis Timeframe
             </label>
             <select
               value={forecastDay}
               onChange={(e) => setForecastDay(e.target.value)}
-              className="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-sm"
+              className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg px-3 py-2 text-[#F4F7F9] focus:outline-none transition-colors text-xs sm:text-sm"
             >
-              <option value="current">Current Weather</option>
-              <option value="today">Today's Forecast</option>
-              <option value="tomorrow">Tomorrow's Forecast</option>
+              <option value="current">Current Telemetry</option>
+              <option value="today">Today's Aggregation</option>
+              <option value="tomorrow">Tomorrow's Projection</option>
             </select>
           </div>
 
           {/* Compare Button */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-3">
             <button
               type="button"
               onClick={() => handleCompare()}
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-medium py-3 px-4 rounded-xl transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
+              className="w-full bg-[#2F80ED] hover:bg-[#2570d4] text-white font-medium py-2.5 px-4 rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center gap-2 text-xs sm:text-sm"
             >
               {loading ? (
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
-                'Compare Weather'
+                'Execute Comparison'
               )}
             </button>
           </div>
@@ -238,35 +237,35 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
 
       {/* Error notification */}
       {error && (
-        <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 flex items-center gap-3 text-red-400">
-          <AlertCircle className="w-5 h-5 shrink-0" />
-          <p className="text-sm font-medium">{error}</p>
+        <div className="bg-[#EB5757]/10 border border-[#EB5757]/30 rounded-lg p-3.5 flex items-center gap-2.5 text-[#EB5757] text-xs">
+          <AlertCircle className="w-4 h-4 shrink-0" />
+          <p className="font-medium">{error}</p>
         </div>
       )}
 
       {/* Loading state message */}
       {loading && (
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-8 text-center space-y-3">
-          <div className="w-10 h-10 border-3 border-blue-500/20 border-t-blue-500 rounded-full animate-spin mx-auto" />
-          <p className="text-slate-300 font-medium text-base">Comparing weather...</p>
-          <p className="text-slate-500 text-xs">Fetching real weather telemetry and computing comparative metrics.</p>
+        <div className="bg-[#18232D] border border-[#2B3945] rounded-xl p-8 text-center space-y-2">
+          <div className="w-8 h-8 border-2 border-[#2F80ED]/30 border-t-[#2F80ED] rounded-full animate-spin mx-auto" />
+          <p className="text-[#F4F7F9] font-medium text-sm">Processing telemetry matrices...</p>
+          <p className="text-[#9AA8B2] text-xs font-mono">Aggregating atmospheric variables and normalizing comparative scales.</p>
         </div>
       )}
 
       {/* Results view */}
       {!loading && result && (
-        <div className="space-y-6">
+        <div className="space-y-5">
           {/* Factual AI Summary */}
           {result.ai_summary && (
-            <div className="bg-slate-900/80 border border-blue-800/40 rounded-2xl p-5 flex items-start gap-3 shadow-xl">
-              <div className="p-2 bg-blue-500/10 rounded-xl text-blue-400 shrink-0 mt-0.5">
-                <Sparkles className="w-5 h-5" />
+            <div className="bg-[#18232D] border border-[#2B3945] border-l-4 border-l-[#2F80ED] rounded-xl p-4 flex items-start gap-3 shadow-sm">
+              <div className="p-2 bg-[#24313C] rounded-lg text-[#2F80ED] shrink-0 mt-0.5">
+                <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs font-semibold text-blue-300 uppercase tracking-wider mb-1">
-                  AI Weather Comparison Summary
+                <h3 className="text-xs font-mono uppercase text-[#56CCF2] tracking-wider mb-1 font-semibold">
+                  Comparative Analysis Synthesis
                 </h3>
-                <p className="text-slate-200 text-sm leading-relaxed">
+                <p className="text-[#F4F7F9] text-xs sm:text-sm leading-relaxed">
                   "{result.ai_summary}"
                 </p>
               </div>
@@ -274,83 +273,83 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
           )}
 
           {/* City Cards Grid */}
-          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${Math.min(result.cities.length, 4)} gap-4`}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {result.cities.map((cityData, idx) => (
               <div
                 key={idx}
-                className={`rounded-2xl p-6 border transition-all relative overflow-hidden ${
+                className={`rounded-xl p-5 border transition-colors ${
                   cityData.is_available
-                    ? 'bg-slate-900/70 border-slate-800 hover:border-slate-700 shadow-xl'
-                    : 'bg-slate-950/50 border-red-900/30 opacity-70'
+                    ? 'bg-[#18232D] border-[#2B3945] shadow-sm'
+                    : 'bg-[#18232D] border-[#EB5757]/30 opacity-70'
                 }`}
               >
                 {cityData.is_available ? (
-                  <div className="space-y-4">
+                  <div className="space-y-3.5">
                     {/* Header */}
                     <div className="flex items-start justify-between">
                       <div>
-                        <div className="text-xs font-semibold text-blue-400 uppercase tracking-wider flex items-center gap-1">
-                          <MapPin className="w-3.5 h-3.5" /> {cityData.country}
+                        <div className="text-[10px] font-mono text-[#56CCF2] uppercase tracking-wider flex items-center gap-1">
+                          <MapPin className="w-3 h-3 text-[#2F80ED]" /> {cityData.country}
                         </div>
-                        <h2 className="text-2xl font-bold text-white mt-0.5">
+                        <h2 className="text-xl font-bold text-[#F4F7F9] mt-0.5">
                           {cityData.name}
                         </h2>
-                        <div className="text-xs text-slate-400 flex items-center gap-1 mt-1">
-                          <Clock className="w-3 h-3 text-slate-400" />
-                          <code className="text-slate-300 bg-slate-800/80 px-1.5 py-0.5 rounded">{cityData.timezone}</code>
+                        <div className="text-[11px] text-[#9AA8B2] flex items-center gap-1 mt-0.5 font-mono">
+                          <Clock className="w-3 h-3 text-[#9AA8B2]" />
+                          <span>{cityData.timezone}</span>
                         </div>
                       </div>
                       <img
                         src={`https://openweathermap.org/img/wn/${cityData.icon}@2x.png`}
                         alt={cityData.condition}
-                        className="w-14 h-14 object-contain -mr-2 -mt-2"
+                        className="w-12 h-12 object-contain -mr-1 -mt-1"
                       />
                     </div>
 
                     {/* Temp & Condition */}
-                    <div className="pt-2 border-t border-slate-800/80">
-                      <div className="text-3xl font-extrabold text-white">
+                    <div className="pt-2 border-t border-[#2B3945]">
+                      <div className="text-2xl font-bold text-[#F4F7F9] font-mono">
                         {cityData.temperature}°C
                       </div>
-                      <div className="text-xs text-slate-400 mt-0.5">
-                        Feels like <span className="text-slate-200 font-medium">{cityData.feels_like}°C</span> • {cityData.description}
+                      <div className="text-xs text-[#9AA8B2] mt-0.5">
+                        Feels like <span className="text-[#F4F7F9] font-medium font-mono">{cityData.feels_like}°C</span> &bull; {cityData.description}
                       </div>
                     </div>
 
                     {/* Key Telemetry Metrics */}
-                    <div className="grid grid-cols-2 gap-2 text-xs pt-3 border-t border-slate-800/80">
-                      <div className="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60 space-y-1">
-                        <span className="text-slate-400 flex items-center gap-1">
-                          <CloudRain className="w-3.5 h-3.5 text-blue-400" /> Rain
+                    <div className="grid grid-cols-2 gap-2 text-xs pt-3 border-t border-[#2B3945]">
+                      <div className="bg-[#24313C] p-2 rounded-lg border border-[#2B3945] space-y-0.5">
+                        <span className="text-[#9AA8B2] text-[10px] flex items-center gap-1 font-mono">
+                          <CloudRain className="w-3 h-3 text-[#56CCF2]" /> Rain
                         </span>
-                        <span className="text-white font-bold block text-sm">
+                        <span className="text-[#F4F7F9] font-bold block text-xs font-mono">
                           {cityData.rain_probability}%
                         </span>
                       </div>
 
-                      <div className="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60 space-y-1">
-                        <span className="text-slate-400 flex items-center gap-1">
-                          <Wind className="w-3.5 h-3.5 text-teal-400" /> Wind
+                      <div className="bg-[#24313C] p-2 rounded-lg border border-[#2B3945] space-y-0.5">
+                        <span className="text-[#9AA8B2] text-[10px] flex items-center gap-1 font-mono">
+                          <Wind className="w-3 h-3 text-[#27AE9B]" /> Wind
                         </span>
-                        <span className="text-white font-bold block text-sm">
+                        <span className="text-[#F4F7F9] font-bold block text-xs font-mono">
                           {cityData.wind_speed} km/h
                         </span>
                       </div>
 
-                      <div className="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60 space-y-1">
-                        <span className="text-slate-400 flex items-center gap-1">
-                          <Droplets className="w-3.5 h-3.5 text-indigo-400" /> Humidity
+                      <div className="bg-[#24313C] p-2 rounded-lg border border-[#2B3945] space-y-0.5">
+                        <span className="text-[#9AA8B2] text-[10px] flex items-center gap-1 font-mono">
+                          <Droplets className="w-3 h-3 text-[#56CCF2]" /> Humidity
                         </span>
-                        <span className="text-white font-bold block text-sm">
+                        <span className="text-[#F4F7F9] font-bold block text-xs font-mono">
                           {cityData.humidity}%
                         </span>
                       </div>
 
-                      <div className="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60 space-y-1">
-                        <span className="text-slate-400 flex items-center gap-1">
-                          <Gauge className="w-3.5 h-3.5 text-amber-400" /> Pressure
+                      <div className="bg-[#24313C] p-2 rounded-lg border border-[#2B3945] space-y-0.5">
+                        <span className="text-[#9AA8B2] text-[10px] flex items-center gap-1 font-mono">
+                          <Gauge className="w-3 h-3 text-[#F2C94C]" /> Pressure
                         </span>
-                        <span className="text-white font-bold block text-sm">
+                        <span className="text-[#F4F7F9] font-bold block text-xs font-mono">
                           {cityData.pressure} hPa
                         </span>
                       </div>
@@ -358,13 +357,13 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
 
                     {/* Activity Score Pill */}
                     {cityData.activity_score !== undefined && cityData.activity_score !== null && (
-                      <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between bg-purple-950/20 p-3 rounded-xl border-purple-800/30">
-                        <div className="text-xs text-purple-300 font-medium capitalize">
-                          {selectedActivity} Score
+                      <div className="pt-2.5 border-t border-[#2B3945] flex items-center justify-between bg-[#24313C] p-2.5 rounded-lg border border-[#2B3945]">
+                        <div className="text-xs text-[#9AA8B2] capitalize font-mono">
+                          {selectedActivity}
                         </div>
-                        <div className="text-sm font-bold text-purple-200 flex items-center gap-1.5">
+                        <div className="text-xs font-bold text-[#F4F7F9] flex items-center gap-1.5 font-mono">
                           <span>{cityData.activity_score}/100</span>
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/30 font-semibold">
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#18232D] border border-[#2B3945] text-[#56CCF2]">
                             {cityData.activity_category}
                           </span>
                         </div>
@@ -372,10 +371,10 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
                     )}
                   </div>
                 ) : (
-                  <div className="py-8 text-center space-y-2">
-                    <XCircle className="w-8 h-8 text-red-400 mx-auto" />
-                    <h3 className="text-sm font-bold text-white">{cityData.name}</h3>
-                    <p className="text-xs text-red-400">{cityData.error_message}</p>
+                  <div className="py-6 text-center space-y-2">
+                    <XCircle className="w-6 h-6 text-[#EB5757] mx-auto" />
+                    <h3 className="text-sm font-semibold text-[#F4F7F9]">{cityData.name}</h3>
+                    <p className="text-xs text-[#EB5757]">{cityData.error_message}</p>
                   </div>
                 )}
               </div>
@@ -383,107 +382,107 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
           </div>
 
           {/* Detailed Side-by-Side Comparison Table */}
-          <div className="bg-slate-900/60 backdrop-blur-md border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <GitCompare className="w-5 h-5 text-blue-400" /> Detailed Comparative Matrix
+          <div className="bg-[#18232D] border border-[#2B3945] rounded-xl p-5 shadow-sm space-y-3">
+            <h3 className="text-sm font-semibold text-[#F4F7F9] flex items-center gap-2 font-mono">
+              <GitCompare className="w-4 h-4 text-[#2F80ED]" /> Parameter Comparison Matrix
             </h3>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm border-collapse">
+              <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-800 text-slate-400 uppercase text-xs">
-                    <th className="py-3 px-4 font-semibold">Weather Parameter</th>
+                  <tr className="border-b border-[#2B3945] text-[#9AA8B2] uppercase font-mono text-[10px]">
+                    <th className="py-2.5 px-3 font-semibold">Parameter</th>
                     {result.cities.map((c, i) => (
-                      <th key={i} className="py-3 px-4 font-semibold text-right text-white">
+                      <th key={i} className="py-2.5 px-3 font-semibold text-right text-[#F4F7F9]">
                         {c.name} ({c.country})
                       </th>
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 text-slate-200">
+                <tbody className="divide-y divide-[#2B3945] text-[#F4F7F9]">
                   <tr>
-                    <td className="py-3 px-4 text-slate-400 flex items-center gap-2">
-                      <Thermometer className="w-4 h-4 text-amber-400" /> Temperature
+                    <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
+                      <Thermometer className="w-3.5 h-3.5 text-[#F2C94C]" /> Temperature
                     </td>
                     {result.cities.map((c, i) => (
-                      <td key={i} className="py-3 px-4 text-right font-bold text-white">
+                      <td key={i} className="py-2.5 px-3 text-right font-bold font-mono">
                         {c.is_available ? `${c.temperature}°C` : 'N/A'}
                       </td>
                     ))}
                   </tr>
 
                   <tr>
-                    <td className="py-3 px-4 text-slate-400 flex items-center gap-2">
-                      <Thermometer className="w-4 h-4 text-orange-400" /> Feels Like
+                    <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
+                      <Thermometer className="w-3.5 h-3.5 text-[#F2994A]" /> Feels Like
                     </td>
                     {result.cities.map((c, i) => (
-                      <td key={i} className="py-3 px-4 text-right font-medium">
+                      <td key={i} className="py-2.5 px-3 text-right font-medium font-mono text-[#9AA8B2]">
                         {c.is_available ? `${c.feels_like}°C` : 'N/A'}
                       </td>
                     ))}
                   </tr>
 
                   <tr>
-                    <td className="py-3 px-4 text-slate-400 flex items-center gap-2">
-                      <CloudRain className="w-4 h-4 text-blue-400" /> Rain Probability
+                    <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
+                      <CloudRain className="w-3.5 h-3.5 text-[#56CCF2]" /> Rain Probability
                     </td>
                     {result.cities.map((c, i) => (
-                      <td key={i} className="py-3 px-4 text-right font-medium text-blue-300">
+                      <td key={i} className="py-2.5 px-3 text-right font-medium font-mono text-[#56CCF2]">
                         {c.is_available ? `${c.rain_probability}%` : 'N/A'}
                       </td>
                     ))}
                   </tr>
 
                   <tr>
-                    <td className="py-3 px-4 text-slate-400 flex items-center gap-2">
-                      <Wind className="w-4 h-4 text-teal-400" /> Wind Speed
+                    <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
+                      <Wind className="w-3.5 h-3.5 text-[#27AE9B]" /> Wind Speed
                     </td>
                     {result.cities.map((c, i) => (
-                      <td key={i} className="py-3 px-4 text-right font-medium">
+                      <td key={i} className="py-2.5 px-3 text-right font-medium font-mono">
                         {c.is_available ? `${c.wind_speed} km/h` : 'N/A'}
                       </td>
                     ))}
                   </tr>
 
                   <tr>
-                    <td className="py-3 px-4 text-slate-400 flex items-center gap-2">
-                      <Droplets className="w-4 h-4 text-indigo-400" /> Humidity
+                    <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
+                      <Droplets className="w-3.5 h-3.5 text-[#56CCF2]" /> Humidity
                     </td>
                     {result.cities.map((c, i) => (
-                      <td key={i} className="py-3 px-4 text-right font-medium">
+                      <td key={i} className="py-2.5 px-3 text-right font-medium font-mono">
                         {c.is_available ? `${c.humidity}%` : 'N/A'}
                       </td>
                     ))}
                   </tr>
 
                   <tr>
-                    <td className="py-3 px-4 text-slate-400 flex items-center gap-2">
-                      <Gauge className="w-4 h-4 text-amber-400" /> Barometric Pressure
+                    <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
+                      <Gauge className="w-3.5 h-3.5 text-[#27AE9B]" /> Barometric Pressure
                     </td>
                     {result.cities.map((c, i) => (
-                      <td key={i} className="py-3 px-4 text-right font-medium">
+                      <td key={i} className="py-2.5 px-3 text-right font-medium font-mono">
                         {c.is_available ? `${c.pressure} hPa` : 'N/A'}
                       </td>
                     ))}
                   </tr>
 
                   <tr>
-                    <td className="py-3 px-4 text-slate-400 flex items-center gap-2">
-                      <Eye className="w-4 h-4 text-emerald-400" /> Visibility
+                    <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
+                      <Eye className="w-3.5 h-3.5 text-[#9AA8B2]" /> Visibility
                     </td>
                     {result.cities.map((c, i) => (
-                      <td key={i} className="py-3 px-4 text-right font-medium">
+                      <td key={i} className="py-2.5 px-3 text-right font-medium font-mono">
                         {c.is_available ? `${c.visibility} km` : 'N/A'}
                       </td>
                     ))}
                   </tr>
 
                   <tr>
-                    <td className="py-3 px-4 text-slate-400 flex items-center gap-2">
-                      <Activity className="w-4 h-4 text-purple-400" /> Activity ({selectedActivity})
+                    <td className="py-2.5 px-3 text-[#9AA8B2] flex items-center gap-2">
+                      <Activity className="w-3.5 h-3.5 text-[#56CCF2]" /> Suitability ({selectedActivity})
                     </td>
                     {result.cities.map((c, i) => (
-                      <td key={i} className="py-3 px-4 text-right font-bold text-purple-300">
+                      <td key={i} className="py-2.5 px-3 text-right font-bold font-mono text-[#56CCF2]">
                         {c.is_available && c.activity_score !== undefined
                           ? `${c.activity_score}/100 (${c.activity_category})`
                           : 'N/A'}
@@ -495,8 +494,8 @@ export const CityComparisonPage: React.FC<CityComparisonPageProps> = ({
             </div>
 
             {/* Non-ranking disclaimer banner */}
-            <div className="mt-4 flex items-center gap-2 text-xs text-slate-400 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-              <Info className="w-4 h-4 text-blue-400 shrink-0" />
+            <div className="mt-3 flex items-center gap-2 text-xs text-[#9AA8B2] bg-[#101820] p-2.5 rounded-lg border border-[#2B3945]">
+              <Info className="w-3.5 h-3.5 text-[#2F80ED] shrink-0" />
               <span>{result.disclaimer}</span>
             </div>
           </div>

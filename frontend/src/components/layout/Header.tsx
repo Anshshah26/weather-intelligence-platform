@@ -167,23 +167,25 @@ export const Header = ({
   };
 
   return (
-    <header className="bg-slate-900/80 backdrop-blur-md border-b border-slate-800/80 px-3 sm:px-6 py-2.5 sticky top-0 z-30 flex flex-col gap-2 max-w-full overflow-visible">
-      {/* Top bar on desktop / Row 1 & 2 on mobile */}
+    <header className="bg-[#18232D] border-b border-[#2B3945] px-3 sm:px-6 py-2.5 sticky top-0 z-30 flex flex-col gap-2 max-w-full overflow-visible shadow-sm">
+      {/* Main bar row */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 w-full max-w-full overflow-visible">
-        {/* Top row mobile container: Brand title & Auth controls */}
+        {/* Mobile brand & toggle */}
         <div className="flex items-center justify-between w-full sm:w-auto gap-2">
           <div className="flex items-center gap-2.5">
             <button
               onClick={onToggleSidebar}
-              className="lg:hidden p-2 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="lg:hidden p-2 rounded-lg text-[#9AA8B2] hover:text-[#F4F7F9] hover:bg-[#24313C] transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center border border-transparent hover:border-[#2B3945]"
               aria-label="Toggle Navigation Sidebar"
             >
               <Menu className="w-5 h-5" />
             </button>
 
             <div className="flex items-center gap-2">
-              <CloudSun className="w-5 h-5 text-cyan-400 shrink-0" />
-              <span className="font-bold text-xs sm:text-sm text-slate-100 tracking-tight whitespace-nowrap truncate max-w-[170px] sm:max-w-none">
+              <div className="w-6 h-6 rounded bg-[#24313C] flex items-center justify-center text-[#2F80ED] border border-[#2B3945]">
+                <CloudSun className="w-4 h-4 shrink-0" />
+              </div>
+              <span className="font-semibold text-xs sm:text-sm text-[#F4F7F9] tracking-tight whitespace-nowrap truncate max-w-[170px] sm:max-w-none">
                 Weather Intelligence
               </span>
             </div>
@@ -193,12 +195,12 @@ export const Header = ({
           <div className="flex items-center sm:hidden">
             {user ? (
               <div className="flex items-center gap-1.5">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-xs text-white uppercase shadow-sm">
+                <div className="w-7 h-7 rounded bg-[#2F80ED] flex items-center justify-center font-bold text-xs text-white uppercase">
                   {user.name ? user.name.charAt(0) : 'U'}
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="p-2 rounded-xl text-slate-400 hover:text-rose-400 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center"
+                  className="p-2 rounded-lg text-[#9AA8B2] hover:text-[#EB5757] hover:bg-[#24313C] transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
                   title="Logout"
                 >
                   <LogOut className="w-4 h-4" />
@@ -207,7 +209,7 @@ export const Header = ({
             ) : (
               <Link
                 to="/login"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-semibold text-xs transition-all shadow-sm"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2F80ED] text-white font-medium text-xs transition-colors hover:bg-[#2570d4]"
               >
                 <LogIn className="w-3.5 h-3.5" />
                 <span>Sign In</span>
@@ -222,10 +224,10 @@ export const Header = ({
             <form onSubmit={handleSubmit} className="relative w-full">
               <button
                 type="submit"
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-cyan-400 transition-colors z-10"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9AA8B2] hover:text-[#56CCF2] transition-colors z-10"
                 title="Search City"
               >
-                <Search className={`w-4 h-4 ${isSearching ? 'animate-spin text-cyan-400' : ''}`} />
+                <Search className={`w-4 h-4 ${isSearching ? 'animate-spin text-[#2F80ED]' : ''}`} />
               </button>
               <input
                 type="text"
@@ -238,12 +240,12 @@ export const Header = ({
                 }}
                 onKeyDown={handleKeyDown}
                 placeholder="Search city..."
-                className="w-full bg-slate-950/80 border border-slate-800 focus:border-cyan-500/50 rounded-xl pl-9 pr-14 py-2 text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all min-h-[40px]"
+                className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg pl-9 pr-14 py-2 text-xs sm:text-sm text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none transition-colors min-h-[38px]"
               />
               <button
                 type="submit"
                 disabled={isSearching || !query.trim()}
-                className="hidden md:flex items-center gap-1 absolute right-2 top-1/2 -translate-y-1/2 text-[11px] text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 px-2.5 py-1 rounded-lg transition-colors disabled:opacity-40 z-10"
+                className="hidden md:flex items-center gap-1 absolute right-1.5 top-1/2 -translate-y-1/2 text-[11px] font-medium text-white bg-[#2F80ED] hover:bg-[#2570d4] px-2.5 py-1 rounded transition-colors disabled:opacity-40 z-10"
               >
                 <MapPin className="w-3 h-3" />
                 <span>Search</span>
@@ -252,19 +254,19 @@ export const Header = ({
 
             {/* Autocomplete Suggestions Dropdown */}
             {showDropdown && query.trim().length >= 2 && (
-              <div className="absolute top-full left-0 right-0 mt-1.5 bg-slate-900/95 border border-slate-800 backdrop-blur-xl rounded-xl shadow-2xl z-50 overflow-hidden text-xs max-h-64 overflow-y-auto no-scrollbar">
+              <div className="absolute top-full left-0 right-0 mt-1 bg-[#18232D] border border-[#2B3945] rounded-lg shadow-xl z-50 overflow-hidden text-xs max-h-64 overflow-y-auto no-scrollbar">
                 {isSuggesting ? (
-                  <div className="p-3 text-slate-400 font-mono text-xs flex items-center gap-2">
-                    <RefreshCw className="w-3.5 h-3.5 animate-spin text-cyan-400 shrink-0" />
+                  <div className="p-3 text-[#9AA8B2] font-mono text-xs flex items-center gap-2">
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#2F80ED] shrink-0" />
                     <span>Searching locations...</span>
                   </div>
                 ) : suggestError ? (
-                  <div className="p-3 text-amber-300 font-mono text-xs flex items-center gap-2">
-                    <AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <div className="p-3 text-[#F2C94C] font-mono text-xs flex items-center gap-2">
+                    <AlertTriangle className="w-3.5 h-3.5 text-[#F2C94C] shrink-0" />
                     <span>Unable to find locations</span>
                   </div>
                 ) : suggestions.length === 0 ? (
-                  <div className="p-3 text-slate-400 font-mono text-xs">
+                  <div className="p-3 text-[#9AA8B2] font-mono text-xs">
                     No locations found
                   </div>
                 ) : (
@@ -275,18 +277,18 @@ export const Header = ({
                         key={`${item.name}-${item.latitude}-${item.longitude}-${idx}`}
                         onClick={() => handleSelectSuggestion(item)}
                         onMouseEnter={() => setHighlightedIndex(idx)}
-                        className={`px-3.5 py-2.5 cursor-pointer flex items-start gap-2.5 border-b border-slate-800/60 last:border-b-0 transition-colors ${
+                        className={`px-3.5 py-2.5 cursor-pointer flex items-start gap-2.5 border-b border-[#2B3945] last:border-b-0 transition-colors ${
                           isHighlighted
-                            ? 'bg-cyan-500/20 text-cyan-200 border-l-2 border-l-cyan-400'
-                            : 'hover:bg-slate-800/60 text-slate-200'
+                            ? 'bg-[#24313C] text-[#F4F7F9] border-l-2 border-l-[#2F80ED]'
+                            : 'hover:bg-[#24313C]/80 text-[#F4F7F9]'
                         }`}
                       >
-                        <MapPin className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                        <MapPin className="w-4 h-4 text-[#56CCF2] shrink-0 mt-0.5" />
                         <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-slate-100 text-xs sm:text-sm truncate">
+                          <div className="font-semibold text-[#F4F7F9] text-xs sm:text-sm truncate">
                             {item.name}
                           </div>
-                          <div className="text-[11px] text-slate-400 truncate">
+                          <div className="text-[11px] text-[#9AA8B2] truncate">
                             {[item.state, item.country].filter(Boolean).join(', ')}
                           </div>
                         </div>
@@ -306,13 +308,13 @@ export const Header = ({
               disabled={isDetectingGPS}
               title="Use My Location"
               aria-label="Use My Location"
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all shrink-0 min-h-[40px] ${
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium border transition-colors shrink-0 min-h-[38px] ${
                 locationSource === 'gps'
-                  ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-sm shadow-cyan-500/20'
-                  : 'bg-slate-950/90 hover:bg-slate-800 border-slate-800 text-slate-200 hover:text-cyan-400'
+                  ? 'bg-[#2F80ED]/15 border-[#2F80ED] text-[#56CCF2]'
+                  : 'bg-[#18232D] hover:bg-[#24313C] border-[#3A4A57] text-[#F4F7F9]'
               } disabled:opacity-50`}
             >
-              <Navigation className={`w-3.5 h-3.5 ${isDetectingGPS ? 'animate-spin text-cyan-400' : 'text-cyan-400'}`} />
+              <Navigation className={`w-3.5 h-3.5 ${isDetectingGPS ? 'animate-spin text-[#2F80ED]' : 'text-[#56CCF2]'}`} />
               <span className="hidden sm:inline">
                 {isDetectingGPS ? 'Detecting...' : 'Use My Location'}
               </span>
@@ -327,18 +329,18 @@ export const Header = ({
         <div className="hidden sm:flex items-center shrink-0">
           {user ? (
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="flex items-center gap-2.5 pl-2 pr-3 py-1 rounded-xl border border-slate-800 bg-slate-950/60">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-xs text-white uppercase shadow-sm">
+              <div className="flex items-center gap-2.5 pl-2 pr-3 py-1 rounded-lg border border-[#2B3945] bg-[#101820]">
+                <div className="w-7 h-7 rounded bg-[#2F80ED] flex items-center justify-center font-bold text-xs text-white uppercase">
                   {user.name ? user.name.charAt(0) : 'U'}
                 </div>
                 <div className="hidden sm:block text-left">
-                  <div className="text-xs font-semibold text-slate-200 leading-none">{user.name}</div>
-                  <div className="text-[10px] text-slate-400 mt-0.5 max-w-[120px] truncate">{user.email}</div>
+                  <div className="text-xs font-medium text-[#F4F7F9] leading-none">{user.name}</div>
+                  <div className="text-[10px] text-[#9AA8B2] mt-0.5 max-w-[120px] truncate">{user.email}</div>
                 </div>
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 text-xs font-medium transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[#9AA8B2] hover:text-[#EB5757] hover:bg-[#24313C] border border-transparent hover:border-[#2B3945] text-xs font-medium transition-colors"
                 title="Logout"
               >
                 <LogOut className="w-4 h-4" />
@@ -348,7 +350,7 @@ export const Header = ({
           ) : (
             <Link
               to="/login"
-              className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 hover:text-cyan-300 font-semibold text-xs sm:text-sm transition-all shadow-sm"
+              className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#2F80ED] hover:bg-[#2570d4] text-white font-medium text-xs sm:text-sm transition-colors shadow-sm"
             >
               <LogIn className="w-4 h-4" />
               <span>Sign In</span>
@@ -359,18 +361,18 @@ export const Header = ({
 
       {/* GPS Status Banners */}
       {gpsSuccessMessage && (
-        <div className="px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center justify-between gap-2 shadow-md animate-fade-in">
+        <div className="px-3 py-1.5 rounded-lg bg-[#27AE9B]/10 border border-[#27AE9B]/30 text-[#27AE9B] text-xs flex items-center justify-between gap-2 shadow-sm">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-[#27AE9B] shrink-0" />
             <span>{gpsSuccessMessage}</span>
           </div>
         </div>
       )}
 
       {gpsError && (
-        <div className="px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center justify-between gap-2 shadow-md animate-fade-in">
+        <div className="px-3 py-1.5 rounded-lg bg-[#EB5757]/10 border border-[#EB5757]/30 text-[#EB5757] text-xs flex items-center justify-between gap-2 shadow-sm">
           <div className="flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
+            <AlertTriangle className="w-4 h-4 text-[#EB5757] shrink-0" />
             <span>{gpsError}</span>
           </div>
         </div>

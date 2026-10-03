@@ -9,61 +9,61 @@ export const ActivityScore = ({ items }: ActivityScoreProps) => {
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'Footprints':
-        return <Footprints className="w-4 h-4 text-cyan-400" />;
+        return <Footprints className="w-4 h-4 text-[#56CCF2]" />;
       case 'UserCheck':
-        return <UserCheck className="w-4 h-4 text-emerald-400" />;
+        return <UserCheck className="w-4 h-4 text-[#27AE9B]" />;
       case 'Bike':
-        return <Bike className="w-4 h-4 text-sky-400" />;
+        return <Bike className="w-4 h-4 text-[#2F80ED]" />;
       case 'Trophy':
-        return <Trophy className="w-4 h-4 text-amber-400" />;
+        return <Trophy className="w-4 h-4 text-[#F2C94C]" />;
       default:
-        return <Activity className="w-4 h-4 text-cyan-400" />;
+        return <Activity className="w-4 h-4 text-[#56CCF2]" />;
     }
   };
 
   const getProgressColor = (score: number) => {
-    if (score >= 85) return 'bg-emerald-500';
-    if (score >= 75) return 'bg-cyan-500';
-    if (score >= 65) return 'bg-amber-500';
-    return 'bg-red-500';
+    if (score >= 85) return 'bg-[#27AE9B]';
+    if (score >= 75) return 'bg-[#2F80ED]';
+    if (score >= 65) return 'bg-[#F2C94C]';
+    return 'bg-[#EB5757]';
   };
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+    <div className="bg-[#18232D] border border-[#2B3945] rounded-xl p-5 sm:p-6 shadow-sm flex flex-col justify-between">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-base font-semibold text-slate-100 flex items-center gap-2">
-            <Activity className="w-4 h-4 text-cyan-400" />
+          <h2 className="text-base font-semibold text-[#F4F7F9] flex items-center gap-2">
+            <Activity className="w-4 h-4 text-[#2F80ED]" />
             Outdoor Activity Index
           </h2>
-          <p className="text-xs text-slate-400">Atmospheric suitability ratings for activities</p>
+          <p className="text-xs text-[#9AA8B2]">Suitability indices based on current conditions</p>
         </div>
-        <span className="text-[11px] font-mono text-slate-400 bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">
-          Optimal Weather
+        <span className="text-[10px] font-mono text-[#9AA8B2] bg-[#24313C] px-2.5 py-1 rounded border border-[#2B3945]">
+          Telemetry Rating
         </span>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {items.map((item) => (
-          <div key={item.id} className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3.5">
+          <div key={item.id} className="bg-[#24313C] border border-[#2B3945] rounded-lg p-3">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2.5">
-                <div className="p-1.5 bg-slate-900 border border-slate-800 rounded-lg">
+                <div className="p-1.5 bg-[#18232D] border border-[#2B3945] rounded">
                   {getIcon(item.icon)}
                 </div>
-                <span className="text-xs font-semibold text-slate-200">{item.name}</span>
+                <span className="text-xs font-semibold text-[#F4F7F9]">{item.name}</span>
               </div>
               
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-400 font-mono">{item.status}</span>
-                <span className="text-sm font-bold text-slate-100 font-mono">{item.score}<span className="text-xs text-slate-500">/100</span></span>
+                <span className="text-xs text-[#9AA8B2] font-mono">{item.status}</span>
+                <span className="text-sm font-bold text-[#F4F7F9] font-mono">{item.score}<span className="text-xs text-[#9AA8B2]">/100</span></span>
               </div>
             </div>
 
             {/* Visual Progress Bar */}
-            <div className="w-full h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-800/60">
+            <div className="w-full h-1.5 bg-[#18232D] rounded-full overflow-hidden border border-[#2B3945]">
               <div
-                className={`h-full ${getProgressColor(item.score)} transition-all duration-500 rounded-full`}
+                className={`h-full ${getProgressColor(item.score)} transition-all duration-300 rounded-full`}
                 style={{ width: `${item.score}%` }}
               />
             </div>

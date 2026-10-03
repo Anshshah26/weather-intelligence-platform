@@ -77,26 +77,26 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
   const hoveredItem = hoveredIdx !== null ? displayItems[hoveredIdx] : null;
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-xl h-full flex flex-col justify-between">
+    <div className="bg-[#18232D] border border-[#2B3945] rounded-xl p-5 sm:p-6 shadow-sm h-full flex flex-col justify-between">
       <div>
         {/* Header & Metric Switcher */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
           <div>
-            <h2 className="text-base font-semibold text-slate-100 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-cyan-400" />
+            <h2 className="text-base font-semibold text-[#F4F7F9] flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-[#2F80ED]" />
               Weather Trends — {selectedDateLabel}
             </h2>
-            <p className="text-xs text-slate-400">Interactive trend visualization & telemetry metrics</p>
+            <p className="text-xs text-[#9AA8B2]">Atmospheric trend lines and hourly variations</p>
           </div>
 
           {/* Metric Switcher Controls */}
-          <div className="flex flex-wrap sm:flex-nowrap items-center gap-1.5 bg-slate-950/80 border border-slate-800 rounded-xl p-1 max-w-full">
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-1 bg-[#101820] border border-[#2B3945] rounded-lg p-1 max-w-full">
             <button
               onClick={() => setMetric('temperature')}
-              className={`flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded text-xs font-medium transition-colors ${
                 metric === 'temperature'
-                  ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-[#24313C] border border-[#2B3945] text-[#F2C94C] shadow-sm'
+                  : 'text-[#9AA8B2] hover:text-[#F4F7F9]'
               }`}
             >
               <Thermometer className="w-3.5 h-3.5" />
@@ -104,10 +104,10 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
             </button>
             <button
               onClick={() => setMetric('rain')}
-              className={`flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded text-xs font-medium transition-colors ${
                 metric === 'rain'
-                  ? 'bg-blue-500/20 border border-blue-500/40 text-blue-300 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-[#24313C] border border-[#2B3945] text-[#2F80ED] shadow-sm'
+                  : 'text-[#9AA8B2] hover:text-[#F4F7F9]'
               }`}
             >
               <Umbrella className="w-3.5 h-3.5" />
@@ -115,10 +115,10 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
             </button>
             <button
               onClick={() => setMetric('wind')}
-              className={`flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded text-xs font-medium transition-colors ${
                 metric === 'wind'
-                  ? 'bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-[#24313C] border border-[#2B3945] text-[#27AE9B] shadow-sm'
+                  : 'text-[#9AA8B2] hover:text-[#F4F7F9]'
               }`}
             >
               <Wind className="w-3.5 h-3.5" />
@@ -129,15 +129,15 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
 
         {/* Error State */}
         {error && (
-          <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-xl flex items-center justify-between gap-3 text-rose-300 text-xs my-2">
+          <div className="p-3.5 bg-[#EB5757]/10 border border-[#EB5757]/30 rounded-lg flex items-center justify-between gap-3 text-[#EB5757] text-xs my-2">
             <div className="flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
+              <AlertCircle className="w-4 h-4 shrink-0 text-[#EB5757]" />
               <span>Weather trend data is temporarily unavailable.</span>
             </div>
             {onRetry && (
               <button
                 onClick={onRetry}
-                className="px-2.5 py-1 bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-200 text-[11px] font-semibold rounded-md transition-colors shrink-0"
+                className="px-2.5 py-1 bg-[#EB5757]/20 hover:bg-[#EB5757]/30 border border-[#EB5757]/40 text-[#F4F7F9] text-[11px] font-medium rounded transition-colors shrink-0"
               >
                 Retry
               </button>
@@ -147,42 +147,42 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
 
         {/* Loading Skeleton */}
         {loading ? (
-          <div className="w-full h-56 bg-slate-950/60 rounded-xl border border-slate-800/80 p-4 animate-pulse flex flex-col justify-between">
-            <div className="w-32 h-4 bg-slate-800 rounded"></div>
-            <div className="w-full h-32 bg-slate-800/40 rounded"></div>
+          <div className="w-full h-56 bg-[#101820] rounded-lg border border-[#2B3945] p-4 animate-pulse flex flex-col justify-between">
+            <div className="w-32 h-4 bg-[#24313C] rounded"></div>
+            <div className="w-full h-32 bg-[#24313C]/40 rounded"></div>
             <div className="flex justify-between">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="w-10 h-3 bg-slate-800 rounded"></div>
+                <div key={i} className="w-10 h-3 bg-[#24313C] rounded"></div>
               ))}
             </div>
           </div>
         ) : displayItems.length === 0 ? (
-          <div className="p-8 text-center bg-slate-950/40 rounded-xl border border-slate-800/60 text-slate-400 text-xs">
+          <div className="p-8 text-center bg-[#101820] rounded-lg border border-[#2B3945] text-[#9AA8B2] text-xs">
             No trend data available for {selectedDateLabel}.
           </div>
         ) : (
           /* SVG Interactive Line Chart */
-          <div className="relative bg-slate-950/70 border border-slate-800/80 rounded-xl p-3 sm:p-4 overflow-hidden w-full max-w-full">
+          <div className="relative bg-[#101820] border border-[#2B3945] rounded-lg p-3 sm:p-4 overflow-hidden w-full max-w-full">
             {/* Tooltip Overlay */}
             {hoveredItem && (
               <div
-                className="absolute top-3 right-4 bg-slate-900/95 border border-slate-700/80 p-3 rounded-xl shadow-2xl z-20 text-xs space-y-1 backdrop-blur-md pointer-events-none min-w-[140px]"
+                className="absolute top-3 right-4 bg-[#18232D] border border-[#2B3945] p-3 rounded-lg shadow-xl z-20 text-xs space-y-1 pointer-events-none min-w-[140px]"
               >
-                <div className="font-bold text-cyan-300 border-b border-slate-800 pb-1 flex justify-between">
+                <div className="font-bold text-[#F4F7F9] border-b border-[#2B3945] pb-1 flex justify-between font-mono">
                   <span>{hoveredItem.time}</span>
-                  <span className="capitalize text-slate-400 font-normal">{hoveredItem.condition}</span>
+                  <span className="capitalize text-[#9AA8B2] font-normal">{hoveredItem.condition}</span>
                 </div>
-                <div className="text-slate-200">
-                  Temp: <span className="font-semibold">{formatTemp(hoveredItem.temperature)}</span>
+                <div className="text-[#F4F7F9]">
+                  Temp: <span className="font-semibold font-mono text-[#F2C94C]">{formatTemp(hoveredItem.temperature)}</span>
                 </div>
-                <div className="text-slate-400">
-                  Feels like: <span className="font-semibold">{formatTemp(hoveredItem.feels_like)}</span>
+                <div className="text-[#9AA8B2]">
+                  Feels like: <span className="font-semibold font-mono">{formatTemp(hoveredItem.feels_like)}</span>
                 </div>
-                <div className="text-blue-400">
-                  Rain: <span className="font-semibold">{hoveredItem.precipitation_probability}%</span>
+                <div className="text-[#56CCF2]">
+                  Rain: <span className="font-semibold font-mono">{hoveredItem.precipitation_probability}%</span>
                 </div>
-                <div className="text-emerald-400">
-                  Wind: <span className="font-semibold">{formatWind(hoveredItem.wind_speed)}</span>
+                <div className="text-[#27AE9B]">
+                  Wind: <span className="font-semibold font-mono">{formatWind(hoveredItem.wind_speed)}</span>
                 </div>
               </div>
             )}
@@ -201,14 +201,15 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
                         y1={yVal}
                         x2={chartWidth - paddingX}
                         y2={yVal}
-                        stroke="#1e293b"
+                        stroke="#2B3945"
                         strokeDasharray="4 4"
                       />
                       <text
                         x={paddingX - 8}
                         y={yVal + 4}
-                        fill="#64748b"
+                        fill="#9AA8B2"
                         fontSize="10"
+                        fontFamily="monospace"
                         textAnchor="end"
                       >
                         {metricVal}
@@ -221,20 +222,20 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
                 {/* Temperature mode lines */}
                 {metric === 'temperature' && (
                   <>
-                    {/* Feels-like line (cyan dashed) */}
+                    {/* Feels-like line (sky blue dashed) */}
                     <polyline
                       fill="none"
-                      stroke="#38bdf8"
+                      stroke="#56CCF2"
                       strokeWidth="2"
                       strokeDasharray="4 4"
                       points={makePath('feels_like')}
                       opacity="0.8"
                     />
-                    {/* Actual Temperature line (amber solid) */}
+                    {/* Actual Temperature line (warm yellow solid) */}
                     <polyline
                       fill="none"
-                      stroke="#f59e0b"
-                      strokeWidth="3"
+                      stroke="#F2C94C"
+                      strokeWidth="2.5"
                       points={makePath('temperature')}
                     />
                   </>
@@ -244,8 +245,8 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
                 {metric === 'rain' && (
                   <polyline
                     fill="none"
-                    stroke="#3b82f6"
-                    strokeWidth="3"
+                    stroke="#2F80ED"
+                    strokeWidth="2.5"
                     points={makePath('precipitation_probability')}
                   />
                 )}
@@ -254,8 +255,8 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
                 {metric === 'wind' && (
                   <polyline
                     fill="none"
-                    stroke="#10b981"
-                    strokeWidth="3"
+                    stroke="#27AE9B"
+                    strokeWidth="2.5"
                     points={makePath('wind_speed')}
                   />
                 )}
@@ -264,14 +265,14 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
                 {displayItems.map((item, idx) => {
                   const x = getX(idx);
                   let val = item.temperature;
-                  let strokeColor = '#f59e0b';
+                  let strokeColor = '#F2C94C';
 
                   if (metric === 'rain') {
                     val = item.precipitation_probability;
-                    strokeColor = '#3b82f6';
+                    strokeColor = '#2F80ED';
                   } else if (metric === 'wind') {
                     val = item.wind_speed;
-                    strokeColor = '#10b981';
+                    strokeColor = '#27AE9B';
                   }
 
                   const y = getY(val);
@@ -287,8 +288,8 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
                       <circle
                         cx={x}
                         cy={y}
-                        r={isHovered ? 7 : 4}
-                        fill="#090d16"
+                        r={isHovered ? 6 : 3.5}
+                        fill="#101820"
                         stroke={strokeColor}
                         strokeWidth="2"
                         className="transition-all duration-150"
@@ -297,8 +298,9 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
                       <text
                         x={x}
                         y={chartHeight - 8}
-                        fill={isHovered ? '#38bdf8' : '#64748b'}
+                        fill={isHovered ? '#F4F7F9' : '#9AA8B2'}
                         fontSize="10"
+                        fontFamily="monospace"
                         textAnchor="middle"
                         fontWeight={isHovered ? 'bold' : 'normal'}
                       >
@@ -311,27 +313,27 @@ export const WeatherTrendsGraph: React.FC<WeatherTrendsGraphProps> = ({
             </div>
 
             {/* Chart Legend */}
-            <div className="flex items-center justify-center gap-6 border-t border-slate-800/80 pt-3 text-xs">
+            <div className="flex items-center justify-center gap-6 border-t border-[#2B3945] pt-3 text-xs">
               {metric === 'temperature' ? (
                 <>
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-1 bg-amber-500 rounded"></span>
-                    <span className="text-slate-300">Temperature (°C)</span>
+                    <span className="w-3 h-1 bg-[#F2C94C] rounded"></span>
+                    <span className="text-[#F4F7F9]">Temperature (°C)</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-3 h-1 bg-cyan-400 border border-dashed border-cyan-400 rounded"></span>
-                    <span className="text-slate-400">Feels Like (°C)</span>
+                    <span className="w-3 h-1 bg-[#56CCF2] rounded"></span>
+                    <span className="text-[#9AA8B2]">Feels Like (°C)</span>
                   </div>
                 </>
               ) : metric === 'rain' ? (
                 <div className="flex items-center gap-2">
-                  <span className="w-3 h-1 bg-blue-500 rounded"></span>
-                  <span className="text-slate-300">Rain Probability (%)</span>
+                  <span className="w-3 h-1 bg-[#2F80ED] rounded"></span>
+                  <span className="text-[#F4F7F9]">Precipitation Probability (%)</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <span className="w-3 h-1 bg-emerald-500 rounded"></span>
-                  <span className="text-slate-300">Wind Speed (km/h)</span>
+                  <span className="w-3 h-1 bg-[#27AE9B] rounded"></span>
+                  <span className="text-[#F4F7F9]">Wind Speed (km/h)</span>
                 </div>
               )}
             </div>

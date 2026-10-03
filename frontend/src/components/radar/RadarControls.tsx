@@ -23,7 +23,7 @@ export const RadarControls = ({
 }: RadarControlsProps) => {
   return (
     <div
-      className="flex items-center justify-between gap-2.5 sm:gap-3 bg-slate-900/90 backdrop-blur-md border border-slate-800 p-2.5 rounded-2xl shadow-xl text-slate-200 overflow-x-auto max-w-full no-scrollbar pb-1 sm:pb-0"
+      className="flex items-center justify-between gap-2.5 sm:gap-3 bg-[#18232D] border border-[#2B3945] p-2.5 rounded-xl shadow-sm text-[#F4F7F9] overflow-x-auto max-w-full no-scrollbar pb-1 sm:pb-0"
       role="toolbar"
       aria-label="Radar Playback Controls"
     >
@@ -34,7 +34,7 @@ export const RadarControls = ({
           disabled={disabled}
           aria-label="Previous radar frame"
           title={disabled ? 'Radar frames unavailable' : 'Previous radar frame'}
-          className="p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800/80 disabled:opacity-40 disabled:cursor-not-allowed transition-all focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+          className="p-2 rounded-lg bg-[#101820] border border-[#2B3945] text-[#9AA8B2] hover:text-[#F4F7F9] hover:bg-[#24313C] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <SkipBack className="w-4 h-4" />
         </button>
@@ -44,9 +44,9 @@ export const RadarControls = ({
           disabled={disabled}
           aria-label={isPlaying ? 'Pause radar playback' : 'Play radar playback'}
           title={disabled ? 'Radar playback unavailable' : isPlaying ? 'Pause' : 'Play'}
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-semibold text-xs hover:bg-cyan-500/30 disabled:opacity-40 disabled:cursor-not-allowed transition-all focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2F80ED] hover:bg-[#2570d4] text-white font-medium text-xs disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
-          {isPlaying ? <Pause className="w-4 h-4 fill-cyan-300" /> : <Play className="w-4 h-4 fill-cyan-300 ml-0.5" />}
+          {isPlaying ? <Pause className="w-4 h-4 fill-white" /> : <Play className="w-4 h-4 fill-white ml-0.5" />}
           <span>{isPlaying ? 'Pause' : 'Play'}</span>
         </button>
 
@@ -55,16 +55,16 @@ export const RadarControls = ({
           disabled={disabled}
           aria-label="Next radar frame"
           title={disabled ? 'Radar frames unavailable' : 'Next radar frame'}
-          className="p-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800/80 disabled:opacity-40 disabled:cursor-not-allowed transition-all focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+          className="p-2 rounded-lg bg-[#101820] border border-[#2B3945] text-[#9AA8B2] hover:text-[#F4F7F9] hover:bg-[#24313C] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <SkipForward className="w-4 h-4" />
         </button>
       </div>
 
       {/* Opacity Control Slider */}
-      <div className="flex items-center gap-2 bg-slate-950/60 border border-slate-800 px-3 py-1.5 rounded-xl">
-        <Sliders className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-        <label htmlFor="radar-opacity-slider" className="text-[11px] font-mono text-slate-400 hidden sm:inline">
+      <div className="flex items-center gap-2 bg-[#101820] border border-[#2B3945] px-2.5 py-1.5 rounded-lg">
+        <Sliders className="w-3.5 h-3.5 text-[#56CCF2] shrink-0" />
+        <label htmlFor="radar-opacity-slider" className="text-[11px] font-mono text-[#9AA8B2] hidden sm:inline">
           Opacity
         </label>
         <input
@@ -76,18 +76,18 @@ export const RadarControls = ({
           value={Math.round(opacity * 100)}
           onChange={(e) => onChangeOpacity(Number(e.target.value) / 100)}
           aria-label="Radar overlay opacity slider"
-          className="w-16 sm:w-20 accent-cyan-400 h-1 bg-slate-800 rounded-lg cursor-pointer focus:outline-none focus:ring-1 focus:ring-cyan-500"
+          className="w-16 sm:w-20 accent-[#2F80ED] h-1 bg-[#24313C] rounded-lg cursor-pointer"
           title={`Radar Opacity: ${Math.round(opacity * 100)}%`}
         />
-        <span className="text-[11px] font-mono text-cyan-300 min-w-[2.5rem] text-right font-semibold">
+        <span className="text-[11px] font-mono text-[#56CCF2] min-w-[2.5rem] text-right font-medium">
           {Math.round(opacity * 100)}%
         </span>
       </div>
 
       {/* Selected Radar Frame Timestamp Display */}
-      <div className="flex items-center gap-2 bg-slate-950/60 border border-slate-800 px-3 py-1.5 rounded-xl font-mono text-xs text-slate-300">
-        <Clock className="w-3.5 h-3.5 text-cyan-400" />
-        <span>Radar time: <strong className="text-cyan-300 font-bold">{currentDisplayTime}</strong></span>
+      <div className="flex items-center gap-2 bg-[#101820] border border-[#2B3945] px-3 py-1.5 rounded-lg font-mono text-xs text-[#F4F7F9]">
+        <Clock className="w-3.5 h-3.5 text-[#56CCF2]" />
+        <span>Radar: <strong className="text-[#56CCF2] font-semibold">{currentDisplayTime}</strong></span>
       </div>
     </div>
   );

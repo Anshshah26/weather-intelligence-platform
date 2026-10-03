@@ -10,47 +10,49 @@ interface LocationMarkerProps {
   isGPSLocation?: boolean;
 }
 
-// Custom Leaflet SVG DivIcon with cyan glowing marker pin
+// Professional Meteorological Station Map Marker Pin
 const createCustomPinIcon = (isGPS: boolean) => {
-  const bgGradient = isGPS
-    ? 'linear-gradient(135deg, #10b981, #06b6d4)'
-    : 'linear-gradient(135deg, #06b6d4, #2563eb)';
-  const shadowColor = isGPS ? 'rgba(16, 185, 129, 0.8)' : 'rgba(6, 182, 212, 0.8)';
-  const pingColor = isGPS ? 'rgba(16, 185, 129, 0.3)' : 'rgba(6, 182, 212, 0.25)';
+  const pinColor = isGPS ? '#27AE9B' : '#2F80ED';
+  const pulseColor = isGPS ? 'rgba(39, 174, 155, 0.25)' : 'rgba(47, 128, 237, 0.25)';
 
   return L.divIcon({
     className: 'custom-map-pin-container',
     html: `
       <div style="
         position: relative;
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         display: flex;
         align-items: center;
         justify-content: center;
       ">
         <div style="
           position: absolute;
-          width: 36px;
-          height: 36px;
-          background-color: ${pingColor};
+          width: 32px;
+          height: 32px;
+          background-color: ${pulseColor};
           border-radius: 50%;
-          animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+          animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
         "></div>
         <div style="
-          width: 20px;
-          height: 20px;
-          background: ${bgGradient};
-          border: 2.5px solid #0f172a;
+          width: 18px;
+          height: 18px;
+          background: ${pinColor};
+          border: 2px solid #101820;
           border-radius: 50%;
-          box-shadow: 0 0 15px ${shadowColor};
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
           z-index: 10;
-        "></div>
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        ">
+          <div style="width: 6px; height: 6px; background: #FFFFFF; border-radius: 50%;"></div>
+        </div>
       </div>
     `,
-    iconSize: [36, 36],
-    iconAnchor: [18, 18],
-    popupAnchor: [0, -18],
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+    popupAnchor: [0, -16],
   });
 };
 
@@ -70,18 +72,18 @@ export const LocationMarker = ({
       <Popup className="custom-leaflet-popup">
         <div className="p-1 text-left">
           {isGPSLocation && (
-            <div className="text-[10px] font-bold tracking-wider uppercase text-cyan-400 mb-0.5 flex items-center gap-1">
-              <span>📍 You are here</span>
+            <div className="text-[10px] font-bold tracking-wider uppercase text-[#27AE9B] mb-0.5 flex items-center gap-1 font-mono">
+              <span>GPS Telemetry</span>
             </div>
           )}
-          <div className="text-xs font-bold text-slate-100">{city}{country ? `, ${country}` : ''}</div>
-          <div className="text-[11px] text-slate-400 font-mono mt-0.5">
-            {position[0].toFixed(2)}°, {position[1].toFixed(2)}°
+          <div className="text-xs font-bold text-[#F4F7F9]">{city}{country ? `, ${country}` : ''}</div>
+          <div className="text-[11px] text-[#9AA8B2] font-mono mt-0.5">
+            {position[0].toFixed(3)}°, {position[1].toFixed(3)}°
           </div>
           {temperature !== undefined && (
-            <div className="mt-1 pt-1 border-t border-slate-800 flex items-center justify-between gap-3 text-xs">
-              <span className="font-semibold text-cyan-400">{Math.round(temperature)}°C</span>
-              {condition && <span className="text-slate-300 capitalize text-[10px]">{condition}</span>}
+            <div className="mt-1 pt-1 border-t border-[#2B3945] flex items-center justify-between gap-3 text-xs">
+              <span className="font-semibold font-mono text-[#56CCF2]">{Math.round(temperature)}°C</span>
+              {condition && <span className="text-[#9AA8B2] capitalize text-[10px]">{condition}</span>}
             </div>
           )}
         </div>

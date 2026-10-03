@@ -64,12 +64,12 @@ export const RadarMap = ({
   opacity = 0.65,
 }: RadarMapProps) => {
   return (
-    <div className="w-full h-[65vh] sm:h-full min-h-[360px] relative rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-950">
+    <div className="w-full h-[65vh] sm:h-full min-h-[360px] relative rounded-xl overflow-hidden border border-[#2B3945] bg-[#101820]">
       {/* Provider Status Overlay Banner if radar frames unavailable */}
       {!isAvailable && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/95 border border-slate-800 text-slate-300 text-xs font-mono shadow-2xl backdrop-blur-md pointer-events-none max-w-[90%] text-center">
-          <Info className="w-4 h-4 text-cyan-400 shrink-0" />
-          <span>Advanced global radar is not enabled for this weather account. Base map active.</span>
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#18232D] border border-[#2B3945] text-[#9AA8B2] text-xs font-mono shadow-md pointer-events-none max-w-[90%] text-center">
+          <Info className="w-4 h-4 text-[#2F80ED] shrink-0" />
+          <span>Standard radar mode active. Base telemetry displayed.</span>
         </div>
       )}
 

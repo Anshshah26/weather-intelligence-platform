@@ -117,19 +117,19 @@ export const WeatherMap = ({
   const [tileError, setTileError] = useState<boolean>(false);
 
   return (
-    <div className="w-full h-[65vh] sm:h-full min-h-[360px] relative rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-950">
+    <div className="w-full h-[65vh] sm:h-full min-h-[360px] relative rounded-xl overflow-hidden border border-[#2B3945] bg-[#101820]">
       {/* Tile Loading Indicator Toast (Top Right Overlay) */}
       {isTileLoading && (
-        <div className="absolute top-3 right-3 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 backdrop-blur-md text-cyan-300 text-xs shadow-lg font-mono animate-fade-in pointer-events-none">
-          <RefreshCw className="w-3.5 h-3.5 animate-spin text-cyan-400" />
+        <div className="absolute top-3 right-3 z-20 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#18232D] border border-[#2B3945] text-[#56CCF2] text-xs font-mono shadow-md pointer-events-none">
+          <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#2F80ED]" />
           <span>Syncing weather tiles...</span>
         </div>
       )}
 
       {/* Tile Load Error Toast */}
       {tileError && (
-        <div className="absolute top-3 left-3 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-950/90 border border-amber-800/80 backdrop-blur-md text-amber-300 text-xs shadow-lg font-mono pointer-events-none">
-          <AlertCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+        <div className="absolute top-3 left-3 z-20 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#18232D] border border-[#F2C94C]/40 text-[#F2C94C] text-xs font-mono shadow-md pointer-events-none">
+          <AlertCircle className="w-3.5 h-3.5 text-[#F2C94C] shrink-0" />
           <span>Weather layer tile delayed. Retrying...</span>
         </div>
       )}

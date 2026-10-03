@@ -115,37 +115,37 @@ export const RadarPage = ({ currentCityWeather }: RadarPageProps) => {
   return (
     <div className="space-y-4 max-w-7xl mx-auto flex flex-col min-h-full lg:h-[calc(100vh-5.5rem)] pb-2 max-w-full overflow-x-hidden">
       {/* Page Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/60 border border-slate-800 p-3.5 rounded-2xl shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#18232D] border border-[#2B3945] p-4 rounded-xl shrink-0">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 mb-0.5">
-            <Radio className="w-3.5 h-3.5" /> Weather Intelligence • Radar System
+          <div className="flex items-center gap-2 text-xs font-mono text-[#56CCF2] mb-0.5">
+            <Radio className="w-3.5 h-3.5 text-[#2F80ED]" /> Meteorological Radar Station
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-100 tracking-tight">
-            Weather Radar
+          <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">
+            Precipitation Doppler Radar
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Track precipitation movement and forecast
+          <p className="text-xs text-[#9AA8B2] mt-0.5">
+            Reflectivity telemetry and precipitation motion tracking
           </p>
         </div>
 
         {/* Map City Search Form */}
         <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 w-full sm:w-80" role="search">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#9AA8B2] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Center radar on city..."
               aria-label="Search city to update radar position"
-              className="w-full bg-slate-950/80 border border-slate-800 focus:border-cyan-500/50 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
+              className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg pl-9 pr-3 py-2 text-xs text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none min-h-[38px]"
             />
           </div>
           <button
             type="submit"
             disabled={loading || !searchQuery.trim()}
             aria-label="Execute radar search"
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-semibold rounded-xl transition-colors disabled:opacity-40 shrink-0 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 min-h-[38px]"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#2F80ED] hover:bg-[#2570d4] text-white text-xs font-medium rounded-lg transition-colors disabled:opacity-40 shrink-0 min-h-[38px]"
           >
             {loading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <MapPin className="w-3.5 h-3.5" />}
             <span>Go</span>
@@ -155,23 +155,23 @@ export const RadarPage = ({ currentCityWeather }: RadarPageProps) => {
 
       {/* Error Alert if Search Failed */}
       {error && (
-        <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-center gap-2 text-amber-300 text-xs shrink-0" role="alert">
-          <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
+        <div className="p-3 bg-[#EB5757]/10 border border-[#EB5757]/30 rounded-lg flex items-center gap-2 text-[#EB5757] text-xs shrink-0" role="alert">
+          <AlertCircle className="w-4 h-4 text-[#EB5757] shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
       {/* Account Not Enabled Banner when OpenWeather 2.0 Global Precipitation is inactive */}
       {!isRadarAvailable && (
-        <div className="p-3.5 bg-slate-900/90 border border-slate-800 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shrink-0 shadow-lg">
-          <div className="flex items-center gap-2.5 text-slate-200">
-            <Info className="w-4 h-4 text-amber-400 shrink-0" />
+        <div className="p-3.5 bg-[#18232D] border border-[#2B3945] rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shrink-0 shadow-sm">
+          <div className="flex items-center gap-2.5 text-[#F4F7F9]">
+            <Info className="w-4 h-4 text-[#F2C94C] shrink-0" />
             <div>
-              <div className="font-semibold text-amber-300">Advanced global radar is not enabled for this weather account.</div>
-              <div className="text-[11px] text-slate-400 mt-0.5">Upgrade OpenWeather Global Precipitation Maps to enable 10-minute global radar.</div>
+              <div className="font-semibold text-[#F2C94C]">Standard Radar Mode Active</div>
+              <div className="text-[11px] text-[#9AA8B2] mt-0.5">High-frequency Doppler frames require Global Precipitation integration tier.</div>
             </div>
           </div>
-          <span className="text-[11px] font-mono px-2.5 py-1 bg-slate-950 border border-slate-800 text-slate-400 rounded-lg shrink-0">
+          <span className="text-[11px] font-mono px-2.5 py-1 bg-[#101820] border border-[#2B3945] text-[#9AA8B2] rounded shrink-0">
             Provider: {radarStatus?.provider || 'openweather_global_precipitation'}
           </span>
         </div>
@@ -187,7 +187,7 @@ export const RadarPage = ({ currentCityWeather }: RadarPageProps) => {
       </div>
 
       {/* Main Radar Map & Overlays Container */}
-      <div className="flex-1 min-h-[350px] sm:min-h-[420px] h-[60vh] lg:h-auto relative rounded-2xl overflow-hidden border border-slate-800">
+      <div className="flex-1 min-h-[350px] sm:min-h-[420px] h-[60vh] lg:h-auto relative rounded-xl overflow-hidden border border-[#2B3945]">
         <RadarMap
           center={[lat, lon]}
           city={city}

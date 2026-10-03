@@ -27,16 +27,21 @@ interface NavItem {
   protected?: boolean;
 }
 
-export const navItems: NavItem[] = [
+export const coreNavItems: NavItem[] = [
   { name: 'Dashboard', path: '/', icon: LayoutDashboard },
   { name: 'Forecast', path: '/forecast', icon: CalendarDays },
   { name: 'Weather Map', path: '/map', icon: MapPin },
   { name: 'Radar', path: '/radar', icon: Radio },
+];
+
+export const advancedNavItems: NavItem[] = [
   { name: 'AI Weather Advisor', path: '/ai-advisor', icon: Bot, protected: true },
   { name: 'Activities', path: '/activities', icon: Activity, protected: true },
   { name: 'Travel Planner', path: '/travel', icon: Compass, protected: true },
   { name: 'City Comparison', path: '/compare', icon: GitCompare, protected: true },
 ];
+
+export const navItems: NavItem[] = [...coreNavItems, ...advancedNavItems];
 
 export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const { user } = useAuth();
@@ -79,12 +84,44 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     }
   };
 
+  const renderNavList = (items: NavItem[]) => (
+    items.map((item) => {
+      const Icon = item.icon;
+      const isItemLocked = item.protected && !user;
+
+      return (
+        <NavLink
+          key={item.path}
+          to={item.path}
+          onClick={(e) => handleNavClick(e, item)}
+          className={({ isActive }) =>
+            `flex items-center justify-between px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-150 ${
+              isActive && !isItemLocked
+                ? 'bg-[#24313C] text-[#F4F7F9] font-semibold border-l-2 border-[#2F80ED] pl-2.5 shadow-sm'
+                : 'text-[#9AA8B2] hover:text-[#F4F7F9] hover:bg-[#24313C]/60'
+            }`
+          }
+        >
+          <div className="flex items-center gap-2.5">
+            <Icon className="w-4 h-4 shrink-0 text-[#9AA8B2]" />
+            <span>{item.name}</span>
+          </div>
+          {isItemLocked && (
+            <span title="Sign in required">
+              <Lock className="w-3.5 h-3.5 text-[#F2C94C] shrink-0" />
+            </span>
+          )}
+        </NavLink>
+      );
+    })
+  );
+
   return (
     <>
-      {/* Mobile Overlay */}
+      {/* Mobile Backdrop Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-[#101820]/80 z-40 lg:hidden"
           onClick={onClose}
           aria-hidden="true"
         />
@@ -92,75 +129,63 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed top-0 left-0 bottom-0 z-50 w-64 bg-slate-900 border-r border-slate-800/80 flex flex-col transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:z-auto ${
+        className={`fixed top-0 left-0 bottom-0 z-50 w-64 bg-[#18232D] border-r border-[#2B3945] flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:z-auto ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Sidebar Brand Header */}
-        <div className="h-16 px-6 flex items-center justify-between border-b border-slate-800/80">
+        {/* Brand Header */}
+        <div className="h-16 px-5 flex items-center justify-between border-b border-[#2B3945]">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-cyan-500/10 border border-cyan-500/30 rounded-xl text-cyan-400">
+            <div className="p-2 bg-[#24313C] border border-[#2B3945] rounded-lg text-[#2F80ED]">
               <CloudSun className="w-5 h-5" />
             </div>
             <div>
-              <div className="font-bold text-sm text-slate-100 tracking-tight leading-none">
+              <div className="font-bold text-sm text-[#F4F7F9] tracking-tight leading-none">
                 Weather Intelligence
               </div>
-              <div className="text-[10px] text-cyan-400 font-mono mt-0.5">Platform v1.0</div>
+              <div className="text-[11px] text-[#9AA8B2] mt-1 font-mono">Meteorological Platform</div>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800"
+            className="lg:hidden p-1.5 rounded-lg text-[#9AA8B2] hover:text-[#F4F7F9] hover:bg-[#24313C]"
             aria-label="Close menu"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Navigation Items */}
+        {/* Navigation Sections */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isItemLocked = item.protected && !user;
+          {/* Core Weather Navigation */}
+          <div className="space-y-1">
+            {renderNavList(coreNavItems)}
+          </div>
 
-            return (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                onClick={(e) => handleNavClick(e, item)}
-                className={({ isActive }) =>
-                  `flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
-                    isActive && !isItemLocked
-                      ? 'bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 font-semibold shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                  }`
-                }
-              >
-                <div className="flex items-center gap-3">
-                  <Icon className="w-4 h-4 shrink-0" />
-                  <span>{item.name}</span>
-                </div>
-                {isItemLocked && (
-                  <span title="Sign in required">
-                    <Lock className="w-3.5 h-3.5 text-amber-400/80 shrink-0" />
-                  </span>
-                )}
-              </NavLink>
-            );
-          })}
+          {/* Section Divider */}
+          <div className="pt-3 pb-2">
+            <div className="border-t border-[#2B3945]" />
+            <div className="text-[10px] font-mono text-[#9AA8B2] uppercase tracking-wider px-3 pt-2">
+              Intelligence & Tools
+            </div>
+          </div>
+
+          {/* Advanced / Protected Intelligence Tools */}
+          <div className="space-y-1">
+            {renderNavList(advancedNavItems)}
+          </div>
         </nav>
 
         {/* Sidebar Footer info */}
-        <div className="p-4 border-t border-slate-800/80 text-xs text-slate-500">
+        <div className="p-4 border-t border-[#2B3945] text-xs text-[#9AA8B2] bg-[#141C24]">
           <div className="flex items-center justify-between text-[11px] mb-1">
-            <span className="text-slate-400">System Status</span>
-            <span className="flex items-center gap-1.5 text-emerald-400 font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              Active
+            <span className="text-[#9AA8B2]">Telemetry Feed</span>
+            <span className="flex items-center gap-1.5 text-[#27AE9B] font-medium font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#27AE9B]"></span>
+              ONLINE
             </span>
           </div>
-          <div className="text-[10px] text-slate-600">Enterprise Edition</div>
+          <div className="text-[10px] text-[#9AA8B2]/70 font-mono">OpenWeather + CARTO Engine</div>
         </div>
       </aside>
     </>

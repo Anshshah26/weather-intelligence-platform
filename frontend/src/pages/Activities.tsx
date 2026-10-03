@@ -23,7 +23,6 @@ interface ActivitiesPageProps {
 
 export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
   const defaultCity = currentCityWeather?.location.city || 'Mumbai';
-  const country = currentCityWeather?.location.country || 'IN';
 
   const [searchQuery, setSearchQuery] = useState<string>(defaultCity);
   const [activeCity, setActiveCity] = useState<string>(defaultCity);
@@ -101,26 +100,26 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'Excellent':
-        return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30';
+        return 'text-[#27AE9B] bg-[#27AE9B]/10 border-[#27AE9B]/30';
       case 'Good':
-        return 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30';
+        return 'text-[#56CCF2] bg-[#2F80ED]/10 border-[#2F80ED]/30';
       case 'Moderate':
-        return 'text-amber-400 bg-amber-500/10 border-amber-500/30';
+        return 'text-[#F2C94C] bg-[#F2C94C]/10 border-[#F2C94C]/30';
       case 'Poor':
-        return 'text-orange-400 bg-orange-500/10 border-orange-500/30';
+        return 'text-[#F2994A] bg-[#F2994A]/10 border-[#F2994A]/30';
       case 'Very Poor':
-        return 'text-rose-400 bg-rose-500/10 border-rose-500/30';
+        return 'text-[#EB5757] bg-[#EB5757]/10 border-[#EB5757]/30';
       default:
-        return 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30';
+        return 'text-[#56CCF2] bg-[#24313C] border-[#2B3945]';
     }
   };
 
   const getRingColor = (score: number) => {
-    if (score >= 80) return '#10b981'; // Emerald
-    if (score >= 60) return '#06b6d4'; // Cyan
-    if (score >= 40) return '#f59e0b'; // Amber
-    if (score >= 20) return '#f97316'; // Orange
-    return '#f43f5e'; // Rose
+    if (score >= 80) return '#27AE9B';
+    if (score >= 60) return '#2F80ED';
+    if (score >= 40) return '#F2C94C';
+    if (score >= 20) return '#F2994A';
+    return '#EB5757';
   };
 
   const isExtremeWeather =
@@ -129,39 +128,39 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
     (scoreData?.weather_summary.wind_speed ?? 0) >= 45.0;
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-6">
+    <div className="space-y-5 max-w-7xl mx-auto pb-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/60 border border-slate-800 p-4 rounded-2xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#18232D] border border-[#2B3945] p-4 rounded-xl">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 mb-0.5">
-            <Activity className="w-4 h-4 text-cyan-400" /> Weather Intelligence • Suitability Engine
+          <div className="flex items-center gap-2 text-xs font-mono text-[#56CCF2] mb-0.5">
+            <Activity className="w-3.5 h-3.5 text-[#2F80ED]" /> Suitability Telemetry Engine
           </div>
-          <h1 className="text-2xl font-bold text-slate-100 tracking-tight">
-            Activity Weather
+          <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">
+            Activity Weather Intelligence
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            See how suitable the weather is for your outdoor plans.
+          <p className="text-xs text-[#9AA8B2] mt-0.5">
+            Quantitative outdoor plan suitability computed from atmospheric variables
           </p>
         </div>
 
         {/* City Search Form */}
         <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 w-full sm:w-80" role="search">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#9AA8B2] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Evaluate city..."
               aria-label="Search city for activity scores"
-              className="w-full bg-slate-950/80 border border-slate-800 focus:border-cyan-500/50 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
+              className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg pl-9 pr-3 py-2 text-xs text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none min-h-[38px]"
             />
           </div>
           <button
             type="submit"
             disabled={loading || !searchQuery.trim()}
             aria-label="Execute activity city search"
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-semibold rounded-xl transition-colors disabled:opacity-40 shrink-0 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#2F80ED] hover:bg-[#2570d4] text-white text-xs font-medium rounded-lg transition-colors disabled:opacity-40 shrink-0 min-h-[38px]"
           >
             {loading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <MapPin className="w-3.5 h-3.5" />}
             <span>Go</span>
@@ -171,19 +170,19 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
 
       {/* Error Alert if Search Failed */}
       {error && (
-        <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-center gap-2 text-amber-300 text-xs shrink-0" role="alert">
-          <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
+        <div className="p-3 bg-[#EB5757]/10 border border-[#EB5757]/30 rounded-lg flex items-center gap-2 text-[#EB5757] text-xs shrink-0" role="alert">
+          <AlertCircle className="w-4 h-4 text-[#EB5757] shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
       {/* Extreme Weather Warning Alert */}
       {isExtremeWeather && (
-        <div className="p-4 bg-rose-950/80 border border-rose-800/80 rounded-2xl flex items-center gap-3 text-rose-200 text-xs shadow-xl font-mono">
-          <AlertTriangle className="w-5 h-5 text-rose-400 shrink-0" />
+        <div className="p-3.5 bg-[#EB5757]/10 border border-[#EB5757]/30 rounded-xl flex items-center gap-3 text-[#EB5757] text-xs font-mono">
+          <AlertTriangle className="w-5 h-5 text-[#EB5757] shrink-0" />
           <div>
-            <strong className="text-rose-300 block">Severe weather conditions detected:</strong>
-            <span>Extreme temperature, heavy precipitation, or strong winds present. Consider postponing outdoor activity.</span>
+            <strong className="text-[#EB5757] block font-semibold">Severe conditions present:</strong>
+            <span>Extreme temperature, heavy precipitation, or strong gusts. Outdoor activity is not recommended.</span>
           </div>
         </div>
       )}
@@ -191,11 +190,11 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
       {/* Activity Cards Selection Grid */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-200">Select Activity</h2>
-          <span className="text-[11px] font-mono text-slate-400">8 Supported Sports & Outdoor Plans</span>
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-[#9AA8B2] font-mono">Select Activity Plan</h2>
+          <span className="text-[11px] font-mono text-[#9AA8B2]">8 Supported Modules</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2.5">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
           {activities.map((act) => {
             const isSelected = act.id === selectedActivity;
             const itemScore = allScores.find((s) => s.activity.toLowerCase() === act.name.toLowerCase())?.score;
@@ -204,24 +203,24 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
               <button
                 key={act.id}
                 onClick={() => setSelectedActivity(act.id)}
-                className={`p-3 rounded-2xl border transition-all text-left flex sm:flex-col items-center sm:items-start justify-between h-auto sm:h-24 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 min-h-[48px] ${
+                className={`p-3 rounded-lg border transition-colors text-left flex sm:flex-col items-center sm:items-start justify-between min-h-[52px] sm:min-h-[80px] ${
                   isSelected
-                    ? 'bg-cyan-500/15 border-cyan-500/40 text-slate-100 ring-1 ring-cyan-500/30 shadow-lg'
-                    : 'bg-slate-900/60 border-slate-800/80 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                    ? 'bg-[#24313C] border-2 border-[#2F80ED] text-[#F4F7F9] shadow-sm font-semibold'
+                    : 'bg-[#18232D] border border-[#2B3945] text-[#9AA8B2] hover:text-[#F4F7F9] hover:bg-[#24313C]'
                 }`}
               >
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-2 sm:gap-0">
-                    <span className="text-xl sm:text-2xl">{act.icon}</span>
-                    <span className="text-xs font-semibold tracking-tight sm:hidden">{act.name}</span>
+                    <span className="text-lg sm:text-xl">{act.icon}</span>
+                    <span className="text-xs font-medium sm:hidden">{act.name}</span>
                   </div>
                   {itemScore !== undefined && (
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-950 border border-slate-800 text-cyan-300 font-bold">
-                      Score: {itemScore}
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#101820] border border-[#2B3945] text-[#56CCF2] font-semibold">
+                      {itemScore}
                     </span>
                   )}
                 </div>
-                <span className="text-xs font-semibold tracking-tight hidden sm:block">{act.name}</span>
+                <span className="text-xs font-medium tracking-tight hidden sm:block mt-2 truncate w-full">{act.name}</span>
               </button>
             );
           })}
@@ -229,8 +228,8 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
       </div>
 
       {/* Time Slice Filter Toolbar */}
-      <div className="flex items-center gap-2 bg-slate-900/60 border border-slate-800 p-2 rounded-2xl w-fit">
-        <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider px-2 border-r border-slate-800 hidden sm:inline">
+      <div className="flex items-center gap-1.5 bg-[#18232D] border border-[#2B3945] p-1.5 rounded-lg w-fit">
+        <span className="text-[10px] font-mono text-[#9AA8B2] uppercase tracking-wider px-2 border-r border-[#2B3945] hidden sm:inline">
           Time Slot
         </span>
         {[
@@ -243,10 +242,10 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
           <button
             key={tf.id}
             onClick={() => setSelectedTimeFilter(tf.id as any)}
-            className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all ${
+            className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
               selectedTimeFilter === tf.id
-                ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-300'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                ? 'bg-[#24313C] border border-[#2B3945] text-[#56CCF2]'
+                : 'text-[#9AA8B2] hover:text-[#F4F7F9]'
             }`}
           >
             {tf.label}
@@ -256,21 +255,21 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
 
       {/* Active Activity Evaluation Dashboard */}
       {scoreData && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* Main Visual Score Gauge Card */}
-          <div className="bg-slate-900/80 border border-slate-800 p-6 rounded-3xl shadow-xl flex flex-col items-center justify-center text-center relative overflow-hidden">
-            <div className="text-xs font-mono text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" /> Suitability Rating
+          <div className="bg-[#18232D] border border-[#2B3945] p-6 rounded-xl shadow-sm flex flex-col items-center justify-center text-center">
+            <div className="text-xs font-mono text-[#9AA8B2] uppercase tracking-wider mb-3 flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-[#2F80ED]" /> Suitability Index
             </div>
 
             {/* Circular Ring Gauge Meter */}
-            <div className="relative w-40 h-40 flex items-center justify-center my-2">
+            <div className="relative w-36 h-36 flex items-center justify-center my-2">
               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                 <circle
                   cx="50"
                   cy="50"
                   r="42"
-                  stroke="#1e293b"
+                  stroke="#24313C"
                   strokeWidth="8"
                   fill="transparent"
                 />
@@ -284,24 +283,24 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
                   strokeDasharray="264"
                   strokeDashoffset={264 - (264 * scoreData.score) / 100}
                   strokeLinecap="round"
-                  className="transition-all duration-1000 ease-out"
+                  className="transition-all duration-700 ease-out"
                 />
               </svg>
 
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-4xl font-extrabold text-slate-100 tracking-tight leading-none">
+                <span className="text-4xl font-bold text-[#F4F7F9] font-mono leading-none">
                   {scoreData.score}
                 </span>
-                <span className="text-xs font-mono text-slate-400 mt-1">/ 100</span>
+                <span className="text-xs font-mono text-[#9AA8B2] mt-1">/ 100</span>
               </div>
             </div>
 
             {/* Category Badge */}
-            <div className={`mt-4 px-4 py-1.5 rounded-full border text-xs font-bold tracking-wide uppercase font-mono ${getCategoryColor(scoreData.category)}`}>
+            <div className={`mt-3 px-3 py-1 rounded border text-xs font-bold uppercase font-mono ${getCategoryColor(scoreData.category)}`}>
               {scoreData.category}
             </div>
 
-            <p className="text-xs text-slate-400 mt-3 font-mono">
+            <p className="text-xs text-[#9AA8B2] mt-2 font-mono">
               Evaluated for <strong>{scoreData.activity}</strong> in {scoreData.weather_summary.city}
             </p>
           </div>
@@ -309,85 +308,85 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
           {/* Weather Telemetry Summary & Factors */}
           <div className="lg:col-span-2 space-y-4">
             {/* Weather Telemetry Used */}
-            <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-2xl space-y-3">
-              <div className="flex items-center justify-between text-xs font-semibold text-slate-200">
-                <span className="flex items-center gap-1.5 font-mono text-cyan-400">
-                  <Clock className="w-3.5 h-3.5" /> Evaluated Weather Conditions
+            <div className="bg-[#18232D] border border-[#2B3945] p-4 rounded-xl space-y-3">
+              <div className="flex items-center justify-between text-xs font-semibold text-[#F4F7F9]">
+                <span className="flex items-center gap-1.5 font-mono text-[#56CCF2]">
+                  <Clock className="w-3.5 h-3.5 text-[#2F80ED]" /> Condition Variables
                 </span>
-                <span className="text-[11px] font-mono text-slate-400">
-                  📍 {scoreData.weather_summary.city} • 🕕 {scoreData.weather_summary.time}
+                <span className="text-[11px] font-mono text-[#9AA8B2]">
+                  {scoreData.weather_summary.city} &bull; {scoreData.weather_summary.time}
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
-                <div className="bg-slate-950/70 border border-slate-800/80 p-3 rounded-xl flex items-center gap-2.5">
-                  <Thermometer className="w-4 h-4 text-amber-400 shrink-0" />
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+                <div className="bg-[#24313C] border border-[#2B3945] p-2.5 rounded-lg flex items-center gap-2">
+                  <Thermometer className="w-4 h-4 text-[#F2C94C] shrink-0" />
                   <div>
-                    <span className="text-[10px] text-slate-400 font-mono block">Temp</span>
-                    <span className="text-sm font-bold text-slate-100">{scoreData.weather_summary.temperature}°C</span>
+                    <span className="text-[10px] text-[#9AA8B2] font-mono block">Temp</span>
+                    <span className="text-sm font-bold text-[#F4F7F9] font-mono">{scoreData.weather_summary.temperature}°C</span>
                   </div>
                 </div>
 
-                <div className="bg-slate-950/70 border border-slate-800/80 p-3 rounded-xl flex items-center gap-2.5">
-                  <CloudRain className="w-4 h-4 text-blue-400 shrink-0" />
+                <div className="bg-[#24313C] border border-[#2B3945] p-2.5 rounded-lg flex items-center gap-2">
+                  <CloudRain className="w-4 h-4 text-[#56CCF2] shrink-0" />
                   <div>
-                    <span className="text-[10px] text-slate-400 font-mono block">Rain</span>
-                    <span className="text-sm font-bold text-slate-100">{scoreData.weather_summary.precipitation_probability}%</span>
+                    <span className="text-[10px] text-[#9AA8B2] font-mono block">Rain Prob</span>
+                    <span className="text-sm font-bold text-[#F4F7F9] font-mono">{scoreData.weather_summary.precipitation_probability}%</span>
                   </div>
                 </div>
 
-                <div className="bg-slate-950/70 border border-slate-800/80 p-3 rounded-xl flex items-center gap-2.5">
-                  <Wind className="w-4 h-4 text-teal-400 shrink-0" />
+                <div className="bg-[#24313C] border border-[#2B3945] p-2.5 rounded-lg flex items-center gap-2">
+                  <Wind className="w-4 h-4 text-[#27AE9B] shrink-0" />
                   <div>
-                    <span className="text-[10px] text-slate-400 font-mono block">Wind</span>
-                    <span className="text-sm font-bold text-slate-100">{scoreData.weather_summary.wind_speed} km/h</span>
+                    <span className="text-[10px] text-[#9AA8B2] font-mono block">Wind</span>
+                    <span className="text-sm font-bold text-[#F4F7F9] font-mono">{scoreData.weather_summary.wind_speed} km/h</span>
                   </div>
                 </div>
 
-                <div className="bg-slate-950/70 border border-slate-800/80 p-3 rounded-xl flex items-center gap-2.5">
-                  <Droplets className="w-4 h-4 text-indigo-400 shrink-0" />
+                <div className="bg-[#24313C] border border-[#2B3945] p-2.5 rounded-lg flex items-center gap-2">
+                  <Droplets className="w-4 h-4 text-[#56CCF2] shrink-0" />
                   <div>
-                    <span className="text-[10px] text-slate-400 font-mono block">Humidity</span>
-                    <span className="text-sm font-bold text-slate-100">{scoreData.weather_summary.humidity}%</span>
+                    <span className="text-[10px] text-[#9AA8B2] font-mono block">Humidity</span>
+                    <span className="text-sm font-bold text-[#F4F7F9] font-mono">{scoreData.weather_summary.humidity}%</span>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Positive Reasons (✓) & Warnings (⚠) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               {/* Positive Factors */}
-              <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-2xl space-y-2.5">
-                <h3 className="text-xs font-semibold text-emerald-400 font-mono flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4" /> Positive Weather Factors
+              <div className="bg-[#18232D] border border-[#2B3945] border-l-2 border-l-[#27AE9B] p-4 rounded-xl space-y-2">
+                <h3 className="text-xs font-semibold text-[#27AE9B] font-mono flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#27AE9B]" /> Favorable Factors
                 </h3>
-                <ul className="space-y-1.5 text-xs text-slate-300">
+                <ul className="space-y-1.5 text-xs text-[#F4F7F9]">
                   {scoreData.reasons.map((reason, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <span className="text-emerald-400 font-bold shrink-0">✓</span>
+                      <span className="text-[#27AE9B] font-bold shrink-0">✓</span>
                       <span>{reason}</span>
                     </li>
                   ))}
                   {scoreData.reasons.length === 0 && (
-                    <li className="text-slate-500 italic">No strong positive weather factors present.</li>
+                    <li className="text-[#9AA8B2] italic">No strong positive weather factors present.</li>
                   )}
                 </ul>
               </div>
 
               {/* Warnings / Cautions */}
-              <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-2xl space-y-2.5">
-                <h3 className="text-xs font-semibold text-amber-400 font-mono flex items-center gap-1.5">
-                  <AlertTriangle className="w-4 h-4" /> Warnings & Cautions
+              <div className="bg-[#18232D] border border-[#2B3945] border-l-2 border-l-[#F2994A] p-4 rounded-xl space-y-2">
+                <h3 className="text-xs font-semibold text-[#F2994A] font-mono flex items-center gap-1.5">
+                  <AlertTriangle className="w-4 h-4 text-[#F2994A]" /> Weather Advisories
                 </h3>
-                <ul className="space-y-1.5 text-xs text-slate-300">
+                <ul className="space-y-1.5 text-xs text-[#F4F7F9]">
                   {scoreData.warnings.map((warn, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <span className="text-amber-400 font-bold shrink-0">⚠</span>
+                      <span className="text-[#F2994A] font-bold shrink-0">⚠</span>
                       <span>{warn}</span>
                     </li>
                   ))}
                   {scoreData.warnings.length === 0 && (
-                    <li className="text-emerald-400/80 text-xs">No adverse weather warnings for this plan!</li>
+                    <li className="text-[#27AE9B] text-xs">No adverse weather warnings observed for this window.</li>
                   )}
                 </ul>
               </div>
@@ -395,11 +394,11 @@ export const ActivitiesPage = ({ currentCityWeather }: ActivitiesPageProps) => {
 
             {/* AI Explanation Box */}
             {scoreData.ai_explanation && (
-              <div className="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-xs text-slate-300 leading-relaxed shadow-md">
-                <div className="flex items-center gap-1.5 text-cyan-400 font-mono font-semibold mb-1">
-                  <Sparkles className="w-3.5 h-3.5" /> AI Recommendation Synthesis:
+              <div className="bg-[#18232D] border border-[#2B3945] p-4 rounded-xl text-xs text-[#F4F7F9] leading-relaxed shadow-sm">
+                <div className="flex items-center gap-1.5 text-[#56CCF2] font-mono font-semibold mb-1">
+                  <Sparkles className="w-3.5 h-3.5 text-[#2F80ED]" /> Meteorological Evaluation Synthesis:
                 </div>
-                <p className="text-slate-300 font-sans">{scoreData.ai_explanation}</p>
+                <p className="text-[#9AA8B2]">{scoreData.ai_explanation}</p>
               </div>
             )}
           </div>

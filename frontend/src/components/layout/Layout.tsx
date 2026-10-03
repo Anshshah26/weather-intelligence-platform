@@ -28,7 +28,7 @@ export const Layout = ({
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-row overflow-x-hidden max-w-full">
+    <div className="min-h-screen bg-[#101820] text-[#F4F7F9] flex flex-row overflow-x-hidden max-w-full">
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 

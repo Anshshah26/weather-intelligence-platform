@@ -13,22 +13,21 @@ export const RadarTimeline = ({
   onSelectFrame,
   disabled = false,
 }: RadarTimelineProps) => {
-  // If no dynamic frames are provided yet, render a fallback dynamic timeline representation
   const defaultTimes = ['-60m', '-30m', 'NOW', '+30m', '+60m'];
 
   return (
     <div
-      className="bg-slate-900/95 backdrop-blur-md border border-slate-800 p-3 rounded-2xl shadow-2xl space-y-2 text-slate-200 overflow-x-auto max-w-full no-scrollbar"
+      className="bg-[#18232D] border border-[#2B3945] p-3 rounded-xl shadow-sm space-y-2 text-[#F4F7F9] overflow-x-auto max-w-full no-scrollbar"
       role="region"
       aria-label="Radar Timeline Navigation"
     >
       {/* Timeline Phase Labels */}
-      <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 uppercase tracking-wider px-1">
-        <span className="text-blue-400 font-semibold">PAST</span>
-        <span className="text-cyan-400 font-bold px-2 py-0.5 bg-cyan-500/10 rounded border border-cyan-500/30">
-          LIVE / NOW
+      <div className="flex items-center justify-between text-[10px] font-mono text-[#9AA8B2] uppercase tracking-wider px-1">
+        <span className="text-[#56CCF2] font-medium">Past Slots</span>
+        <span className="text-[#2F80ED] font-semibold px-2 py-0.5 bg-[#2F80ED]/10 rounded border border-[#2F80ED]/30">
+          Live / Observation
         </span>
-        <span className="text-indigo-400 font-semibold">FORECAST</span>
+        <span className="text-[#27AE9B] font-medium">Forward Projection</span>
       </div>
 
       {/* Interactive Time Track Buttons */}
@@ -43,12 +42,12 @@ export const RadarTimeline = ({
                   disabled={disabled}
                   aria-pressed={isSelected}
                   title={`Select radar timestamp ${frame.displayTime}`}
-                  className={`py-1.5 px-1 rounded-xl text-xs font-mono font-semibold transition-all focus:outline-none focus:ring-1 focus:ring-cyan-500 ${
+                  className={`py-1.5 px-1 rounded-lg text-xs font-mono font-medium transition-colors ${
                     isSelected
-                      ? 'bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 shadow-md ring-1 ring-cyan-500/30'
+                      ? 'bg-[#24313C] border-2 border-[#2F80ED] text-[#F4F7F9] shadow-sm'
                       : disabled
-                      ? 'bg-slate-950/40 border border-slate-800/40 text-slate-600 cursor-not-allowed'
-                      : 'bg-slate-950/60 border border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                      ? 'bg-[#101820]/40 border border-[#2B3945]/40 text-[#9AA8B2]/40 cursor-not-allowed'
+                      : 'bg-[#101820] border border-[#2B3945] text-[#9AA8B2] hover:text-[#F4F7F9] hover:bg-[#24313C]'
                   }`}
                 >
                   {frame.displayTime}
@@ -64,10 +63,10 @@ export const RadarTimeline = ({
                   disabled={disabled}
                   aria-pressed={isNow}
                   title={disabled ? 'Radar timestamps unavailable' : `Select frame ${label}`}
-                  className={`py-1.5 px-1 rounded-xl text-xs font-mono font-semibold transition-all ${
+                  className={`py-1.5 px-1 rounded-lg text-xs font-mono font-medium transition-colors ${
                     isNow
-                      ? 'bg-cyan-500/20 border border-cyan-500/50 text-cyan-300'
-                      : 'bg-slate-950/40 border border-slate-800/40 text-slate-600 cursor-not-allowed'
+                      ? 'bg-[#24313C] border-2 border-[#2F80ED] text-[#56CCF2]'
+                      : 'bg-[#101820]/40 border border-[#2B3945]/40 text-[#9AA8B2]/40 cursor-not-allowed'
                   }`}
                 >
                   {label}

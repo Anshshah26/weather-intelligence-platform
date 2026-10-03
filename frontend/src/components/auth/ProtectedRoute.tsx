@@ -17,19 +17,20 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         alignItems: 'center',
         justifyContent: 'center',
         minHeight: '400px',
-        color: '#94A3B8'
+        color: '#9AA8B2',
+        fontFamily: 'Inter, sans-serif'
       }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{
             width: '32px',
             height: '32px',
-            border: '3px solid rgba(56, 189, 248, 0.2)',
-            borderTopColor: '#38BDF8',
+            border: '3px solid rgba(47, 128, 237, 0.2)',
+            borderTopColor: '#2F80ED',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
             margin: '0 auto 12px auto'
           }} />
-          <p>Verifying authentication...</p>
+          <p style={{ fontSize: '13px', margin: 0 }}>Verifying credentials...</p>
         </div>
       </div>
     );

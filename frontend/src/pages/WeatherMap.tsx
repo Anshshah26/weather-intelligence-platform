@@ -117,37 +117,37 @@ export const WeatherMapPage = ({ currentCityWeather }: WeatherMapPageProps) => {
   return (
     <div className="space-y-4 max-w-7xl mx-auto flex flex-col min-h-full lg:h-[calc(100vh-5.5rem)] pb-2 max-w-full overflow-x-hidden">
       {/* Page Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/60 border border-slate-800 p-3.5 rounded-2xl shrink-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#18232D] border border-[#2B3945] p-4 rounded-xl shrink-0">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 mb-0.5">
-            <Globe className="w-3.5 h-3.5" /> Weather Intelligence Platform • Global Map
+          <div className="flex items-center gap-2 text-xs font-mono text-[#56CCF2] mb-0.5">
+            <Globe className="w-3.5 h-3.5 text-[#2F80ED]" /> Meteorological Map Station
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-100 tracking-tight">
-            Interactive Weather Overlay System
+          <h1 className="text-xl sm:text-2xl font-bold text-[#F4F7F9] tracking-tight">
+            Atmospheric Spatial Telemetry
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5 hidden sm:block">
-            Real-time OpenWeather tile overlays for Temperature, Rain, Clouds, Wind, and Pressure.
+          <p className="text-xs text-[#9AA8B2] mt-0.5 hidden sm:block">
+            High-precision OpenWeather layers for Temperature, Precipitation, Clouds, Wind, and Barometric Pressure.
           </p>
         </div>
 
         {/* Map City Search Form */}
         <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 w-full sm:w-80" role="search">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#9AA8B2] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Center map on city..."
               aria-label="Search city to update map view"
-              className="w-full bg-slate-950/80 border border-slate-800 focus:border-cyan-500/50 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20"
+              className="w-full bg-[#101820] border border-[#2B3945] focus:border-[#2F80ED] rounded-lg pl-9 pr-3 py-2 text-xs text-[#F4F7F9] placeholder-[#9AA8B2] focus:outline-none min-h-[38px]"
             />
           </div>
           <button
             type="submit"
             disabled={loading || !searchQuery.trim()}
             aria-label="Execute city search"
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-semibold rounded-xl transition-colors disabled:opacity-40 shrink-0 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 min-h-[38px]"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#2F80ED] hover:bg-[#2570d4] text-white text-xs font-medium rounded-lg transition-colors disabled:opacity-40 shrink-0 min-h-[38px]"
           >
             {loading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <MapPin className="w-3.5 h-3.5" />}
             <span>Go</span>
@@ -157,8 +157,8 @@ export const WeatherMapPage = ({ currentCityWeather }: WeatherMapPageProps) => {
 
       {/* Error Alert if Search Failed */}
       {error && (
-        <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-center gap-2 text-amber-300 text-xs shrink-0" role="alert">
-          <AlertCircle className="w-4 h-4 text-amber-400 shrink-0" />
+        <div className="p-3 bg-[#EB5757]/10 border border-[#EB5757]/30 rounded-lg flex items-center gap-2 text-[#EB5757] text-xs shrink-0" role="alert">
+          <AlertCircle className="w-4 h-4 text-[#EB5757] shrink-0" />
           <span>{error}</span>
         </div>
       )}
@@ -179,7 +179,7 @@ export const WeatherMapPage = ({ currentCityWeather }: WeatherMapPageProps) => {
       {/* Main Map Container Viewport */}
       <div
         ref={mapWrapperRef}
-        className={`flex-1 min-h-[360px] sm:min-h-[420px] h-[65vh] lg:h-auto relative rounded-2xl overflow-hidden border border-slate-800 transition-all ${
+        className={`flex-1 min-h-[360px] sm:min-h-[420px] h-[65vh] lg:h-auto relative rounded-xl overflow-hidden border border-[#2B3945] transition-all ${
           isFullscreen ? 'fixed inset-0 z-50 rounded-none border-none h-screen w-screen' : ''
         }`}
       >

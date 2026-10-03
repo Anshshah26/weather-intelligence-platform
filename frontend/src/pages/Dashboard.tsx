@@ -38,10 +38,10 @@ export const Dashboard = ({
   dailyData,
   dailyLoading,
   dailyError,
-  backendConnected,
-  onRefresh,
+  backendConnected: _backendConnected,
+  onRefresh: _onRefresh,
 }: DashboardProps) => {
-  // Mock fallback payload if backend is offline or before initial fetch
+  // Fallback payload if backend is offline or before initial fetch
   const defaultFallbackPayload: CurrentWeatherResponse = {
     location: {
       city: 'Mumbai',
@@ -66,20 +66,20 @@ export const Dashboard = ({
   const isAnyLoading = loading || hourlyLoading || dailyLoading;
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
+    <div className="space-y-5 max-w-7xl mx-auto">
       {/* User-Friendly Error Alert Banner */}
       {error && (
-        <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-center gap-3 text-amber-300 text-xs sm:text-sm">
-          <AlertCircle className="w-5 h-5 text-amber-400 shrink-0" />
+        <div className="p-3.5 bg-[#EB5757]/10 border border-[#EB5757]/30 rounded-lg flex items-center gap-3 text-[#EB5757] text-xs sm:text-sm">
+          <AlertCircle className="w-4 h-4 shrink-0 text-[#EB5757]" />
           <div className="flex-1 font-medium">{error}</div>
         </div>
       )}
 
-      {/* Loading Overlay / Progress Indicator */}
+      {/* Loading Progress Indicator */}
       {isAnyLoading && (
-        <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-xl flex items-center justify-center gap-2 text-cyan-300 text-xs font-mono animate-pulse">
-          <RefreshCw className="w-4 h-4 animate-spin text-cyan-400" />
-          <span>Fetching live atmospheric telemetry from FastAPI server...</span>
+        <div className="p-2.5 bg-[#24313C] border border-[#2B3945] rounded-lg flex items-center justify-center gap-2 text-[#56CCF2] text-xs font-mono">
+          <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#2F80ED]" />
+          <span>Synchronizing meteorological telemetry feed...</span>
         </div>
       )}
 
@@ -109,7 +109,7 @@ export const Dashboard = ({
       />
 
       {/* Bottom Grid: Activity Score & Weather Summary */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <ActivityScore items={mockActivityScores} />
         <WeatherSummaryCard summary={mockWeatherSummary} />
       </div>

@@ -4,6 +4,22 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-bg: #101820;
+  --color-surface: #18232D;
+  --color-surface-2: #24313C;
+  --color-surface-hover: #2A3A47;
+  --color-primary: #2F80ED;
+  --color-secondary: #56CCF2;
+  --color-success: #27AE9B;
+  --color-warning: #F2C94C;
+  --color-danger: #EB5757;
+  --color-text: #F4F7F9;
+  --color-muted: #9AA8B2;
+  --color-border: #2B3945;
+  --color-border-light: #3A4A57;
+}
+
 @layer base {
   html,
   body,
@@ -14,10 +30,60 @@
   }
 
   body {
-    background-color: #030712;
-    color: #f8fafc;
-    font-family: 'Inter', sans-serif;
+    background-color: #101820;
+    color: #F4F7F9;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: -0.01em;
   }
+}
+
+/* Professional Weather Station Card Classes */
+.weather-card {
+  background-color: #18232D;
+  border: 1px solid #2B3945;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.weather-card-sub {
+  background-color: #24313C;
+  border: 1px solid #2B3945;
+  border-radius: 8px;
+}
+
+.weather-header {
+  background-color: #18232D;
+  border-bottom: 1px solid #2B3945;
+}
+
+.weather-sidebar {
+  background-color: #18232D;
+  border-right: 1px solid #2B3945;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #2F80ED;
+  color: #FFFFFF;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 150ms ease, opacity 150ms ease;
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: #2570d4;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #F4F7F9;
+  border: 1px solid #3A4A57;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+.btn-secondary:hover:not(:disabled) {
+  background-color: #24313C;
+  border-color: #2F80ED;
 }
 
 /* Custom scrollbar utilities for smooth horizontal scrolling on mobile */
@@ -29,31 +95,31 @@
   scrollbar-width: none;
 }
 
-/* Custom Leaflet Dark Theme Adjustments */
+/* Custom Leaflet Meteorological Theme Adjustments */
 .leaflet-container {
-  background-color: #030712 !important;
+  background-color: #101820 !important;
   font-family: 'Inter', sans-serif !important;
   width: 100%;
   height: 100%;
-  border-radius: 1rem;
+  border-radius: 12px;
 }
 
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
-  border: 1px solid #1e293b !important;
-  border-radius: 0.75rem !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+  background-color: #18232D !important;
+  color: #F4F7F9 !important;
+  border: 1px solid #2B3945 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
 }
 
 .leaflet-control-zoom a {
-  background-color: #0f172a !important;
-  color: #38bdf8 !important;
-  border-color: #1e293b !important;
+  background-color: #18232D !important;
+  color: #56CCF2 !important;
+  border-color: #2B3945 !important;
 }
 
 .leaflet-control-zoom a:hover {
-  background-color: #1e293b !important;
-  color: #38bdf8 !important;
+  background-color: #24313C !important;
+  color: #F4F7F9 !important;
 }

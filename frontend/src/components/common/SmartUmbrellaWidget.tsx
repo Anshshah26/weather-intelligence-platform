@@ -75,9 +75,9 @@ export const SmartUmbrellaWidget = ({ city }: SmartUmbrellaWidgetProps) => {
 
   if (loading) {
     return (
-      <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-2xl flex items-center justify-between text-xs text-slate-400 font-mono">
+      <div className="bg-[#18232D] border border-[#2B3945] p-3.5 rounded-xl flex items-center justify-between text-xs text-[#9AA8B2] font-mono">
         <div className="flex items-center gap-2">
-          <RefreshCw className="w-4 h-4 animate-spin text-cyan-400" />
+          <RefreshCw className="w-4 h-4 animate-spin text-[#2F80ED]" />
           <span>Evaluating umbrella forecast for {city}...</span>
         </div>
       </div>
@@ -86,8 +86,8 @@ export const SmartUmbrellaWidget = ({ city }: SmartUmbrellaWidgetProps) => {
 
   if (error || !alertData) {
     return (
-      <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-2xl flex items-center gap-2 text-xs text-slate-400 font-mono">
-        <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+      <div className="bg-[#18232D] border border-[#2B3945] p-3.5 rounded-xl flex items-center gap-2 text-xs text-[#9AA8B2] font-mono">
+        <AlertTriangle className="w-4 h-4 text-[#F2C94C] shrink-0" />
         <span>Rain alerts are temporarily unavailable.</span>
       </div>
     );
@@ -98,12 +98,12 @@ export const SmartUmbrellaWidget = ({ city }: SmartUmbrellaWidgetProps) => {
 
   return (
     <div
-      className={`p-4 rounded-2xl border transition-all shadow-xl relative overflow-hidden text-slate-200 ${
+      className={`p-4 rounded-xl border transition-colors shadow-sm relative overflow-hidden text-[#F4F7F9] bg-[#18232D] ${
         isHigh
-          ? 'bg-rose-950/30 border-rose-800/80 shadow-rose-950/40'
+          ? 'border-l-4 border-l-[#EB5757] border-[#2B3945]'
           : isMedium
-          ? 'bg-amber-950/30 border-amber-800/80 shadow-amber-950/40'
-          : 'bg-slate-900/60 border-slate-800'
+          ? 'border-l-4 border-l-[#F2994A] border-[#2B3945]'
+          : 'border-l-4 border-l-[#27AE9B] border-[#2B3945]'
       }`}
       role="region"
       aria-label="Smart Umbrella Recommendation Widget"
@@ -112,16 +112,16 @@ export const SmartUmbrellaWidget = ({ city }: SmartUmbrellaWidgetProps) => {
         {/* Main Alert Info */}
         <div className="flex items-start gap-3">
           <div
-            className={`p-2.5 rounded-2xl border shrink-0 ${
+            className={`p-2 rounded-lg border shrink-0 ${
               isHigh
-                ? 'bg-rose-500/20 border-rose-500/40 text-rose-300'
+                ? 'bg-[#EB5757]/15 border-[#EB5757]/30 text-[#EB5757]'
                 : isMedium
-                ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
-                : 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400'
+                ? 'bg-[#F2994A]/15 border-[#F2994A]/30 text-[#F2994A]'
+                : 'bg-[#27AE9B]/15 border-[#27AE9B]/30 text-[#27AE9B]'
             }`}
           >
             {isHigh ? (
-              <Umbrella className="w-5 h-5 animate-bounce" />
+              <Umbrella className="w-5 h-5" />
             ) : isMedium ? (
               <CloudRain className="w-5 h-5" />
             ) : (
@@ -131,54 +131,54 @@ export const SmartUmbrellaWidget = ({ city }: SmartUmbrellaWidgetProps) => {
 
           <div className="space-y-0.5">
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-bold tracking-tight text-slate-100 flex items-center gap-1.5">
-                {isHigh ? '☔ Umbrella recommended' : isMedium ? '🌦️ Umbrella possible' : '☀️ No umbrella needed'}
+              <h3 className="text-sm font-bold tracking-tight text-[#F4F7F9] flex items-center gap-1.5">
+                {isHigh ? 'Umbrella recommended' : isMedium ? 'Umbrella possible' : 'No umbrella needed'}
               </h3>
               <span
-                className={`text-[10px] font-mono px-2 py-0.5 rounded-full border uppercase ${
+                className={`text-[10px] font-mono px-2 py-0.5 rounded border uppercase ${
                   isHigh
-                    ? 'bg-rose-500/20 border-rose-500/40 text-rose-300'
+                    ? 'bg-[#EB5757]/10 border-[#EB5757]/30 text-[#EB5757]'
                     : isMedium
-                    ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
-                    : 'bg-slate-950 border-slate-800 text-slate-400'
+                    ? 'bg-[#F2994A]/10 border-[#F2994A]/30 text-[#F2994A]'
+                    : 'bg-[#101820] border-[#2B3945] text-[#9AA8B2]'
                 }`}
               >
                 {alertData.severity} priority
               </span>
             </div>
 
-            <p className="text-xs text-slate-300 leading-snug">{alertData.message}</p>
+            <p className="text-xs text-[#9AA8B2] leading-snug">{alertData.message}</p>
 
-            <div className="flex flex-wrap items-center gap-3 text-[11px] font-mono text-slate-400 pt-1">
-              <span className="flex items-center gap-1 text-cyan-300">
-                <MapPin className="w-3 h-3 text-cyan-400" /> {alertData.location}
+            <div className="flex flex-wrap items-center gap-3 text-[11px] font-mono text-[#9AA8B2] pt-1">
+              <span className="flex items-center gap-1 text-[#56CCF2]">
+                <MapPin className="w-3 h-3 text-[#2F80ED]" /> {alertData.location}
               </span>
               {alertData.expected_time && (
-                <span className="flex items-center gap-1 text-slate-300">
-                  <Clock className="w-3 h-3 text-cyan-400" /> Expected: {alertData.expected_time}
+                <span className="flex items-center gap-1 text-[#F4F7F9]">
+                  <Clock className="w-3 h-3 text-[#9AA8B2]" /> Expected: {alertData.expected_time}
                 </span>
               )}
-              <span className="flex items-center gap-1 text-blue-400 font-semibold">
-                🌧️ {alertData.rain_probability}% rain probability
+              <span className="flex items-center gap-1 text-[#56CCF2] font-semibold">
+                {alertData.rain_probability}% precipitation probability
               </span>
             </div>
           </div>
         </div>
 
         {/* User Notification Preference Toggle */}
-        <div className="shrink-0 flex items-center gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-800/80">
+        <div className="shrink-0 flex items-center gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#2B3945]">
           <button
             onClick={handleToggleNotifications}
             aria-pressed={notificationsEnabled}
             title={notificationsEnabled ? 'Disable rain notifications' : 'Enable browser rain notifications'}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold font-mono transition-all focus:outline-none focus:ring-2 focus:ring-cyan-500/50 ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium font-mono transition-colors ${
               notificationsEnabled
-                ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-300'
-                : 'bg-slate-950/60 border border-slate-800 text-slate-400 hover:text-slate-200'
+                ? 'bg-[#2F80ED]/15 border border-[#2F80ED] text-[#56CCF2]'
+                : 'bg-[#24313C] border border-[#2B3945] text-[#9AA8B2] hover:text-[#F4F7F9]'
             }`}
           >
-            {notificationsEnabled ? <Bell className="w-3.5 h-3.5 text-cyan-400" /> : <BellOff className="w-3.5 h-3.5 text-slate-500" />}
-            <span>{notificationsEnabled ? 'Rain Alerts On' : 'Enable Rain Alerts'}</span>
+            {notificationsEnabled ? <Bell className="w-3.5 h-3.5 text-[#56CCF2]" /> : <BellOff className="w-3.5 h-3.5 text-[#9AA8B2]" />}
+            <span>{notificationsEnabled ? 'Rain Alerts Active' : 'Enable Alerts'}</span>
           </button>
         </div>
       </div>
